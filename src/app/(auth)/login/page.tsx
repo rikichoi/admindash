@@ -40,7 +40,7 @@ export default async function LoginPage() {
                 <input
                   id="email"
                   name="email"
-                  className="border-2 text-black border-gray-950 p-2 w-full"
+                  className="border-2 focus:ring-2 focus:ring-[#FDC62D] text-black focus:outline-2  outline-none border-gray-950 p-2 w-full"
                   placeholder="Email"
                 ></input>
               </div>
@@ -51,7 +51,7 @@ export default async function LoginPage() {
                 <input
                   id="password"
                   name="password"
-                  className=" text-black border-gray-950 border-2 p-2 w-full"
+                  className="border-2 focus:ring-2 focus:ring-[#FDC62D] text-black focus:outline-2  outline-none border-gray-950 p-2 w-full"
                   placeholder="Password"
                 ></input>
                 <Link
@@ -62,8 +62,8 @@ export default async function LoginPage() {
                 </Link>
               </div>
             </div>
-            <div className="font-space_grotesque text-black">
-              <button className="flex w-full border-2 border-black p-2 items-center gap-3 font-bold justify-center bg-[#FDC62D] hover:bg-[#ffcd42]">
+            <button className="relative group flex w-full border-2 border-black items-center font-bold justify-center bg-[#FDC62D] hover:bg-[#ffcd42] font-space_grotesque text-black">
+              <div className="z-50 flex h-full border-2 p-3 w-full gap-3 border-black items-center font-bold justify-center bg-[#FDC62D] hover:bg-[#ffcd42]">
                 Log In{" "}
                 <svg
                   width="17"
@@ -80,8 +80,9 @@ export default async function LoginPage() {
                     stroke-linejoin="round"
                   />
                 </svg>
-              </button>
-            </div>
+              </div>
+              <div className="hidden group-hover:flex group-hover:absolute left-1 top-1 items-center gap-3 bg-black w-full h-full"></div>
+            </button>
             <p className="text-center font-light text-black font-space_grotesque">
               Don&apos;t have an account?{" "}
               <Link
@@ -99,7 +100,7 @@ export default async function LoginPage() {
           alt="loginBg"
           height={1024}
           width={600}
-          className="min-w-full max-h-screen flex object-fill object-right"
+          className="min-w-full pointer-events-none select-none max-h-screen flex object-fill object-right"
           src={loginBg}
         ></Image>
       </div>
