@@ -17,8 +17,8 @@ async function logIn(formData: FormData) {
 
 export default async function LoginPage() {
   return (
-    <div className="grid xl:grid-cols-[1fr,600px] min-h-screen">
-      <div className="flex items-center justify-center">
+    <div className="grid xl:grid-cols-3 min-h-screen">
+      <div className="col-span-2 flex items-center justify-center">
         <div className="relative left-3 border-2 border-black h-full w-full max-h-[520px] lg:max-h-[580px] max-w-[320px] lg:max-w-[424px] bg-yellow-500 ">
           <form
             action={logIn}
@@ -95,7 +95,7 @@ export default async function LoginPage() {
           </form>
         </div>
       </div>
-      <div className="hidden xl:flex ">
+      <div className="col-span-1 hidden xl:flex ">
         <Image
           alt="loginBg"
           height={1024}
