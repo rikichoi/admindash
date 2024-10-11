@@ -7,6 +7,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      space_mono: ['Space Mono', "monospace"],
+      space_grotesque: ['Space Grotesk', "sans-serif"],    
+    },
     extend: {
       colors: {
         background: "var(--background)",
