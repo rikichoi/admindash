@@ -5,6 +5,8 @@ import { ZodError } from "zod";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
+// TODO: Learn how to gracefully handle errors; especially the updateUser controller
+
 export const getUsers: RequestHandler = async (req, res, next) => {
     try {
         // throw Error("There was an error!!!!")
