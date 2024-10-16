@@ -1,28 +1,10 @@
+import { getServerSession } from "next-auth";
 import Image from "next/image";
-
-
-// async function getData(): Promise<User[]> {
-//   "use server";
-
-//   // const res = await fetch("http://localhost:5000/api/users");
-//   // return await res.json();
-
-
-//   const users = await axios
-//     .get("http://localhost:5000/api/users")
-//     .then(function (response) {
-//       // handle success
-//       return response.data;
-//     })
-//     .catch(function (error) {
-//       // handle error
-//       console.log(error);
-//     });
-//   return users;
-// }
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  // const users = await getData();
+  const session = await getServerSession();
+  if (!session) redirect("/login");
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -35,16 +17,7 @@ export default async function Home() {
           height={38}
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          {/* {users &&
-            users.map((user, index: number) => (
-              <li key={index} className="mb-2">
-                <span>email: {user.email}</span>{" "}
-                <span>username: {user.username}</span>{" "}
-                <span>passwordHashed: {user.password}</span>
-              </li>
-            ))} */}
-        </ol>
+        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]"></ol>
       </main>
     </div>
   );

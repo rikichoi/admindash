@@ -1,30 +1,50 @@
-"use client"
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import loginBg from "@/app/assets/Picture1.png";
 import "@/app/globals.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const [errorMsg, setErrorMsg] = useState<string>();
+  const router = useRouter();
 
-  async function logIn(formData: FormData) {
-    const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get("email") as string | null;
+    const password = formData.get("password") as string | null;
+
     if (!email || !password) {
-      console.log("Please enter required fields!");
-      return;
+      setErrorMsg(
+        "Incorrect email or password. Type the correct email and password, and try again"
+      );
     }
-    try {
-      const response = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+
+    if (email && password) {
+      try {
+        const response = await signIn("credentials", {
+          email: email,
+          password: password,
+          redirect: false,
+          redirectTo: "/",
+        });
+        if (response && response.ok) {
+          console.log(response.ok);
+          router.push("/");
+        } else {
+          setErrorMsg(
+            "Incorrect email or password. Type the correct email and password, and try again"
+          );
+        }
+      } catch (error) {
+        console.log(error);
+        setErrorMsg(
+          "Incorrect email or password. Type the correct email and password, and try again"
+        );
+      }
     }
   }
 
@@ -33,7 +53,7 @@ export default function LoginPage() {
       <div className="col-span-2 flex items-center justify-center">
         <div className="relative left-3 border-2 border-black h-full w-full max-h-[520px] lg:max-h-[580px] max-w-[320px] lg:max-w-[424px] bg-yellow-500 ">
           <form
-            action={logIn}
+            onSubmit={(e) => handleSubmit(e)}
             className="flex flex-col gap-8 px-8 justify-center absolute border-2 border-black right-3 bottom-3 h-full w-full max-h-[520px] lg:max-h-[580px] max-w-[320px] lg:max-w-[424px] bg-white "
           >
             <div>
@@ -74,6 +94,9 @@ export default function LoginPage() {
                 </Link>
               </div>
             </div>
+            <span className="text-xs text-red-500 font-space_grotesque">
+              {errorMsg && errorMsg}
+            </span>
             <button className="relative group flex w-full border-2 border-black items-center font-bold justify-center bg-[#FDC62D] hover:bg-[#ffcd42] font-space_grotesque text-black">
               <div className="z-50 flex h-full border-2 p-3 w-full gap-3 border-black items-center font-bold justify-center bg-[#FDC62D] hover:bg-[#ffcd42]">
                 Log In{" "}
@@ -87,9 +110,9 @@ export default function LoginPage() {
                   <path
                     d="M1.83333 6H15.1667M15.1667 6L10.1667 1M15.1667 6L10.1667 11"
                     stroke="black"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>
