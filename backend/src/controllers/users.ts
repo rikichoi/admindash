@@ -1,111 +1,113 @@
-import { RequestHandler } from "express";
-import User from "../models/user";
-import { createUserSchema, updateUserSchema } from "../lib/validation";
-import { ZodError } from "zod";
-import createHttpError from "http-errors";
-import mongoose from "mongoose";
+// import { RequestHandler } from "express";
+// import User from "../models/user";
+// import { createUserSchema, updateUserSchema } from "../lib/validation";
+// import { ZodError } from "zod";
+// import createHttpError from "http-errors";
+// import mongoose from "mongoose";
 
-export const getUsers: RequestHandler = async (req, res, next) => {
-    try {
-        // throw Error("There was an error!!!!")
-        const users = await User.find().exec();
-        res.status(200).json(users);
-    } catch (error) {
-        next(error);
-    }
-}
+// // TODO: Learn how to gracefully handle errors; especially the updateUser controller
 
-export const getUser: RequestHandler = async (req, res, next) => {
-    const userId = req.params.userId;
-    try {
-        if (!mongoose.isValidObjectId(userId)) {
-            throw createHttpError(400, "Invalid userId")
-        }
+// export const getUsers: RequestHandler = async (req, res, next) => {
+//     try {
+//         // throw Error("There was an error!!!!")
+//         const users = await User.find().exec();
+//         res.status(200).json(users);
+//     } catch (error) {
+//         next(error);
+//     }
+// }
 
-        const user = await User.findById(userId).exec();
+// export const getUser: RequestHandler = async (req, res, next) => {
+//     const userId = req.params.userId;
+//     try {
+//         if (!mongoose.isValidObjectId(userId)) {
+//             throw createHttpError(400, "Invalid userId")
+//         }
 
-        if (!user) {
-            throw createHttpError(404, "User not found")
-        }
+//         const user = await User.findById(userId).exec();
 
-        res.status(200).json(user);
-    }
-    catch (error) {
-        next(error)
-    }
-}
+//         if (!user) {
+//             throw createHttpError(404, "User not found")
+//         }
 
-export const deleteUser: RequestHandler = async (req, res, next) => {
-    const userId = req.params.userId;
+//         res.status(200).json(user);
+//     }
+//     catch (error) {
+//         next(error)
+//     }
+// }
 
-    try {
-        await User.deleteOne({ _id: userId }).exec();
+// export const deleteUser: RequestHandler = async (req, res, next) => {
+//     const userId = req.params.userId;
 
-        res.status(200).json(`User: ${userId} was successfully deleted`)
-    }
-    catch (error) {
-        next(error)
-    }
-}
+//     try {
+//         await User.deleteOne({ _id: userId }).exec();
 
-export const createUser: RequestHandler = async (req, res, next) => {
-    const data = createUserSchema.parse(req.body)
+//         res.status(200).json(`User: ${userId} was successfully deleted`)
+//     }
+//     catch (error) {
+//         next(error)
+//     }
+// }
 
-    try {
+// export const createUser: RequestHandler = async (req, res, next) => {
+//     const data = createUserSchema.parse(req.body)
 
-        const newUser = await User.create({
-            email: data.email,
-            username: data.username,
-            passwordHashed: data.passwordHashed,
-        });
+//     try {
 
-        res.status(201).json(newUser);
-    } catch (error) {
-        if (error instanceof ZodError) {
-            const errorMessages = error.errors.map((issue) => ({
-                message: `${issue.path.join('.')} is ${issue.message}`,
-            }))
-            throw createHttpError(400, { error: 'Invalid data', details: errorMessages });
-        }
-        else {
-            next(error);
-        }
-    }
-};
+//         const newUser = await User.create({
+//             email: data.email,
+//             username: data.username,
+//             passwordHashed: data.passwordHashed,
+//         });
 
-export const updateUser: RequestHandler = async (req, res, next) => {
-    const userId = req.params.userId;
+//         res.status(201).json(newUser);
+//     } catch (error) {
+//         if (error instanceof ZodError) {
+//             const errorMessages = error.errors.map((issue) => ({
+//                 message: `${issue.path.join('.')} is ${issue.message}`,
+//             }))
+//             throw createHttpError(400, { error: 'Invalid data', details: errorMessages });
+//         }
+//         else {
+//             next(error);
+//         }
+//     }
+// };
+
+// export const updateUser: RequestHandler = async (req, res, next) => {
+//     const userId = req.params.userId;
 
 
-    try {
-        const data = await updateUserSchema.safeParseAsync(req.body);
+//     try {
+//         const data = await updateUserSchema.safeParseAsync(req.body);
 
-        if (!mongoose.isValidObjectId(userId)) {
-            throw createHttpError(400, "Invalid userId")
-        }
-        const user = await User.findOne({ _id: userId });
+//         if (!mongoose.isValidObjectId(userId)) {
+//             throw createHttpError(400, "Invalid userId")
+//         }
+//         const user = await User.findOne({ _id: userId });
 
-        if (!user) {
-            throw createHttpError(404, "User not found")
-        }
+//         if (!user) {
+//             throw createHttpError(404, "User not found")
+//         }
 
-        if (data.success) {
-            user.username = (data.data.username || user.username);
-            user.email = (data.data.email || user.email);
-            user.passwordHashed = (data.data.passwordHashed || user.passwordHashed);
-            const updatedUser = await user.save();
-            res.status(200).json(updatedUser)
-        } else {
-            throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
-        }
-    }
-    catch (error) {
-        if (error instanceof ZodError) {
-            throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
-        }
-        else {
-            next(error)
-        }
-    }
+//         if (data.success) {
+//             user.username = (data.data.username || user.username);
+//             user.email = (data.data.email || user.email);
+//             user.passwordHashed = (data.data.passwordHashed || user.passwordHashed);
+//             const updatedUser = await user.save();
+//             res.status(200).json(updatedUser)
+//         } else {
+//             throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
+//         }
+//     }
+//     catch (error) {
+//         if (error instanceof ZodError) {
+//             throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
+//         }
+//         else {
+//             next(error)
+//         }
+//     }
 
-}
+// }
