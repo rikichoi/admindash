@@ -1,21 +1,33 @@
+"use client"
 import Image from "next/image";
 import React from "react";
 import loginBg from "@/app/assets/Picture1.png";
 import "@/app/globals.css";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
-async function logIn(formData: FormData) {
-  "use server";
-  const email = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
-  if (!email || !password) {
-    console.log("Please enter required fields!");
-    return;
+
+export default function LoginPage() {
+
+  async function logIn(formData: FormData) {
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
+    if (!email || !password) {
+      console.log("Please enter required fields!");
+      return;
+    }
+    try {
+      const response = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  console.log(`Details provided = email: ${email}, password: ${password}`);
-}
 
-export default async function LoginPage() {
   return (
     <div className="grid xl:grid-cols-3 min-h-screen">
       <div className="col-span-2 flex items-center justify-center">
