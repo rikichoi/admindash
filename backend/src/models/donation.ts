@@ -6,7 +6,6 @@ type Donation = {
     orgName?: string;
     comment: string;
     donorName?: string;
-    itemName?: string;
     // orgId: string;
     itemId: string;
     createdAt: Date;
@@ -14,15 +13,15 @@ type Donation = {
 }
 
 const DonationSchema = new Schema({
-    refundStatus: { type: Boolean, required: true },
+    refundStatus: { type: Boolean, required: false, default: false },
     amount: { type: Number, required: true },
     orgName: { type: String, required: false },
     comment: { type: String, required: true },
     donorName: { type: String, required: false },
-    itemName: { type: String, required: false },
-    itemId: { type: String, required: true },
+    email: { type: String, required: false },
+    phone: { type: Number, required: false },
+    itemId: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
     // orgId: { type: String, required: true },
-    items: [{ type: Schema.Types.ObjectId, ref: 'Item' }],
     // organisations: [{ type: Schema.Types.ObjectId, ref: 'Organisation' }],
 }, { timestamps: true });
 

@@ -3,7 +3,8 @@ import { z } from "zod";
 const envSchema = z.object({
     MONGO_DB_CONNECTION_STRING: z.string().url(),
     PORT: z.coerce.number().min(1000),
-    JWT_SECRET: z.string()
+    JWT_SECRET: z.string(),
+    STRIPE_SECRET_KEY: z.string()
 });
 
 export const envSanitisedSchema = envSchema.parse(process.env);
@@ -45,14 +46,28 @@ export const createItemSchema = z.object({
     itemImage: z.string().min(1, "Required")
 })
 
+const requiredNumericString = z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number")
+const requiredString = z.string().min(1, "Required")
+// const requiredBooleanString = z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean")
+
 export type CreateItemSchema = z.infer<typeof createItemSchema>
 
+const contactSchema = z.object({
+    email: z.string().optional().or(z.literal("")),
+    phone: z.string().regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number").optional().or(z.literal("")),
+}).refine((data) => data.email || data.phone, {
+    message: "Email or url is required",
+    path: ["email"],
+});
+
+
 export const createDonationSchema = z.object({
-    name: z.string().min(1, "Required"),
-    email: z.string().min(1, "Required"),
-    phoneNumber: data.phoneNumber,
-    mailingAddress: z.string().min(1, "Required"),
-    IsAnon: data.IsAnon,
-    agreeToContact: data.agreeToContact,
-    howHeard: data.howHeard
-})
+    amount: requiredNumericString,
+    orgName: requiredString,
+    comment: requiredString,
+    donorName: z.string().optional(),
+
+    itemId: requiredString,
+}).and(contactSchema)
+
+export type CreateDonationSchema = z.infer<typeof createDonationSchema>
