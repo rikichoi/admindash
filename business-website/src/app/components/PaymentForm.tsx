@@ -68,12 +68,13 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
       setLoading(false);
       return;
     }
-
+    // TODO: Implement RHF and Zod for "return_url" values. This should be possible because the entire form is client side
     const result = await stripe.confirmPayment({
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3000/api/checkout/new-donation?${amount}&${orgName}&${comment}&${donorName}&${itemId}${email && `&${email}`}${phone && `&${phone}`}`,
+        return_url:
+          "http://localhost:3000/api/checkout/new-donation/2131451/FINALTEST/FASDASD/asdasd/6710740785124d1c61e37396/zxczxcz@gmail.com/6123",
       },
     });
     console.log(result);
@@ -93,7 +94,7 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
       <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
         <PaymentElement />
 
-        {errorMessage && <div>{errorMessage}</div>}
+        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 
         <button
           disabled={!stripe || loading || amount < 10}
