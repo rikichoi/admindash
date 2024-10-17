@@ -1,6 +1,5 @@
 import { model, Schema } from "mongoose";
 
-
 const Session = model(
     "Session",
     new Schema(
