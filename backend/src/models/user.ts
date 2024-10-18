@@ -2,15 +2,10 @@ import { model, Schema } from "mongoose";
 import bcrypt from "bcrypt"
 
 interface IUser {
-
     name: string;
-
     email: string;
-
     password: string;
-
     matchPassword(enteredPassword: string): Promise<boolean>;
-
 }
 
 const UserSchema = new Schema({

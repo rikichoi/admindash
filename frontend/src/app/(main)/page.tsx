@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -5,6 +6,13 @@ import { redirect } from "next/navigation";
 export default async function Home() {
   const session = await getServerSession();
   if (!session) redirect("/login");
+
+  const items = await axios
+    .get("http://localhost:5000/api/item/get-items")
+    .then(function (response) {
+      // handle success
+      return response.data;
+    });
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -17,7 +25,9 @@ export default async function Home() {
           height={38}
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]"></ol>
+        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+          {JSON.stringify(items)}
+        </ol>
       </main>
     </div>
   );

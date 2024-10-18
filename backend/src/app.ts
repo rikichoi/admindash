@@ -2,6 +2,8 @@ import 'dotenv/config'
 import express, { NextFunction, Request, Response } from "express";
 // import userRoutes from "./routes/users";
 import authRoutes from "./routes/authRoutes";
+import itemRoutes from "./routes/itemRoutes";
+import donationRoutes from "./routes/donationRoutes";
 import createHttpError, { isHttpError } from 'http-errors';
 
 const app = express();
@@ -11,6 +13,10 @@ app.use(express.json());
 // app.use("/api/users", userRoutes);
 
 app.use("/api/auth", authRoutes)
+
+app.use("/api/item", itemRoutes)
+
+app.use("/api/donation", donationRoutes)
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"))
