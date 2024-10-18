@@ -12,11 +12,19 @@ type Donation = {
   updatedAt: Date;
 };
 
-async function getDonations(): Promise<Donation[]> {
-  const response = await axios.get(
-    "http://localhost:5000/api/donation/get-donations"
-  );
-  return response.data;
+async function getDonations(): Promise<Donation[] | undefined> {
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/api/donation/get-donations"
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data.errors);
+    } else {
+      console.log(error);
+    }
+  }
 }
 
 export default async function Home() {
@@ -32,13 +40,14 @@ export default async function Home() {
           <li>Any 3 digits</li>
           <li>Any future date</li>
         </ol>
-        <div className="flex gap-5">
-          {donations.map((donation, index) => (
-            <ol key={index}>
-              <li>Donor Name: {donation.donorName}</li>
-              <li>Amount: ${donation.amount.toLocaleString()}</li>
-            </ol>
-          ))}
+        <div className="flex flex-col gap-5">
+          {donations &&
+            donations.map((donation, index) => (
+              <ol key={index}>
+                <li>Donor Name: {donation.donorName}</li>
+                <li>Comment: {donation.comment}</li>
+              </ol>
+            ))}
         </div>
       </div>
     </div>

@@ -8,6 +8,9 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { createPaymentIntent } from "../checkout/actions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateDonationSchema, createDonationSchema } from "../lib/validation";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type CheckoutFormProps = {
   amount: number;
@@ -36,12 +39,25 @@ export default function PaymentForm({
     </Elements>
   );
 }
+
 function CheckoutForm({ amount }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    control,
+    formState: { errors },
+  } = useForm<CreateDonationSchema>({
+    resolver: zodResolver(createDonationSchema),
+  });
+  const formSubmitHandler: SubmitHandler<CreateDonationSchema> = (data) => {
+    stripeSubmitHandler(data);
+  };
 
   useEffect(() => {
     if (amount > 10) {
@@ -56,13 +72,14 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
     }
   }, [amount]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const stripeSubmitHandler = async (data: CreateDonationSchema) => {
+    const { amount, comment, itemId, orgName, donorName, email, phone } = data;
     if (!stripe || !elements) {
       return;
     }
 
     const { error: submitError } = await elements.submit();
+    console.log(encodeURIComponent(comment));
     if (submitError) {
       setErrorMessage(submitError.message);
       setLoading(false);
@@ -73,8 +90,11 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url:
-          "http://localhost:3000/api/checkout/new-donation/2131451/FINALTEST/FASDASD/asdasd/6710740785124d1c61e37396/zxczxcz@gmail.com/6123",
+        return_url: `http://localhost:3000/api/checkout/new-donation/${amount}/${orgName}/${encodeURIComponent(
+          comment
+        )}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId}/${
+          email || null
+        }/${phone || null}`,
       },
     });
     console.log(result);
@@ -90,8 +110,88 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
   };
 
   return (
-    <div className="w-full h-full border-2">
-      <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
+    <div className="max-w-3xl mx-auto h-full border-2 rounded-lg">
+      <form
+        onSubmit={handleSubmit(formSubmitHandler)}
+        className="bg-white p-2 rounded-md text-black "
+      >
+        <h1 className="text-3xl">Make a donation</h1>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col">
+            <h2>Item ID</h2>
+            <input
+              className="border-2 p-2 rounded-lg"
+              {...register("itemId")}
+            />
+            {/* errors will return when field validation fails  */}
+            <p className="text-red-500">{errors.itemId?.message}</p>
+          </div>
+          <div className="flex flex-col">
+            <h2>Amount</h2>
+            <input
+              className="border-2 p-2 rounded-lg"
+              {...register("amount")}
+            />
+            {/* errors will return when field validation fails  */}
+            <p className="text-red-500">{errors.amount?.message}</p>
+          </div>
+          <div className="flex flex-col">
+            <h2>Organisation</h2>
+            <input
+              className="border-2 p-2 rounded-lg"
+              {...register("orgName")}
+            />
+            {/* errors will return when field validation fails  */}
+            <p className="text-red-500">{errors.orgName?.message}</p>
+          </div>
+          <div className="flex flex-col">
+            <h2>Full Name</h2>
+            <input
+              className="border-2 p-2 rounded-lg"
+              {...register("donorName")}
+            />
+            {/* errors will return when field validation fails  */}
+            <p className="text-red-500">{errors.donorName?.message}</p>
+          </div>
+          <div className="flex flex-col">
+            <h2>Comment</h2>
+            <input
+              className="border-2 p-2 rounded-lg"
+              {...register("comment")}
+            />
+            {/* errors will return when field validation fails  */}
+            <p className="text-red-500">{errors.comment?.message}</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col flex-grow">
+              <h2>Email</h2>
+              <input
+                className="border-2 p-2 rounded-lg"
+                {...register("email")}
+              />
+              {/* errors will return when field validation fails  */}
+              <p className="text-red-500">{errors.email?.message}</p>
+            </div>
+            <div className="flex flex-col flex-grow">
+              <h2>Phone Number</h2>
+              <Controller
+                control={control}
+                render={({ field }) => (
+                  <input
+                    onChange={(e) => {
+                      field.onChange(e);
+                      trigger("email");
+                    }}
+                    className="border-2 p-2 rounded-lg"
+                  />
+                )}
+                name="phone"
+              />
+              {/* errors will return when field validation fails  */}
+              <p className="text-red-500">{errors.phone?.message}</p>
+            </div>
+          </div>
+        </div>
         <PaymentElement />
 
         {errorMessage && <div className="text-red-500">{errorMessage}</div>}
