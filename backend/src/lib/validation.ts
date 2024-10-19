@@ -42,7 +42,7 @@ export const createItemSchema = z.object({
     name: z.string().min(1, "Required"),
     donationGoalValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
     totalDonationValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
-    activeStatus: z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean"),
+    activeStatus: z.string().min(1, "Required").refine(value => value == "true" || value == "false", "This value must be a boolean"),
     itemImage: z.string().min(1, "Required")
 })
 
@@ -71,3 +71,17 @@ export const createDonationSchema = z.object({
 }).and(contactSchema)
 
 export type CreateDonationSchema = z.infer<typeof createDonationSchema>
+
+export const createOrganisationSchema = z.object({
+    ABN: z.string().optional(),
+    activeStatus: z.string().min(1, "Required").refine(value => value == "true" || value == "false", "This value must be a boolean"),
+    description: requiredString,
+    image: requiredString,
+    name: requiredString,
+    phone: requiredString,
+    summary: requiredString,
+    website: requiredString,
+    totalDonationsCount: requiredNumericString,
+    totalDonationItemsCount: requiredNumericString,
+    totalDonationsValue: requiredNumericString,
+})

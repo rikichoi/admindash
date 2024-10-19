@@ -1,22 +1,29 @@
 import 'dotenv/config'
 import express, { NextFunction, Request, Response } from "express";
-// import userRoutes from "./routes/users";
 import authRoutes from "./routes/authRoutes";
 import itemRoutes from "./routes/itemRoutes";
 import donationRoutes from "./routes/donationRoutes";
+import organisationRoutes from "./routes/organisationRoutes";
 import createHttpError, { isHttpError } from 'http-errors';
+import cors from "cors";
 
 const app = express();
-
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200
+}
 app.use(express.json());
 
-// app.use("/api/users", userRoutes);
+app.use(cors(corsOptions));
 
 app.use("/api/auth", authRoutes)
 
 app.use("/api/item", itemRoutes)
 
 app.use("/api/donation", donationRoutes)
+
+app.use("/api/organisation", organisationRoutes)
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"))
