@@ -4,8 +4,14 @@ import React, { useState } from "react";
 import Dialog from "../Dialog";
 import AddOrganisationModal from "../Modals/AddOrganisationModal";
 
-export default function OrganisationDataOptions() {
-  const [showModal, setShowModal] = useState(true);
+type OrganisationDataOptionsProps = {
+  name?: string;
+};
+
+export default function OrganisationDataOptions({
+  name,
+}: OrganisationDataOptionsProps) {
+  const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("Add Organisation");
 
   return (
@@ -16,9 +22,7 @@ export default function OrganisationDataOptions() {
         setShowModal={setShowModal}
       >
         {modalContent == "Add Organisation" && (
-          <AddOrganisationModal
-            setShowModal={setShowModal}
-          />
+          <AddOrganisationModal setShowModal={setShowModal} />
         )}
         {modalContent == "" && (
           <p>
@@ -39,15 +43,19 @@ export default function OrganisationDataOptions() {
       >
         <Plus size={20} /> Organisation
       </button>
-      <button
-        onClick={() => (setModalContent(""), setShowModal(true))}
-        className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center border-2 rounded-lg p-3"
-      >
-        <Edit size={20} /> Edit
-      </button>
-      <button className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3">
-        <Trash2 size={20} /> Delete
-      </button>
+      {name && (
+        <>
+          <button
+            onClick={() => (setModalContent(""), setShowModal(true))}
+            className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center border-2 rounded-lg p-3"
+          >
+            <Edit size={20} /> Edit
+          </button>
+          <button className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3">
+            <Trash2 size={20} /> Delete
+          </button>
+        </>
+      )}
     </div>
   );
 }

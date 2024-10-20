@@ -3,8 +3,15 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import OrganisationDataOptions from "../components/OrganisationBar/OrganisationDataOptions";
 import OrganisationTable from "./OrganisationTable";
+import OrganisationGraph from "./OrganisationGraph";
 
-export default async function Home() {
+type HomeProps = {
+  searchParams: {
+    name: string;
+  };
+};
+
+export default async function Home({ searchParams: { name } }: HomeProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
 
@@ -17,13 +24,15 @@ export default async function Home() {
 
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">
-      <OrganisationDataOptions />
+      <OrganisationDataOptions name={name} />
       <div className="grid grid-cols-5 md:flex-row gap-8 items-center">
         {/* <ItemForm /> */}
-        <div className="col-span-3 border-2 h-[500px] rounded-lg">
-          <OrganisationTable />
+        <div className="col-span-3 border-2 rounded-lg">
+          <OrganisationTable name={name}/>
         </div>
-        <div className="col-span-2 border-2 "></div>
+        <div className="col-span-2 border-2 ">
+          <OrganisationGraph name={name} />
+        </div>
       </div>
     </main>
   );
