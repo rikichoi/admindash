@@ -48,3 +48,19 @@ export const createOrganisation = async (req: Request, res: Response, next: Next
         }
     }
 }
+
+export const deleteOrganisation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const name = req.params.name;
+        const organisation = Organisation.find({ name: name }).exec();
+        if (!organisation) {
+            res.status(400).json({ message: 'Organisation does not exist' });
+        } else {
+            await Organisation.deleteOne({ name: name }).exec()
+            res.status(201).json({ message: 'Organisation deleted successfully' });
+        }
+    }
+    catch (error) {
+        next(error)
+    }
+}
