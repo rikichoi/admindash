@@ -3,6 +3,7 @@ import { Edit, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import Dialog from "../Dialog";
 import AddOrganisationModal from "../Modals/AddOrganisationModal";
+import DeleteOrganisationModal from "../Modals/DeleteOrganisationModal";
 
 type OrganisationDataOptionsProps = {
   name?: string;
@@ -24,13 +25,16 @@ export default function OrganisationDataOptions({
         {modalContent == "Add Organisation" && (
           <AddOrganisationModal setShowModal={setShowModal} />
         )}
-        {modalContent == "" && (
+        {modalContent == "Edit Organisation" && (
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam
             eligendi odio ipsa nostrum dolores voluptas architecto tempore nulla
             voluptatibus vel, placeat explicabo exercitationem id officia
             laborum doloremque blanditiis earum accusamus.
           </p>
+        )}
+        {modalContent == "Delete Organisation" && (
+          <DeleteOrganisationModal name={name} setShowModal={setShowModal}/>
         )}
       </Dialog>
       <button
@@ -46,12 +50,19 @@ export default function OrganisationDataOptions({
       {name && (
         <>
           <button
-            onClick={() => (setModalContent(""), setShowModal(true))}
+            onClick={() => (
+              setModalContent("Edit Organisation"), setShowModal(true)
+            )}
             className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center border-2 rounded-lg p-3"
           >
             <Edit size={20} /> Edit
           </button>
-          <button className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3">
+          <button
+            onClick={() => (
+              setModalContent("Delete Organisation"), setShowModal(true)
+            )}
+            className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3"
+          >
             <Trash2 size={20} /> Delete
           </button>
         </>
