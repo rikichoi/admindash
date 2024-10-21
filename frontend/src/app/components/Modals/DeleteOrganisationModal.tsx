@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 
 type DeleteOrganisationModalProps = {
@@ -12,6 +12,7 @@ export default function DeleteOrganisationModal({
   name,
   setShowModal,
 }: DeleteOrganisationModalProps) {
+  const router = useRouter();
   const handleSubmit = async () => {
     await axios
       .delete(
@@ -21,7 +22,7 @@ export default function DeleteOrganisationModal({
       .then(function (response) {
         console.log(response);
         setShowModal(false);
-        redirect("/");
+        router.push("/");
       })
       .catch(function (error) {
         console.log(error);
@@ -30,11 +31,11 @@ export default function DeleteOrganisationModal({
 
   return (
     <form className="flex flex-col gap-3" action={handleSubmit}>
-      <input hidden className="border-2 p-2 rounded-lg" value={name} />
+      <input hidden readOnly className="border-2 p-2 rounded-lg" value={name} />
       <p>
         Are you sure you want to{" "}
         <span className="text-red-500 font-bold">{name}</span> as an
-        organisation? 
+        organisation?
       </p>
       <div className="flex ">
         <input
@@ -42,6 +43,7 @@ export default function DeleteOrganisationModal({
           className="p-2 border-2 bg-black text-white hover:cursor-pointer rounded-lg"
         />
         <button
+        type="button"
           onClick={() => setShowModal(false)}
           className="p-2 border-2 bg-red-600 text-white hover:cursor-pointer rounded-lg"
         >

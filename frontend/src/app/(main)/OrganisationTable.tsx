@@ -23,8 +23,8 @@ export default async function OrganisationTable({
 }: OrganisationTableProps) {
   const organisations = await getOrganisations();
   return (
-    <table className="w-full text-sm text-left text-gray-500">
-      <thead className="text-xs uppercase text-gray-400 border-b-2">
+    <table className="w-full text-xs text-left text-gray-500">
+      <thead className="uppercase text-gray-400 border-b-2">
         <tr className="text-left">
           <th scope="col" className="px-6 py-3">
             Name

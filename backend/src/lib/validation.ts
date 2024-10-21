@@ -74,7 +74,7 @@ export type CreateDonationSchema = z.infer<typeof createDonationSchema>
 
 export const createOrganisationSchema = z.object({
     ABN: z.string().optional(),
-    activeStatus: z.string().min(1, "Required").refine(value => value == "true" || value == "false", "This value must be a boolean"),
+    activeStatus: z.boolean(),
     description: requiredString,
     image: requiredString,
     name: requiredString,

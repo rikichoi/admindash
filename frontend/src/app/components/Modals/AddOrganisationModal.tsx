@@ -5,7 +5,7 @@ import {
 } from "@/app/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -16,12 +16,18 @@ type AddOrganisationModalProps = {
 export default function AddOrganisationModal({
   setShowModal,
 }: AddOrganisationModalProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
+    defaultValues: {
+      totalDonationItemsCount: "0",
+      totalDonationsCount: "0",
+      totalDonationsValue: "0"
+    },
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
     const {
@@ -37,7 +43,7 @@ export default function AddOrganisationModal({
       website,
       ABN,
     } = data;
-    console.log(data);
+    console.log(data.activeStatus);
 
     await axios
       .post("http://localhost:5000/api/organisation/create-organisation", {
@@ -56,7 +62,7 @@ export default function AddOrganisationModal({
       .then(function (response) {
         console.log(response);
         setShowModal(false);
-        revalidatePath("/");
+        router.push("/");
       })
       .catch(function (error) {
         console.log(error);
@@ -75,6 +81,7 @@ export default function AddOrganisationModal({
       <div className="flex flex-col">
         <h2>activeStatus</h2>
         <input
+          type="checkbox"
           className="border-2 p-2 rounded-lg"
           {...register("activeStatus")}
         />

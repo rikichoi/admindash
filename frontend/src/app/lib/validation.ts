@@ -6,13 +6,13 @@ const requiredString = z.string().min(1, "Required")
 
 export const createOrganisationSchema = z.object({
     ABN: z.string().optional(),
-    activeStatus: z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean"),
+    activeStatus: z.boolean(),
     description: requiredString,
     image: requiredString,
     name: requiredString,
     phone: requiredString,
     summary: requiredString,
-    website: requiredString,
+    website: requiredString.url(),
     totalDonationsCount: requiredNumericString,
     totalDonationItemsCount: requiredNumericString,
     totalDonationsValue: requiredNumericString,
