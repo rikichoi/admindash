@@ -34,7 +34,7 @@ export default function DeleteOrganisationModal({
       <p>
         Are you sure you want to{" "}
         <span className="text-red-500 font-bold">{name}</span> as an
-        organisation?
+        organisation? 
       </p>
       <div className="flex ">
         <input

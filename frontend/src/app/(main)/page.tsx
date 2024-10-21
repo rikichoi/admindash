@@ -25,9 +25,9 @@ export default async function Home({ searchParams: { name } }: HomeProps) {
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">
       <OrganisationDataOptions name={name} />
-      <div className="grid grid-cols-5 md:flex-row gap-8 items-center">
+      <div className="grid md:grid-cols-5 gap-8 items-center">
         {/* <ItemForm /> */}
-        <div className="col-span-3 border-2 rounded-lg">
+        <div className="col-span-3 border-t-2">
           <OrganisationTable name={name}/>
         </div>
         <div className="col-span-2 border-2 ">

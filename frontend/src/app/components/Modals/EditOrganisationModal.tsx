@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
 
-export default function EditOrganisationModal() {
-  return (
-    <div>EditOrganisationModal</div>
-  )
+type EditOrganisationModalProps = {
+  name?: string;
+};
+
+export default function EditOrganisationModal({
+  name,
+}: EditOrganisationModalProps) {
+  return <div>{name}</div>;
 }

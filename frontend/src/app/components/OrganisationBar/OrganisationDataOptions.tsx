@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Dialog from "../Dialog";
 import AddOrganisationModal from "../Modals/AddOrganisationModal";
 import DeleteOrganisationModal from "../Modals/DeleteOrganisationModal";
+import EditOrganisationModal from "../Modals/EditOrganisationModal";
 
 type OrganisationDataOptionsProps = {
   name?: string;
@@ -26,15 +27,10 @@ export default function OrganisationDataOptions({
           <AddOrganisationModal setShowModal={setShowModal} />
         )}
         {modalContent == "Edit Organisation" && (
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam
-            eligendi odio ipsa nostrum dolores voluptas architecto tempore nulla
-            voluptatibus vel, placeat explicabo exercitationem id officia
-            laborum doloremque blanditiis earum accusamus.
-          </p>
+          <EditOrganisationModal name={name} />
         )}
         {modalContent == "Delete Organisation" && (
-          <DeleteOrganisationModal name={name} setShowModal={setShowModal}/>
+          <DeleteOrganisationModal name={name} setShowModal={setShowModal} />
         )}
       </Dialog>
       <button

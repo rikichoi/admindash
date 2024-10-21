@@ -23,8 +23,8 @@ export default async function OrganisationTable({
 }: OrganisationTableProps) {
   const organisations = await getOrganisations();
   return (
-    <table className="rounded-xl w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table className="w-full text-sm text-left text-gray-500">
+      <thead className="text-xs uppercase text-gray-400 border-b-2">
         <tr className="text-left">
           <th scope="col" className="px-6 py-3">
             Name
@@ -43,59 +43,74 @@ export default async function OrganisationTable({
           </th>
         </tr>
       </thead>
-      <tbody className="rounded-xl">
-        {organisations?.map((organisation, index) => (
-          <tr
-            key={index}
-            className={`${
-              name == organisation.name ? "bg-gray-500" : "bg-gray-800"
-            }  border-b bg-gray-800 border-gray-700  hover:bg-gray-600`}
-          >
+      <tbody className="">
+        {organisations ? (
+          organisations.map((organisation, index) => (
+            <tr
+              key={index}
+              className={`${
+                name == organisation.name ? "bg-gray-300" : ""
+              }     hover:bg-gray-200 border-b-2`}
+            >
+              <th
+                scope="row"
+                className="font-medium text-gray-900 whitespace-nowrap"
+              >
+                <Link
+                  className="flex px-6 py-4  w-full"
+                  href={`?name=${organisation.name}`}
+                >
+                  {organisation.name}
+                </Link>
+              </th>
+              <td>
+                <Link
+                  className="flex px-6 py-4  w-full"
+                  href={`?name=${organisation.name}`}
+                >
+                  {organisation.activeStatus.toString()}
+                </Link>
+              </td>
+              <td>
+                <Link
+                  className="flex px-6 py-4  w-full"
+                  href={`?name=${organisation.name}`}
+                >
+                  {organisation.totalDonationItemsCount}
+                </Link>
+              </td>
+              <td>
+                <Link
+                  className="flex px-6 py-4  w-full"
+                  href={`?name=${organisation.name}`}
+                >
+                  {organisation.totalDonationsCount}
+                </Link>
+              </td>
+              <td>
+                <Link
+                  className="flex px-6 py-4  w-full"
+                  href={`?name=${organisation.name}`}
+                >
+                  {organisation.totalDonationsValue}
+                </Link>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr className="bg-gray-800 border-b border-gray-700  hover:bg-gray-600">
             <th
               scope="row"
               className="font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              <Link
-                className="flex px-6 py-4  w-full"
-                href={`?name=${organisation.name}`}
-              >
-                {organisation.name}
-              </Link>
+              ---
             </th>
-            <td>
-              <Link
-                className="flex px-6 py-4  w-full"
-                href={`?name=${organisation.name}`}
-              >
-                {organisation.activeStatus.toString()}
-              </Link>
-            </td>
-            <td>
-              <Link
-                className="flex px-6 py-4  w-full"
-                href={`?name=${organisation.name}`}
-              >
-                {organisation.totalDonationItemsCount}
-              </Link>
-            </td>
-            <td>
-              <Link
-                className="flex px-6 py-4  w-full"
-                href={`?name=${organisation.name}`}
-              >
-                {organisation.totalDonationsCount}
-              </Link>
-            </td>
-            <td>
-              <Link
-                className="flex px-6 py-4  w-full"
-                href={`?name=${organisation.name}`}
-              >
-                {organisation.totalDonationsValue}
-              </Link>
-            </td>
+            <td className="flex px-6 py-4  w-full">---</td>
+            <td className="flex px-6 py-4  w-full">---</td>
+            <td className="flex px-6 py-4  w-full">---</td>
+            <td className="flex px-6 py-4  w-full">---</td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
