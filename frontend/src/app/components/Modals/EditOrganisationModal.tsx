@@ -7,7 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type EditOrganisationModalProps = {
@@ -20,9 +20,36 @@ export default function AddOrganisationModal({
   organisation,
 }: EditOrganisationModalProps) {
   const router = useRouter();
+
+  useEffect(() => {
+    if (!organisation) return;
+    setValue("ABN", organisation.ABN);
+    setValue("activeStatus", organisation.activeStatus);
+    setValue("description", organisation.description);
+    setValue("image", organisation.image);
+    setValue("name", organisation.name);
+    setValue("phone", organisation.phone.toString());
+    setValue("summary", organisation.summary);
+    setValue("website", organisation.website);
+    setValue(
+      "totalDonationItemsCount",
+      organisation.totalDonationItemsCount.toString()
+    );
+    setValue(
+      "totalDonationsCount",
+      organisation.totalDonationsCount.toString()
+    );
+    setValue(
+      "totalDonationsValue",
+      organisation.totalDonationsValue.toString()
+    );
+  }, [organisation]);
+
   const {
     register,
     handleSubmit,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
@@ -37,9 +64,10 @@ export default function AddOrganisationModal({
       website: organisation?.website,
       totalDonationItemsCount: organisation?.totalDonationItemsCount.toString(),
       totalDonationsCount: organisation?.totalDonationsCount.toString(),
-      totalDonationsValue: organisation?.totalDonationsCount.toString(),
+      totalDonationsValue: organisation?.totalDonationsValue.toString(),
     },
   });
+
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
     const {
       activeStatus,
@@ -76,6 +104,7 @@ export default function AddOrganisationModal({
         )
         .then(function (response) {
           console.log(response);
+          reset();
           setShowModal(false);
           router.push("/");
         })

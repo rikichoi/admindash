@@ -16,17 +16,19 @@ type AddOrganisationModalProps = {
 export default function AddOrganisationModal({
   setShowModal,
 }: AddOrganisationModalProps) {
+  
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
     defaultValues: {
       totalDonationItemsCount: "0",
       totalDonationsCount: "0",
-      totalDonationsValue: "0"
+      totalDonationsValue: "0",
     },
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
@@ -61,6 +63,7 @@ export default function AddOrganisationModal({
       })
       .then(function (response) {
         console.log(response);
+        reset();
         setShowModal(false);
         router.push("/");
       })
