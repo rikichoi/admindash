@@ -49,6 +49,41 @@ export const createOrganisation = async (req: Request, res: Response, next: Next
     }
 }
 
+export const editOrganisation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = await createOrganisationSchema.safeParseAsync(req.body)
+        if (data.success) {
+            const organisation = await Organisation.findOne({ name: data.data.name }).exec();
+            if (!organisation) { throw createHttpError(404, "Organisation does not exist") }
+            else {
+                organisation.ABN = (data.data.ABN || organisation.ABN)
+                organisation.activeStatus = (data.data.activeStatus || organisation.activeStatus)
+                organisation.description = (data.data.description || organisation.description)
+                organisation.image = (data.data.image || organisation.image)
+                organisation.name = (data.data.name || organisation.name)
+                organisation.phone = (data.data.phone || organisation.phone)
+                organisation.summary = (data.data.summary || organisation.summary)
+                organisation.website = (data.data.website || organisation.website)
+                organisation.totalDonationsCount = (data.data.totalDonationsCount || organisation.totalDonationsCount)
+                organisation.totalDonationItemsCount = (data.data.totalDonationItemsCount || organisation.totalDonationItemsCount)
+                organisation.totalDonationsValue = (data.data.totalDonationsValue || organisation.totalDonationsValue)
+                const edittedOrganisation = await organisation.save();
+                res.status(200).json(edittedOrganisation)
+            }
+        } else {
+            throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
+        }
+    } catch (error) {
+        if (error instanceof ZodError) {
+            throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
+        }
+        else {
+            next(error)
+
+        }
+    }
+}
+
 export const deleteOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const name = req.params.name;
