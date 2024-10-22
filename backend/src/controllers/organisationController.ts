@@ -3,6 +3,7 @@ import { createOrganisationSchema } from "../lib/validation";
 import { ZodError } from "zod";
 import createHttpError from "http-errors";
 import Organisation from "../models/organisation";
+import { isValidObjectId } from "mongoose";
 
 export const getOrganisations = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -51,9 +52,13 @@ export const createOrganisation = async (req: Request, res: Response, next: Next
 
 export const editOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const orgId = req.params.orgId
         const data = await createOrganisationSchema.safeParseAsync(req.body)
+        if (!isValidObjectId(orgId)) {
+            throw createHttpError(400, "Invalid orgId")
+        }
         if (data.success) {
-            const organisation = await Organisation.findOne({ name: data.data.name }).exec();
+            const organisation = await Organisation.findOne({ _id: orgId }).exec();
             if (!organisation) { throw createHttpError(404, "Organisation does not exist") }
             else {
                 organisation.ABN = (data.data.ABN || organisation.ABN)

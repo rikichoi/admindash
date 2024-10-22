@@ -1,20 +1,35 @@
 "use client";
 import { Edit, Plus, Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "../Dialog";
 import AddOrganisationModal from "../Modals/AddOrganisationModal";
 import DeleteOrganisationModal from "../Modals/DeleteOrganisationModal";
 import EditOrganisationModal from "../Modals/EditOrganisationModal";
+import { Organisation } from "@/app/lib/types";
 
 type OrganisationDataOptionsProps = {
   name?: string;
+  organisations: Organisation[] | null;
 };
 
 export default function OrganisationDataOptions({
   name,
+  organisations,
 }: OrganisationDataOptionsProps) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("Add Organisation");
+  const [selectedOrganisation, setSelectedOrganisation] = useState<
+    Organisation | undefined
+  >();
+
+  useEffect(() => {
+    const selectedOrg: Organisation | undefined = organisations?.filter(
+      (org) => {
+        return org.name == name;
+      }
+    )[0];
+    setSelectedOrganisation(selectedOrg);
+  }, [name]);
 
   return (
     <div className="flex items-center ">
@@ -27,7 +42,10 @@ export default function OrganisationDataOptions({
           <AddOrganisationModal setShowModal={setShowModal} />
         )}
         {modalContent == "Edit Organisation" && (
-          <EditOrganisationModal name={name} />
+          <EditOrganisationModal
+            setShowModal={setShowModal}
+            organisation={selectedOrganisation}
+          />
         )}
         {modalContent == "Delete Organisation" && (
           <DeleteOrganisationModal name={name} setShowModal={setShowModal} />

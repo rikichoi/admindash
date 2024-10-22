@@ -1,27 +1,16 @@
-import axios from "axios";
 import React from "react";
 import { Organisation } from "../lib/types";
 import Link from "next/link";
 
-type OrganisationTableProps = { name?: string };
-
-async function getOrganisations(): Promise<Organisation[] | null> {
-  "use server";
-  try {
-    const response = await axios.get(
-      "http://localhost:5000/api/organisation/get-organisations"
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
+type OrganisationTableProps = {
+  name?: string;
+  organisations: Organisation[] | null;
+};
 
 export default async function OrganisationTable({
   name,
+  organisations,
 }: OrganisationTableProps) {
-  const organisations = await getOrganisations();
   return (
     <table className="w-full text-xs text-left text-gray-500">
       <thead className="uppercase text-gray-400 border-b-2">
@@ -98,10 +87,10 @@ export default async function OrganisationTable({
             </tr>
           ))
         ) : (
-          <tr className="bg-gray-800 border-b border-gray-700  hover:bg-gray-600">
+          <tr className={` border-b-2`}>
             <th
               scope="row"
-              className="font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="font-medium text-gray-900 whitespace-nowrap"
             >
               ---
             </th>

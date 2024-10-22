@@ -4,12 +4,27 @@ import { redirect } from "next/navigation";
 import OrganisationDataOptions from "../components/OrganisationBar/OrganisationDataOptions";
 import OrganisationTable from "./OrganisationTable";
 import OrganisationGraph from "./OrganisationGraph";
+import { Organisation } from "../lib/types";
+import axios from "axios";
 
 type HomeProps = {
   searchParams: {
     name: string;
   };
 };
+
+async function getOrganisations(): Promise<Organisation[] | null> {
+  "use server";
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/api/organisation/get-organisations"
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 export default async function Home({ searchParams: { name } }: HomeProps) {
   const session = await getServerSession();
@@ -22,13 +37,15 @@ export default async function Home({ searchParams: { name } }: HomeProps) {
   //     return response.data;
   //   });
 
+  const organisations = await getOrganisations();
+
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">
-      <OrganisationDataOptions name={name} />
+      <OrganisationDataOptions name={name} organisations={organisations}/>
       <div className="flex flex-col lg:flex-row justify-between gap-8 items-center">
         {/* <ItemForm /> */}
         <div className="">
-          <OrganisationTable name={name} />
+          <OrganisationTable name={name} organisations={organisations}/>
         </div>
         <div className="flex-1">
           <OrganisationGraph name={name} />

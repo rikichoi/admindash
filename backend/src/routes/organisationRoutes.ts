@@ -9,6 +9,6 @@ router.get("/get-organisations", OrganisationController.getOrganisations)
 
 router.delete("/delete-organisation/:name", OrganisationController.deleteOrganisation)
 
-router.patch("/edit-organisation/", OrganisationController.editOrganisation)
+router.patch("/edit-organisation/:orgId", OrganisationController.editOrganisation)
 
 export default router;
