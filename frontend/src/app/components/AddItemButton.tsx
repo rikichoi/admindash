@@ -5,7 +5,7 @@ import AddItemModal from "./Modals/AddItemModal";
 
 export default function AddItemButton() {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState("Add Organisation");
+  const [modalContent, setModalContent] = useState("Add Item");
   return (
     <div>
       <ItemDialog
@@ -13,11 +13,13 @@ export default function AddItemButton() {
         showModal={showModal}
         setShowModal={setShowModal}
       >
-        {modalContent == "Add Organisation" && (
+        {modalContent == "Add Item" && (
           <AddItemModal setShowModal={setShowModal} />
         )}
       </ItemDialog>
-      <button onClick={() => setShowModal(true)}>Add Item</button>
+      <button onClick={() => (setModalContent("Add Item"), setShowModal(true))}>
+        Add Item
+      </button>
     </div>
   );
 }

@@ -43,9 +43,9 @@ export default async function Home({ searchParams: { name } }: HomeProps) {
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">
       <OrganisationDataOptions name={name} organisations={organisations} />
-      <div className="flex flex-col lg:flex-row justify-between gap-8 items-center">
+      <div className="flex flex-col lg:flex-row justify-between gap-8 items-center ">
         {/* <ItemForm /> */}
-        <div className="">
+        <div className="w-full lg:w-auto">
           <OrganisationTable name={name} organisations={organisations} />
         </div>
         <div className="flex-1">

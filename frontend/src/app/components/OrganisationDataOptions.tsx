@@ -32,7 +32,7 @@ export default function OrganisationDataOptions({
   }, [name]);
 
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center gap-2">
       <Dialog
         title={modalContent}
         showModal={showModal}
@@ -57,7 +57,7 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex gap-2 hover:bg-blue-700 bg-blue-600 items-center border-2 rounded-lg p-3"
+        className="flex gap-2 hover:bg-blue-700 bg-blue-600 items-center rounded-lg p-3"
       >
         <Plus size={20} /> Organisation
       </button>
@@ -67,7 +67,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Edit Organisation"), setShowModal(true)
             )}
-            className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center border-2 rounded-lg p-3"
+            className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center rounded-lg p-3"
           >
             <Edit size={20} /> Edit
           </button>
@@ -75,7 +75,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Delete Organisation"), setShowModal(true)
             )}
-            className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3"
+            className="flex gap-2 hover:bg-red-700 bg-red-600 items-center rounded-lg p-3"
           >
             <Trash2 size={20} /> Delete
           </button>
