@@ -1,5 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import {
   useStripe,
   useElements,
@@ -14,6 +19,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type CheckoutFormProps = {
   amount: number;
+  setAmount: Dispatch<SetStateAction<number>>;
 };
 
 type PaymentFormProps = {
@@ -24,23 +30,23 @@ export default function PaymentForm({
   STRIPE_PUBLISHABLE_KEY,
 }: PaymentFormProps) {
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
-
+  const [amount, setAmount] = useState(0);
   return (
     <Elements
       stripe={stripePromise}
       options={{
         mode: "payment",
-        amount: 5000,
+        amount: amount < 10 ? 10 : amount,
         appearance: { theme: "stripe" },
         currency: "usd",
       }}
     >
-      <CheckoutForm amount={5000} />
+      <CheckoutForm amount={amount} setAmount={setAmount} />
     </Elements>
   );
 }
 
-function CheckoutForm({ amount }: CheckoutFormProps) {
+function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -51,6 +57,7 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
     handleSubmit,
     trigger,
     control,
+    watch,
     formState: { errors },
   } = useForm<CreateDonationSchema>({
     resolver: zodResolver(createDonationSchema),
@@ -71,6 +78,13 @@ function CheckoutForm({ amount }: CheckoutFormProps) {
       return;
     }
   }, [amount]);
+
+  const amountValue = watch("amount");
+
+  useEffect(() => {
+    console.log(amountValue);
+    setAmount(parseInt(amountValue) || 0);
+  }, [amountValue]);
 
   const stripeSubmitHandler = async (data: CreateDonationSchema) => {
     const { amount, comment, itemId, orgName, donorName, email, phone } = data;

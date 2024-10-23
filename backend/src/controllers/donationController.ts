@@ -1,18 +1,25 @@
 import { NextFunction, Request, Response } from "express";
-// import stripe from "../lib/stripe";
+import stripe from "../lib/stripe";
 import { createDonationSchema } from "../lib/validation";
 import { ZodError } from "zod";
 import createHttpError from "http-errors";
 import Donation from "../models/donation";
 
+export const getStripeDonations = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const balanceTransactions = await stripe.balanceTransactions.list({
+            limit: 3,
+        });
+        res.status(200).json(balanceTransactions.data)
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const getDonations = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // const balanceTransactions = await stripe.balanceTransactions.list({
-        //     limit: 3,
-        // });
-        // res.status(200).json(balanceTransactions.data)
         const donations = await Donation.find().populate('itemId') // multiple path names in one requires mongoose >= 3.6
-        .exec();
+            .exec();
         res.status(200).json(donations)
     } catch (error) {
         next(error)
@@ -22,7 +29,6 @@ export const getDonations = async (req: Request, res: Response, next: NextFuncti
 export const createDonation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await createDonationSchema.safeParseAsync(req.params)
-
         const item = await Donation.create({
             amount: data.data?.amount,
             orgName: data.data?.orgName,
@@ -37,7 +43,6 @@ export const createDonation = async (req: Request, res: Response, next: NextFunc
         } else {
             res.status(400).json({ message: 'Invalid item data' });
         }
-
     } catch (error) {
         if (error instanceof ZodError) {
             throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)

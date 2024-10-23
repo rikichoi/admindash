@@ -41,7 +41,6 @@ export const authOptions: NextAuthOptions = {
                         token: res.data.token,
                         name,
                         email,
-
                     }
                     return user;
                 }
@@ -64,7 +63,6 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/login",
-        error: '/login'
     },
 };
 
