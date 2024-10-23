@@ -1,14 +1,11 @@
 "use client";
-import { Session } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-type SignOutButtonProps = {
-  session?: Session;
-};
 
-export default function SignOutButton({ session }: SignOutButtonProps) {
-  const { data, status } = useSession();
+
+export default function SignOutButton() {
+  const { status } = useSession();
   return (
     status === "authenticated" && (
       <button
