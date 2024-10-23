@@ -1,10 +1,10 @@
 "use client";
 import { Edit, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Dialog from "../Dialog";
-import AddOrganisationModal from "../Modals/AddOrganisationModal";
-import DeleteOrganisationModal from "../Modals/DeleteOrganisationModal";
-import EditOrganisationModal from "../Modals/EditOrganisationModal";
+import Dialog from "./OrganisationDialog";
+import AddOrganisationModal from "./Modals/AddOrganisationModal";
+import DeleteOrganisationModal from "./Modals/DeleteOrganisationModal";
+import EditOrganisationModal from "./Modals/EditOrganisationModal";
 import { Organisation } from "@/app/lib/types";
 
 type OrganisationDataOptionsProps = {

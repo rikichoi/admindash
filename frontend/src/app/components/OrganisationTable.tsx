@@ -47,7 +47,11 @@ export default async function OrganisationTable({
               >
                 <Link
                   className="flex px-6 py-4  w-full"
-                  href={name == organisation.name ? "/" : `?name=${organisation.name}`}
+                  href={
+                    name == organisation.name
+                      ? "/"
+                      : `?name=${organisation.name}`
+                  }
                 >
                   {organisation.name}
                 </Link>
@@ -55,7 +59,11 @@ export default async function OrganisationTable({
               <td>
                 <Link
                   className="flex px-6 py-4  w-full"
-                  href={name == organisation.name ? "/" : `?name=${organisation.name}`}
+                  href={
+                    name == organisation.name
+                      ? "/"
+                      : `?name=${organisation.name}`
+                  }
                 >
                   {organisation.activeStatus.toString()}
                 </Link>
@@ -63,7 +71,11 @@ export default async function OrganisationTable({
               <td>
                 <Link
                   className="flex px-6 py-4  w-full"
-                  href={name == organisation.name ? "/" : `?name=${organisation.name}`}
+                  href={
+                    name == organisation.name
+                      ? "/"
+                      : `?name=${organisation.name}`
+                  }
                 >
                   {organisation.totalDonationItemsCount}
                 </Link>
@@ -71,7 +83,11 @@ export default async function OrganisationTable({
               <td>
                 <Link
                   className="flex px-6 py-4  w-full"
-                  href={name == organisation.name ? "/" : `?name=${organisation.name}`}
+                  href={
+                    name == organisation.name
+                      ? "/"
+                      : `?name=${organisation.name}`
+                  }
                 >
                   {organisation.totalDonationsCount}
                 </Link>
@@ -79,7 +95,11 @@ export default async function OrganisationTable({
               <td>
                 <Link
                   className="flex px-6 py-4  w-full"
-                  href={name == organisation.name ? "/" : `?name=${organisation.name}`}
+                  href={
+                    name == organisation.name
+                      ? "/"
+                      : `?name=${organisation.name}`
+                  }
                 >
                   {organisation.totalDonationsValue}
                 </Link>
@@ -92,12 +112,20 @@ export default async function OrganisationTable({
               scope="row"
               className="font-medium text-gray-900 whitespace-nowrap"
             >
-              ---
+              <span className="flex px-6 py-4  w-full">---</span>
             </th>
-            <td className="flex px-6 py-4  w-full">---</td>
-            <td className="flex px-6 py-4  w-full">---</td>
-            <td className="flex px-6 py-4  w-full">---</td>
-            <td className="flex px-6 py-4  w-full">---</td>
+            <td>
+              <span className="flex px-6 py-4  w-full">---</span>
+            </td>
+            <td>
+              <span className="flex px-6 py-4  w-full">---</span>
+            </td>
+            <td>
+              <span className="flex px-6 py-4  w-full">---</span>
+            </td>
+            <td>
+              <span className="flex px-6 py-4  w-full">---</span>
+            </td>
           </tr>
         )}
       </tbody>
