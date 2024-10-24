@@ -1,12 +1,12 @@
 // import axios from "axios";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import OrganisationDataOptions from "../components/OrganisationDataOptions";
-import OrganisationTable from "../components/OrganisationTable";
-import OrganisationGraph from "../components/OrganisationGraph";
-import { Organisation } from "../lib/types";
+import OrganisationDataOptions from "../../components/OrganisationDataOptions";
+import OrganisationTable from "../../components/OrganisationTable";
+import OrganisationGraph from "../../components/OrganisationGraph";
+import { Organisation } from "../../lib/types";
 import axios from "axios";
-import ItemSection from "../components/ItemSection";
+import ItemSection from "../../components/ItemSection";
 
 type HomeProps = {
   searchParams: {
