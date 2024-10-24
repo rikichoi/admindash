@@ -1,11 +1,8 @@
 "use client";
-import {
-  createOrganisationSchema,
-  CreateOrganisationSchema,
-} from "@/app/lib/validation";
+import { createItemSchema, CreateItemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+// import axios from "axios";
+// import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -13,76 +10,80 @@ type AddItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function AddItemModal({
-  setShowModal,
-}: AddItemModalProps) {
-  
-  const router = useRouter();
+export default function AddItemModal({}: // setShowModal,
+AddItemModalProps) {
+  // const router = useRouter();
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors },
-  } = useForm<CreateOrganisationSchema>({
-    resolver: zodResolver(createOrganisationSchema),
-    defaultValues: {
-      totalDonationItemsCount: "0",
-      totalDonationsCount: "0",
-      totalDonationsValue: "0",
-    },
+  } = useForm<CreateItemSchema>({
+    resolver: zodResolver(createItemSchema),
   });
-  const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
-    const {
-      activeStatus,
-      description,
-      image,
-      name,
-      phone,
-      summary,
-      totalDonationItemsCount,
-      totalDonationsCount,
-      totalDonationsValue,
-      website,
-      ABN,
-    } = data;
-    console.log(data.activeStatus);
+  const onSubmit: SubmitHandler<CreateItemSchema> = async (data) => {
+    // const {
+    //   activeStatus,
+    //   description,
+    //   image,
+    //   name,
+    //   phone,
+    //   summary,
+    //   totalDonationItemsCount,
+    //   totalDonationsCount,
+    //   totalDonationsValue,
+    //   website,
+    //   ABN,
+    // } = data;
+    console.log(data);
 
-    await axios
-      .post("http://localhost:5000/api/organisation/create-organisation", {
-        activeStatus,
-        ABN,
-        description,
-        image,
-        name,
-        phone,
-        summary,
-        totalDonationItemsCount,
-        totalDonationsCount,
-        totalDonationsValue,
-        website,
-      })
-      .then(function (response) {
-        console.log(response);
-        reset();
-        setShowModal(false);
-        router.push("/");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // await axios
+    //   .post("http://localhost:5000/api/organisation/create-organisation", {
+    //     activeStatus,
+    //     ABN,
+    //     description,
+    //     image,
+    //     name,
+    //     phone,
+    //     summary,
+    //     totalDonationItemsCount,
+    //     totalDonationsCount,
+    //     totalDonationsValue,
+    //     website,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     reset();
+    //     setShowModal(false);
+    //     router.push("/");
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col">
-        <h2>ABN</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("ABN")} />
-        {errors.ABN && (
-          <span className="text-red-500">{errors.ABN.message}</span>
+        <h2>Name</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("name")} />
+        {errors.name && (
+          <span className="text-red-500">{errors.name.message}</span>
         )}
       </div>
       <div className="flex flex-col">
-        <h2>activeStatus</h2>
+        <h2>Image</h2>
+        <input
+          // type="file"
+          className="border-2 p-2 rounded-lg"
+          {...register("itemImage")}
+        />
+        {errors.itemImage && (
+          <span className="text-red-500">{errors.itemImage.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Active Status</h2>
         <input
           type="checkbox"
           className="border-2 p-2 rounded-lg"
@@ -93,7 +94,14 @@ export default function AddItemModal({
         )}
       </div>
       <div className="flex flex-col">
-        <h2>description</h2>
+        <h2>Summary</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("summary")} />
+        {errors.summary && (
+          <span className="text-red-500">{errors.summary.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Description</h2>
         <input
           className="border-2 p-2 rounded-lg"
           {...register("description")}
@@ -103,73 +111,26 @@ export default function AddItemModal({
         )}
       </div>
       <div className="flex flex-col">
-        <h2>image</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("image")} />
-        {errors.image && (
-          <span className="text-red-500">{errors.image.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>name</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("name")} />
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>phone</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("phone")} />
-        {errors.phone && (
-          <span className="text-red-500">{errors.phone.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>summary</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("summary")} />
-        {errors.summary && (
-          <span className="text-red-500">{errors.summary.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>website</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("website")} />
-        {errors.website && (
-          <span className="text-red-500">{errors.website.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>totalDonationsCount</h2>
+        <h2>donationGoalValue</h2>
         <input
           className="border-2 p-2 rounded-lg"
-          {...register("totalDonationsCount")}
+          {...register("donationGoalValue")}
         />
-        {errors.totalDonationsCount && (
+        {errors.donationGoalValue && (
           <span className="text-red-500">
-            {errors.totalDonationsCount.message}
+            {errors.donationGoalValue.message}
           </span>
         )}
       </div>
       <div className="flex flex-col">
-        <h2>totalDonationItemsCount</h2>
+        <h2>totalDonationValue</h2>
         <input
           className="border-2 p-2 rounded-lg"
-          {...register("totalDonationItemsCount")}
+          {...register("totalDonationValue")}
         />
-        {errors.totalDonationItemsCount && (
+        {errors.totalDonationValue && (
           <span className="text-red-500">
-            {errors.totalDonationItemsCount.message}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>totalDonationsValue</h2>
-        <input
-          className="border-2 p-2 rounded-lg"
-          {...register("totalDonationsValue")}
-        />
-        {errors.totalDonationsValue && (
-          <span className="text-red-500">
-            {errors.totalDonationsValue.message}
+            {errors.totalDonationValue.message}
           </span>
         )}
       </div>

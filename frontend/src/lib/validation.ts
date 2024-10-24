@@ -19,3 +19,15 @@ export const createOrganisationSchema = z.object({
 })
 
 export type CreateOrganisationSchema = z.infer<typeof createOrganisationSchema>
+
+export const createItemSchema = z.object({
+    summary: z.string().min(1, "Required"),
+    description: requiredString,
+    name: requiredString,
+    donationGoalValue: requiredNumericString,
+    totalDonationValue: requiredNumericString,
+    activeStatus: z.boolean(),
+    itemImage: requiredString,
+})
+
+export type CreateItemSchema = z.infer<typeof createItemSchema>

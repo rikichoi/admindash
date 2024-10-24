@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { FormEvent, useState } from "react";
-import loginBg from "@/app/assets/Picture1.png";
+import loginBg from "@/assets/Picture1.png";
 import "@/app/globals.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";

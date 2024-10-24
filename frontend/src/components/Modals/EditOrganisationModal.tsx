@@ -1,9 +1,9 @@
 "use client";
-import { Organisation } from "@/app/lib/types";
+import { Organisation } from "@/lib/types";
 import {
   createOrganisationSchema,
   CreateOrganisationSchema,
-} from "@/app/lib/validation";
+} from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
