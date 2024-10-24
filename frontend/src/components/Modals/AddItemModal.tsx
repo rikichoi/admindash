@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // import axios from "axios";
 // import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type AddItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -16,6 +16,7 @@ AddItemModalProps) {
   const {
     register,
     handleSubmit,
+    control,
     // reset,
     formState: { errors },
   } = useForm<CreateItemSchema>({
@@ -73,13 +74,23 @@ AddItemModalProps) {
       </div>
       <div className="flex flex-col">
         <h2>Image</h2>
-        <input
-          // type="file"
-          className="border-2 p-2 rounded-lg"
-          {...register("itemImage")}
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <input
+              type="file"
+              onChange={(e) => {
+                field.onChange(e.target.files?.[0])
+              }}
+              className="border-2 p-2 rounded-lg"
+            />
+          )}
+          name="itemImage"
         />
         {errors.itemImage && (
-          <span className="text-red-500">{errors.itemImage.message}</span>
+          <span className="text-red-500">
+            {errors.itemImage?.message as string}
+          </span>
         )}
       </div>
       <div className="flex flex-col">

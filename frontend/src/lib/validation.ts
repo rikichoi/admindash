@@ -20,6 +20,19 @@ export const createOrganisationSchema = z.object({
 
 export type CreateOrganisationSchema = z.infer<typeof createOrganisationSchema>
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const itemImageSchema = z.object({
+    itemImage: z
+        .any()
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+        .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+        )
+})
+
 export const createItemSchema = z.object({
     summary: z.string().min(1, "Required"),
     description: requiredString,
@@ -27,7 +40,6 @@ export const createItemSchema = z.object({
     donationGoalValue: requiredNumericString,
     totalDonationValue: requiredNumericString,
     activeStatus: z.boolean(),
-    itemImage: requiredString,
-})
+}).and(itemImageSchema)
 
 export type CreateItemSchema = z.infer<typeof createItemSchema>
