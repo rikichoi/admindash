@@ -71,14 +71,14 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
 export const getItems = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const items = await Item.find().exec();
-        items.forEach(async (e) => {
+        const itemsWithUrls = await Promise.all(items.map(async (e) => {
             const command = new GetObjectCommand({ Bucket: envSanitisedSchema.BUCKET_NAME, Key: e.itemImage });
             const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-            e.imageUrl = url
-            console.log(url)
-        })
-        console.log(items)
-        res.status(200).json(items)
+            e.imageUrl = url;
+            return e;
+        }));
+        console.log(itemsWithUrls)
+        res.status(200).json(itemsWithUrls)
     } catch (error) {
         next(error)
     }

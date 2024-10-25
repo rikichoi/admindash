@@ -21,6 +21,7 @@ const ItemSchema = new Schema({
     totalDonationValue: { type: Number, required: true },
     activeStatus: { type: Boolean, required: true },
     itemImage: { type: String, required: true },
+    imageUrl: { type: String, required: true },
 }, { timestamps: true });
 
 export default model<Item>("Item", ItemSchema);
