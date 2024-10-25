@@ -5,12 +5,12 @@ import Link from "next/link";
 import OrganisationFilterSection from "./OrganisationFilterSection";
 
 type OrganisationTableProps = {
-  name?: string;
+  _id?: string;
   organisations: Organisation[] | null;
 };
 
 export default function OrganisationTable({
-  name,
+  _id,
   organisations,
 }: OrganisationTableProps) {
   const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
@@ -51,7 +51,7 @@ export default function OrganisationTable({
               <tr
                 key={index}
                 className={`${
-                  name == organisation.name ? "bg-gray-300" : ""
+                  _id == organisation._id ? "bg-gray-300" : ""
                 }     hover:bg-gray-200 border-b-2`}
               >
                 <th
@@ -61,9 +61,9 @@ export default function OrganisationTable({
                   <Link
                     className="flex px-6 py-4  w-full"
                     href={
-                      name == organisation.name
+                      _id == organisation._id
                         ? "/"
-                        : `?name=${organisation.name}`
+                        : `?_id=${organisation._id}`
                     }
                   >
                     {organisation.name}
@@ -73,9 +73,9 @@ export default function OrganisationTable({
                   <Link
                     className="flex px-6 py-4  w-full"
                     href={
-                      name == organisation.name
+                      _id == organisation._id
                         ? "/"
-                        : `?name=${organisation.name}`
+                        : `?_id=${organisation._id}`
                     }
                   >
                     {organisation.activeStatus.toString()}
@@ -85,9 +85,9 @@ export default function OrganisationTable({
                   <Link
                     className="flex px-6 py-4  w-full"
                     href={
-                      name == organisation.name
+                      _id == organisation._id
                         ? "/"
-                        : `?name=${organisation.name}`
+                        : `?_id=${organisation._id}`
                     }
                   >
                     {organisation.totalDonationItemsCount}
@@ -97,9 +97,9 @@ export default function OrganisationTable({
                   <Link
                     className="flex px-6 py-4  w-full"
                     href={
-                      name == organisation.name
+                      _id == organisation._id
                         ? "/"
-                        : `?name=${organisation.name}`
+                        : `?_id=${organisation._id}`
                     }
                   >
                     {organisation.totalDonationsCount}
@@ -109,9 +109,9 @@ export default function OrganisationTable({
                   <Link
                     className="flex px-6 py-4  w-full"
                     href={
-                      name == organisation.name
+                      _id == organisation._id
                         ? "/"
-                        : `?name=${organisation.name}`
+                        : `?_id=${organisation._id}`
                     }
                   >
                     {organisation.totalDonationsValue}

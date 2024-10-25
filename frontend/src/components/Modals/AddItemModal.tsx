@@ -8,9 +8,13 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 type AddItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  _id: string;
 };
 
-export default function AddItemModal({ setShowModal }: AddItemModalProps) {
+export default function AddItemModal({
+  setShowModal,
+  _id,
+}: AddItemModalProps) {
   const router = useRouter();
   const {
     register,
@@ -30,6 +34,7 @@ export default function AddItemModal({ setShowModal }: AddItemModalProps) {
       summary,
       totalDonationValue,
       itemImage,
+      orgId,
     } = data;
 
     const formData = new FormData();
@@ -40,6 +45,7 @@ export default function AddItemModal({ setShowModal }: AddItemModalProps) {
     formData.append("summary", summary);
     formData.append("totalDonationValue", totalDonationValue);
     formData.append("itemImage", itemImage);
+    formData.append("orgId", orgId);
 
     await axios
       .post("http://localhost:5000/api/item/create-item", formData, {
@@ -58,6 +64,7 @@ export default function AddItemModal({ setShowModal }: AddItemModalProps) {
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+      <input hidden value={_id} {...register("orgId")}></input>
       <div className="flex flex-col">
         <h2>Name</h2>
         <input className="border-2 p-2 rounded-lg" {...register("name")} />

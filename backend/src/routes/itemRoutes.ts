@@ -10,8 +10,10 @@ upload.single("itemImage")
 
 router.post("/create-item", upload.single("itemImage"), ItemController.createItem);
 
+router.get("/get-org-items/:orgId", ItemController.getOrgItems)
+
 router.get("/get-items", ItemController.getItems)
 
-router.delete("/delete-item/:name", ItemController.deleteItem)
+router.delete("/delete-item/:itemId", ItemController.deleteItem)
 
 export default router;

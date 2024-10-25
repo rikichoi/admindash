@@ -8,12 +8,12 @@ import EditOrganisationModal from "./Modals/EditOrganisationModal";
 import { Organisation } from "../lib/types";
 
 type OrganisationDataOptionsProps = {
-  name?: string;
+  _id?: string;
   organisations: Organisation[] | null;
 };
 
 export default function OrganisationDataOptions({
-  name,
+  _id,
   organisations,
 }: OrganisationDataOptionsProps) {
   const [showModal, setShowModal] = useState(false);
@@ -25,11 +25,11 @@ export default function OrganisationDataOptions({
   useEffect(() => {
     const selectedOrg: Organisation | undefined = organisations?.filter(
       (org) => {
-        return org.name == name;
+        return org._id == _id;
       }
     )[0];
     setSelectedOrganisation(selectedOrg);
-  }, [name]);
+  }, [_id]);
 
   return (
     <div className="flex items-center gap-2 text-white">
@@ -48,7 +48,7 @@ export default function OrganisationDataOptions({
           />
         )}
         {modalContent == "Delete Organisation" && (
-          <DeleteOrganisationModal name={name} setShowModal={setShowModal} />
+          <DeleteOrganisationModal _id={_id} setShowModal={setShowModal} />
         )}
       </Dialog>
       <button
@@ -61,7 +61,7 @@ export default function OrganisationDataOptions({
       >
         <Plus size={20} /> Organisation
       </button>
-      {name && (
+      {_id && (
         <>
           <button
             onClick={() => (

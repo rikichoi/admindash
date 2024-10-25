@@ -91,12 +91,12 @@ export const editOrganisation = async (req: Request, res: Response, next: NextFu
 
 export const deleteOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const name = req.params.name;
-        const organisation = Organisation.find({ name: name }).exec();
+        const orgId = req.params.orgId;
+        const organisation = Organisation.find({ _id: orgId }).exec();
         if (!organisation) {
             res.status(400).json({ message: 'Organisation does not exist' });
         } else {
-            await Organisation.deleteOne({ name: name }).exec()
+            await Organisation.deleteOne({ _id: orgId }).exec()
             res.status(201).json({ message: 'Organisation deleted successfully' });
         }
     }

@@ -4,19 +4,19 @@ import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 
 type DeleteOrganisationModalProps = {
-  name?: string;
+  _id?: string;
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function DeleteOrganisationModal({
-  name,
+  _id,
   setShowModal,
 }: DeleteOrganisationModalProps) {
   const router = useRouter();
   const handleSubmit = async () => {
     await axios
       .delete(
-        `http://localhost:5000/api/organisation/delete-organisation/${name}`,
+        `http://localhost:5000/api/organisation/delete-organisation/${_id}`,
         {}
       )
       .then(function (response) {
@@ -31,11 +31,9 @@ export default function DeleteOrganisationModal({
 
   return (
     <form className="flex flex-col gap-3" action={handleSubmit}>
-      <input hidden readOnly className="border-2 p-2 rounded-lg" value={name} />
+      <input hidden readOnly className="border-2 p-2 rounded-lg" value={_id} />
       <p>
-        Are you sure you want to{" "}
-        <span className="text-red-500 font-bold">{name}</span> as an
-        organisation?
+        Are you sure you want to delete this organisation?
       </p>
       <div className="flex ">
         <input

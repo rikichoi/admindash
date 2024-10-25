@@ -40,6 +40,7 @@ export const createItemSchema = z.object({
     donationGoalValue: requiredNumericString,
     totalDonationValue: requiredNumericString,
     activeStatus: z.boolean(),
+    orgId: z.string()
 }).and(itemImageSchema)
 
 export type CreateItemSchema = z.infer<typeof createItemSchema>

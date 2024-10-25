@@ -1,12 +1,12 @@
 import React from "react";
 type OrganisationGraphProps = {
-  name?: string;
+  _id?: string;
 };
-export default function OrganisationGraph({ name }: OrganisationGraphProps) {
+export default function OrganisationGraph({ _id }: OrganisationGraphProps) {
   return (
     <div className="text-black">
       OrganisationGraph
-      <p>Organisation name: {name}</p>
+      <p>Organisation name: {_id}</p>
     </div>
   );
 }

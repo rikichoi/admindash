@@ -7,7 +7,7 @@ router.post("/create-organisation", OrganisationController.createOrganisation);
 
 router.get("/get-organisations", OrganisationController.getOrganisations)
 
-router.delete("/delete-organisation/:name", OrganisationController.deleteOrganisation)
+router.delete("/delete-organisation/:orgId", OrganisationController.deleteOrganisation)
 
 router.patch("/edit-organisation/:orgId", OrganisationController.editOrganisation)
 

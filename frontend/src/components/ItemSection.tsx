@@ -4,9 +4,10 @@ import { Item } from "@/lib/types";
 
 type ItemSectionProps = {
   items: Item[] | null;
+  _id: string;
 };
 
-export default function ItemSection({ items }: ItemSectionProps) {
+export default function ItemSection({ items, _id }: ItemSectionProps) {
   return (
     <div className="text-black">
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
@@ -26,9 +27,8 @@ export default function ItemSection({ items }: ItemSectionProps) {
               <p>{item.itemImage}</p>
             </div>
           ))}
-        <ItemAddButton />
+        {_id && <ItemAddButton _id={_id}/>}
       </div>
-      <h1>ItemSection</h1>
     </div>
   );
 }

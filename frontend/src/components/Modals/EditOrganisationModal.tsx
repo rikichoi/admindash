@@ -107,6 +107,7 @@ export default function AddOrganisationModal({
           reset();
           setShowModal(false);
           router.push("/");
+          router.refresh();
         })
         .catch(function (error) {
           console.log(error);

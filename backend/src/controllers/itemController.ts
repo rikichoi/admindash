@@ -3,7 +3,7 @@ import { createItemSchema, itemImageSchema } from "../lib/validation";
 import Item from "../models/item";
 import createHttpError from "http-errors";
 import { ZodError } from "zod";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { envSanitisedSchema } from '../lib/validation';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -40,6 +40,7 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
                     donationGoalValue: data.data.donationGoalValue,
                     totalDonationValue: data.data.totalDonationValue,
                     activeStatus: data.data.activeStatus,
+                    orgId: data.data.orgId,
                     itemImage: imageData.data.originalname,
                 });
                 if (item) {
@@ -68,17 +69,29 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-export const getItems = async (req: Request, res: Response, next: NextFunction) => {
+export const getOrgItems = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const items = await Item.find().exec();
+        console.log(req.params)
+        const orgId = req.params.orgId
+        const items = await Item.find({ orgId: orgId }).populate("orgId").exec();
         const itemsWithUrls = await Promise.all(items.map(async (e) => {
             const command = new GetObjectCommand({ Bucket: envSanitisedSchema.BUCKET_NAME, Key: e.itemImage });
             const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
             e.imageUrl = url;
             return e;
         }));
-        console.log(itemsWithUrls)
         res.status(200).json(itemsWithUrls)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getItems = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const items = await Item.find().exec();
+       
+        res.status(200).json(items)
     } catch (error) {
         next(error)
     }
@@ -86,13 +99,19 @@ export const getItems = async (req: Request, res: Response, next: NextFunction) 
 
 export const deleteItem = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const name = req.params.name;
-        const item = Item.find({ name: name }).exec();
-        if (!item) {
-            res.status(400).json({ message: 'Item does not exist' });
+        const itemId = req.params.itemId;
+        const item = await Item.findOne({ _id: itemId }).exec();
+        if (item) {
+            await Item.deleteOne({ orgId: itemId }).exec()
+            const command = new DeleteObjectCommand({
+                Bucket: envSanitisedSchema.BUCKET_NAME,
+                Key: item.itemImage,
+            })
+            await s3.send(command)
+            res.status(201).json({ message: `Item: ${item} deleted successfully` });
         } else {
-            await Item.deleteOne({ name: name }).exec()
-            res.status(201).json({ message: 'Item deleted successfully' });
+            res.status(400).json({ message: 'Item does not exist' });
+
         }
     } catch (error) {
         next(error)
