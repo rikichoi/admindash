@@ -1,8 +1,8 @@
 "use client";
 import { createItemSchema, CreateItemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import axios from "axios";
-// import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -10,57 +10,50 @@ type AddItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function AddItemModal({}: // setShowModal,
-AddItemModalProps) {
-  // const router = useRouter();
+export default function AddItemModal({ setShowModal }: AddItemModalProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     control,
-    // reset,
+    reset,
     formState: { errors },
   } = useForm<CreateItemSchema>({
     resolver: zodResolver(createItemSchema),
   });
   const onSubmit: SubmitHandler<CreateItemSchema> = async (data) => {
-    // const {
-    //   activeStatus,
-    //   description,
-    //   image,
-    //   name,
-    //   phone,
-    //   summary,
-    //   totalDonationItemsCount,
-    //   totalDonationsCount,
-    //   totalDonationsValue,
-    //   website,
-    //   ABN,
-    // } = data;
-    console.log(data);
+    const {
+      activeStatus,
+      description,
+      donationGoalValue,
+      name,
+      summary,
+      totalDonationValue,
+      itemImage,
+    } = data;
 
-    // await axios
-    //   .post("http://localhost:5000/api/organisation/create-organisation", {
-    //     activeStatus,
-    //     ABN,
-    //     description,
-    //     image,
-    //     name,
-    //     phone,
-    //     summary,
-    //     totalDonationItemsCount,
-    //     totalDonationsCount,
-    //     totalDonationsValue,
-    //     website,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     reset();
-    //     setShowModal(false);
-    //     router.push("/");
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    const formData = new FormData();
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    formData.append("donationGoalValue", donationGoalValue);
+    formData.append("name", name);
+    formData.append("summary", summary);
+    formData.append("totalDonationValue", totalDonationValue);
+    formData.append("itemImage", itemImage);
+
+    await axios
+      .post("http://localhost:5000/api/item/create-item", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(function (response) {
+        console.log(response);
+        reset();
+        setShowModal(false);
+        router.push("/");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -80,7 +73,7 @@ AddItemModalProps) {
             <input
               type="file"
               onChange={(e) => {
-                field.onChange(e.target.files?.[0])
+                field.onChange(e.target.files?.[0]);
               }}
               className="border-2 p-2 rounded-lg"
             />

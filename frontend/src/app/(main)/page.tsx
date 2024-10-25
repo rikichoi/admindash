@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import OrganisationDataOptions from "../../components/OrganisationDataOptions";
 import OrganisationTable from "../../components/OrganisationTable";
 import OrganisationGraph from "../../components/OrganisationGraph";
-import { Organisation } from "../../lib/types";
+import { Item, Organisation } from "../../lib/types";
 import axios from "axios";
 import ItemSection from "../../components/ItemSection";
 
@@ -27,6 +27,18 @@ async function getOrganisations(): Promise<Organisation[] | null> {
   }
 }
 
+async function getItems(): Promise<Item[] | null> {
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/api/item/get-items"
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export default async function Home({ searchParams: { name } }: HomeProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
@@ -39,6 +51,9 @@ export default async function Home({ searchParams: { name } }: HomeProps) {
   //   });
 
   const organisations = await getOrganisations();
+  const items = await getItems();
+
+  console.log(items)
 
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">
@@ -53,7 +68,7 @@ export default async function Home({ searchParams: { name } }: HomeProps) {
         </div>
       </div>
       <div>
-        <ItemSection />
+        <ItemSection items={items} />
       </div>
     </main>
   );
