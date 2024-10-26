@@ -50,15 +50,15 @@ export default function AddOrganisationModal({
     await axios
       .post("http://localhost:5000/api/organisation/create-organisation", {
         activeStatus,
-        ABN,
+        ABN: parseInt(ABN),
         description,
         image,
         name,
-        phone,
+        phone: parseInt(phone),
         summary,
-        totalDonationItemsCount,
-        totalDonationsCount,
-        totalDonationsValue,
+        totalDonationItemsCount: parseInt(totalDonationItemsCount),
+        totalDonationsCount: parseInt(totalDonationsCount),
+        totalDonationsValue: parseInt(totalDonationsValue),
         website,
       })
       .then(function (response) {

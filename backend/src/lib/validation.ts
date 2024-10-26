@@ -89,7 +89,7 @@ export const createDonationSchema = z.object({
 export type CreateDonationSchema = z.infer<typeof createDonationSchema>
 
 export const createOrganisationSchema = z.object({
-    ABN: z.string().optional(),
+    ABN: z.number(),
     activeStatus: z.boolean(),
     description: requiredString,
     name: requiredString,

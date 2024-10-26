@@ -14,6 +14,7 @@ export type Organisation = {
 }
 
 export type Item = {
+    _id: string;
     summary: string;
     description: string;
     name: string;
@@ -22,6 +23,7 @@ export type Item = {
     activeStatus: boolean;
     itemImage: string;
     imageUrl?: string;
+    orgId: string;
     createdAt: Date;
     updatedAt: Date;
 }

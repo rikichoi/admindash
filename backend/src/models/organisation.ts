@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 type Organisation = {
-    ABN: string,
+    ABN: number,
     activeStatus: boolean,
     description: string,
     image: string,
@@ -15,7 +15,7 @@ type Organisation = {
 }
 
 const OrganisationSchema = new Schema<Organisation>({
-    ABN: { type: String, required: false },
+    ABN: { type: Number, required: false },
     activeStatus: { type: Boolean, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },

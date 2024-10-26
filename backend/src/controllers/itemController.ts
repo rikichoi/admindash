@@ -73,7 +73,7 @@ export const getOrgItems = async (req: Request, res: Response, next: NextFunctio
     try {
         console.log(req.params)
         const orgId = req.params.orgId
-        const items = await Item.find({ orgId: orgId }).populate("orgId").exec();
+        const items = await Item.find({ orgId: orgId }).exec();
         const itemsWithUrls = await Promise.all(items.map(async (e) => {
             const command = new GetObjectCommand({ Bucket: envSanitisedSchema.BUCKET_NAME, Key: e.itemImage });
             const url = await getSignedUrl(s3, command, { expiresIn: 3600 });

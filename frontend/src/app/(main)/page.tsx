@@ -41,17 +41,9 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
       return null;
     }
   }
-  // const items = await axios
-  //   .get("http://localhost:5000/api/item/get-items")
-  //   .then(function (response) {
-  //     // handle success
-  //     return response.data;
-  //   });
 
   const organisations = await getOrganisations();
   const items = await getItems();
-
-  console.log(items);
 
   return (
     <main className="bg-slate-50 mt-20 flex flex-col gap-2">

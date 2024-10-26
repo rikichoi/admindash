@@ -1,6 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import ItemAddButton from "./ItemAddButton";
 import { Item } from "@/lib/types";
+import ItemDialog from "./ItemDialog";
+import EditItemModal from "./Modals/EditItemModal";
 
 type ItemSectionProps = {
   items: Item[] | null;
@@ -8,12 +11,39 @@ type ItemSectionProps = {
 };
 
 export default function ItemSection({ items, _id }: ItemSectionProps) {
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState("Edit Item");
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const selectedItem =
+    items?.find((item) => item._id === selectedItemId) || null;
+
   return (
     <div className="text-black">
+      <ItemDialog
+        title={modalContent}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      >
+        {modalContent == "Edit Item" && (
+          <EditItemModal
+            item={selectedItem}
+            _id={_id}
+            setShowModal={setShowModal}
+          />
+        )}
+      </ItemDialog>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {items &&
           items.map((item, index) => (
-            <div className="w-fit" key={index}>
+            <button
+              onClick={() => (
+                setSelectedItemId(item._id),
+                setModalContent("Edit Item"),
+                setShowModal(true)
+              )}
+              className="w-fit items-center justify-center mx-auto flex flex-col gap-2"
+              key={index}
+            >
               {item.imageUrl && (
                 <img
                   width={400}
@@ -25,9 +55,9 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
               )}
               <p>{item.name}</p>
               <p>{item.itemImage}</p>
-            </div>
+            </button>
           ))}
-        {_id && <ItemAddButton _id={_id}/>}
+        {_id && <ItemAddButton _id={_id} />}
       </div>
     </div>
   );

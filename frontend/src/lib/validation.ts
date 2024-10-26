@@ -5,12 +5,12 @@ const requiredString = z.string().min(1, "Required")
 
 
 export const createOrganisationSchema = z.object({
-    ABN: z.string().optional(),
+    ABN: requiredNumericString,
     activeStatus: z.boolean(),
     description: requiredString,
     image: requiredString,
     name: requiredString,
-    phone: requiredString,
+    phone: requiredNumericString,
     summary: requiredString,
     website: requiredString.url(),
     totalDonationsCount: requiredNumericString,
