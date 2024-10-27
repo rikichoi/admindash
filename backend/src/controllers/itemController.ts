@@ -6,6 +6,7 @@ import { ZodError } from "zod";
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { envSanitisedSchema } from '../lib/validation';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { isValidObjectId } from "mongoose";
 
 const s3 = new S3Client({
     credentials: {
@@ -71,47 +72,44 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
 
 export const editItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+        const itemId = req.params.itemId;
         const data = await createItemSchema.safeParseAsync(req.body);
-        const imageData = await itemImageSchema.safeParseAsync(req.file)
-        if (data.success && imageData.success) {
-            const itemExists = await Item.findOne({ name: data.data.name });
-            if (itemExists) { res.status(400).json({ message: 'Item already exists' }) };
-
-            try {
-                const command = new PutObjectCommand({
-                    Bucket: envSanitisedSchema.BUCKET_NAME,
-                    Key: imageData.data.originalname,
-                    Body: imageData.data.buffer,
-                    ContentType: imageData.data.mimetype
-                })
-
-                await s3.send(command)
-
-                const item = await Item.create({
-                    summary: data.data.summary,
-                    description: data.data.description,
-                    name: data.data.name,
-                    donationGoalValue: data.data.donationGoalValue,
-                    totalDonationValue: data.data.totalDonationValue,
-                    activeStatus: data.data.activeStatus,
-                    orgId: data.data.orgId,
-                    itemImage: imageData.data.originalname,
-                });
-                if (item) {
-                    res.status(201).json({ message: 'Item created successfully' });
-                } else {
-                    res.status(400).json({ message: 'Invalid item data' });
-                }
+        // const imageData = await itemImageSchema.safeParseAsync(req.file)
+        if (itemId && data.success) {
+            if (!isValidObjectId(itemId)) {
+                throw createHttpError(400, "Invalid userId")
             }
-            catch (error) {
-                throw createHttpError(400, `Failed to upload image. Error message: ${error}`)
+            const itemExists = await Item.findOne({ _id: itemId });
+            if (!itemExists) { res.status(400).json({ message: 'Item does not exist' }) };
+
+            //update image if new image is provided
+            // const command = new PutObjectCommand({
+            //     Bucket: envSanitisedSchema.BUCKET_NAME,
+            //     Key: imageData.data.originalname,
+            //     Body: imageData.data.buffer,
+            //     ContentType: imageData.data.mimetype
+            // })
+
+            // await s3.send(command)
+            if (itemExists) {
+                itemExists.summary = data.data.summary
+                itemExists.description = data.data.description
+                itemExists.name = data.data.name
+                itemExists.donationGoalValue = parseInt(data.data.donationGoalValue)
+                itemExists.totalDonationValue = parseInt(data.data.totalDonationValue)
+                itemExists.activeStatus = JSON.parse(data.data.activeStatus)
+                itemExists.orgId = data.data.orgId
+
+                await itemExists.save();
+
+                res.status(200).json({ message: 'Item updated successfully' });
+            } else {
+                res.status(400).json({ message: 'Invalid item data' });
             }
-
-
-
-        } else {
-            throw createHttpError(400, `Invalid data,  ${data.error ? `Data details: ${data.error.message}` : ""}  ${imageData.error && `Image details: ${imageData.error.message}`}`);
         }
+        // catch (error) {
+        //     throw createHttpError(400, `Failed to upload image. Error message: ${error}`)
+        // }
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -143,7 +141,7 @@ export const getItems = async (req: Request, res: Response, next: NextFunction) 
     try {
 
         const items = await Item.find().exec();
-       
+
         res.status(200).json(items)
     } catch (error) {
         next(error)
