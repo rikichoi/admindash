@@ -29,6 +29,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
             item={selectedItem}
             _id={_id}
             setShowModal={setShowModal}
+            itemId={selectedItemId}
           />
         )}
       </ItemDialog>
@@ -41,14 +42,14 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
                 setModalContent("Edit Item"),
                 setShowModal(true)
               )}
-              className="w-fit items-center justify-center mx-auto flex flex-col gap-2"
+              className="w-fit h-full items-center justify-center mx-auto flex flex-col gap-2"
               key={index}
             >
               {item.imageUrl && (
                 <img
                   width={400}
                   height={400}
-                  className="max-w-40 max-h-40 object-center object-cover"
+                  className="w-40 h-40 object-center object-contain"
                   alt={item.name}
                   src={item.imageUrl}
                 ></img>

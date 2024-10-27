@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import FormSubmitButton from "../FormSubmitButton";
 
 type AddOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -16,13 +17,12 @@ type AddOrganisationModalProps = {
 export default function AddOrganisationModal({
   setShowModal,
 }: AddOrganisationModalProps) {
-  
   const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
     defaultValues: {
@@ -66,6 +66,7 @@ export default function AddOrganisationModal({
         reset();
         setShowModal(false);
         router.push("/");
+        router.refresh();
       })
       .catch(function (error) {
         console.log(error);
@@ -173,10 +174,7 @@ export default function AddOrganisationModal({
           </span>
         )}
       </div>
-      <input
-        type="submit"
-        className="p-2 border-2 bg-black text-white hover:cursor-pointer rounded-lg"
-      />
+      <FormSubmitButton className=" bg-black " isLoading={isSubmitting}>Submit</FormSubmitButton>
     </form>
   );
 }

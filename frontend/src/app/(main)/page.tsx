@@ -30,6 +30,7 @@ async function getOrganisations(): Promise<Organisation[] | null> {
 export default async function Home({ searchParams: { _id } }: HomeProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
+  
   async function getItems(): Promise<Item[] | null> {
     try {
       const response = await axios.get(
@@ -46,7 +47,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="bg-slate-50 mt-20 flex flex-col gap-2">
+    <main className="bg-slate-50 mt-20 flex flex-col gap-5">
       <OrganisationDataOptions _id={_id} organisations={organisations} />
       <div className="flex flex-col lg:flex-row justify-between gap-8 items-center ">
         {/* <ItemForm /> */}

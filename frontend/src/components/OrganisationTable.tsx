@@ -25,124 +25,126 @@ export default function OrganisationTable({
         setNameSort={setNameSort}
         setNameFilter={setNameFilter}
       />
-      <table className="w-full text-xs text-left text-gray-500">
-        <thead className="uppercase text-gray-400 border-b-2">
-          <tr className="text-left">
-            <th scope="col" className="px-6 py-3">
-              Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Active Status
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Item Count
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Donations Count
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Donations Value
-            </th>
-          </tr>
-        </thead>
-        <tbody className="">
-          {sortedOrganisations ? (
-            sortedOrganisations.map((organisation, index) => (
-              <tr
-                key={index}
-                className={`${
-                  _id == organisation._id ? "bg-gray-300" : ""
-                }     hover:bg-gray-200 border-b-2`}
-              >
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs text-left text-gray-500">
+          <thead className="uppercase text-gray-400 border-b-2">
+            <tr className="text-left">
+              <th scope="col" className="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Active Status
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Item Count
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Donations Count
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Donations Value
+              </th>
+            </tr>
+          </thead>
+          <tbody className="">
+            {sortedOrganisations ? (
+              sortedOrganisations.map((organisation, index) => (
+                <tr
+                  key={index}
+                  className={`${
+                    _id == organisation._id ? "bg-gray-300" : ""
+                  }     hover:bg-gray-200 border-b-2`}
+                >
+                  <th
+                    scope="row"
+                    className="font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    <Link
+                      className="flex px-6 py-4  w-full"
+                      href={
+                        _id == organisation._id
+                          ? "/"
+                          : `?_id=${organisation._id}`
+                      }
+                    >
+                      {organisation.name}
+                    </Link>
+                  </th>
+                  <td>
+                    <Link
+                      className="flex px-6 py-4  w-full"
+                      href={
+                        _id == organisation._id
+                          ? "/"
+                          : `?_id=${organisation._id}`
+                      }
+                    >
+                      {organisation.activeStatus.toString()}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      className="flex px-6 py-4  w-full"
+                      href={
+                        _id == organisation._id
+                          ? "/"
+                          : `?_id=${organisation._id}`
+                      }
+                    >
+                      {organisation.totalDonationItemsCount}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      className="flex px-6 py-4  w-full"
+                      href={
+                        _id == organisation._id
+                          ? "/"
+                          : `?_id=${organisation._id}`
+                      }
+                    >
+                      {organisation.totalDonationsCount}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      className="flex px-6 py-4  w-full"
+                      href={
+                        _id == organisation._id
+                          ? "/"
+                          : `?_id=${organisation._id}`
+                      }
+                    >
+                      {organisation.totalDonationsValue}
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr className={` border-b-2`}>
                 <th
                   scope="row"
                   className="font-medium text-gray-900 whitespace-nowrap"
                 >
-                  <Link
-                    className="flex px-6 py-4  w-full"
-                    href={
-                      _id == organisation._id
-                        ? "/"
-                        : `?_id=${organisation._id}`
-                    }
-                  >
-                    {organisation.name}
-                  </Link>
+                  <span className="flex px-6 py-4  w-full">---</span>
                 </th>
                 <td>
-                  <Link
-                    className="flex px-6 py-4  w-full"
-                    href={
-                      _id == organisation._id
-                        ? "/"
-                        : `?_id=${organisation._id}`
-                    }
-                  >
-                    {organisation.activeStatus.toString()}
-                  </Link>
+                  <span className="flex px-6 py-4  w-full">---</span>
                 </td>
                 <td>
-                  <Link
-                    className="flex px-6 py-4  w-full"
-                    href={
-                      _id == organisation._id
-                        ? "/"
-                        : `?_id=${organisation._id}`
-                    }
-                  >
-                    {organisation.totalDonationItemsCount}
-                  </Link>
+                  <span className="flex px-6 py-4  w-full">---</span>
                 </td>
                 <td>
-                  <Link
-                    className="flex px-6 py-4  w-full"
-                    href={
-                      _id == organisation._id
-                        ? "/"
-                        : `?_id=${organisation._id}`
-                    }
-                  >
-                    {organisation.totalDonationsCount}
-                  </Link>
+                  <span className="flex px-6 py-4  w-full">---</span>
                 </td>
                 <td>
-                  <Link
-                    className="flex px-6 py-4  w-full"
-                    href={
-                      _id == organisation._id
-                        ? "/"
-                        : `?_id=${organisation._id}`
-                    }
-                  >
-                    {organisation.totalDonationsValue}
-                  </Link>
+                  <span className="flex px-6 py-4  w-full">---</span>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr className={` border-b-2`}>
-              <th
-                scope="row"
-                className="font-medium text-gray-900 whitespace-nowrap"
-              >
-                <span className="flex px-6 py-4  w-full">---</span>
-              </th>
-              <td>
-                <span className="flex px-6 py-4  w-full">---</span>
-              </td>
-              <td>
-                <span className="flex px-6 py-4  w-full">---</span>
-              </td>
-              <td>
-                <span className="flex px-6 py-4  w-full">---</span>
-              </td>
-              <td>
-                <span className="flex px-6 py-4  w-full">---</span>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

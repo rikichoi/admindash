@@ -69,9 +69,62 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+export const editItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const data = await createItemSchema.safeParseAsync(req.body);
+        const imageData = await itemImageSchema.safeParseAsync(req.file)
+        if (data.success && imageData.success) {
+            const itemExists = await Item.findOne({ name: data.data.name });
+            if (itemExists) { res.status(400).json({ message: 'Item already exists' }) };
+
+            try {
+                const command = new PutObjectCommand({
+                    Bucket: envSanitisedSchema.BUCKET_NAME,
+                    Key: imageData.data.originalname,
+                    Body: imageData.data.buffer,
+                    ContentType: imageData.data.mimetype
+                })
+
+                await s3.send(command)
+
+                const item = await Item.create({
+                    summary: data.data.summary,
+                    description: data.data.description,
+                    name: data.data.name,
+                    donationGoalValue: data.data.donationGoalValue,
+                    totalDonationValue: data.data.totalDonationValue,
+                    activeStatus: data.data.activeStatus,
+                    orgId: data.data.orgId,
+                    itemImage: imageData.data.originalname,
+                });
+                if (item) {
+                    res.status(201).json({ message: 'Item created successfully' });
+                } else {
+                    res.status(400).json({ message: 'Invalid item data' });
+                }
+            }
+            catch (error) {
+                throw createHttpError(400, `Failed to upload image. Error message: ${error}`)
+            }
+
+
+
+        } else {
+            throw createHttpError(400, `Invalid data,  ${data.error ? `Data details: ${data.error.message}` : ""}  ${imageData.error && `Image details: ${imageData.error.message}`}`);
+        }
+
+    } catch (error) {
+        if (error instanceof ZodError) {
+            throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
+        }
+        else {
+            next(error)
+        }
+    }
+};
+
 export const getOrgItems = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(req.params)
         const orgId = req.params.orgId
         const items = await Item.find({ orgId: orgId }).exec();
         const itemsWithUrls = await Promise.all(items.map(async (e) => {
@@ -102,7 +155,7 @@ export const deleteItem = async (req: Request, res: Response, next: NextFunction
         const itemId = req.params.itemId;
         const item = await Item.findOne({ _id: itemId }).exec();
         if (item) {
-            await Item.deleteOne({ orgId: itemId }).exec()
+            await Item.deleteOne({ _id: itemId }).exec()
             const command = new DeleteObjectCommand({
                 Bucket: envSanitisedSchema.BUCKET_NAME,
                 Key: item.itemImage,

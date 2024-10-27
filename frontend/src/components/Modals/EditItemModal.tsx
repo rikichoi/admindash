@@ -6,17 +6,20 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import FormSubmitButton from "../FormSubmitButton";
 
 type EditItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
   _id: string;
   item: Item | null;
+  itemId: string | null;
 };
 
 export default function EditItemModal({
   setShowModal,
   _id,
   item,
+  itemId,
 }: EditItemModalProps) {
   const router = useRouter();
   const {
@@ -25,7 +28,7 @@ export default function EditItemModal({
     control,
     reset,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateItemSchema>({
     resolver: zodResolver(createItemSchema),
     defaultValues: {
@@ -90,6 +93,20 @@ export default function EditItemModal({
     //     console.log(error);
     //   });
   };
+
+  async function deleteItem() {
+    await axios
+      .delete(`http://localhost:5000/api/item/delete-item/${itemId}`)
+      .then(function (response) {
+        console.log(response);
+        reset();
+        setShowModal(false);
+        router.push("/");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
@@ -174,10 +191,20 @@ export default function EditItemModal({
           </span>
         )}
       </div>
-      <input
+      <FormSubmitButton
         type="submit"
         className="p-2 border-2 bg-black text-white hover:cursor-pointer rounded-lg"
-      />
+        isLoading={isSubmitting}
+      >
+        Edit Item
+      </FormSubmitButton>
+      <FormSubmitButton
+        type="button"
+        onClick={async () => deleteItem()}
+        className="p-2 border-2 bg-red-600 text-white hover:cursor-pointer rounded-lg"
+      >
+        Delete Item
+      </FormSubmitButton>
     </form>
   );
 }
