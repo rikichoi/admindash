@@ -43,6 +43,15 @@ export const updateUserSchema = z.object({
 // const MAX_FILE_SIZE = 5000000;
 // const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
+export const editItemSchema = z.object({
+    summary: z.string().min(1, "Required"),
+    description: z.string().min(1, "Required"),
+    name: z.string().min(1, "Required"),
+    donationGoalValue: z.number(),
+    totalDonationValue: z.number(),
+    activeStatus: z.boolean().optional(),
+    orgId: z.string().min(1, "Required")
+})
 
 export const createItemSchema = z.object({
     summary: z.string().min(1, "Required"),

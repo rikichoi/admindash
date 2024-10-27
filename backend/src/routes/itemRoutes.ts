@@ -14,7 +14,7 @@ router.get("/get-org-items/:orgId", ItemController.getOrgItems)
 
 router.get("/get-items", ItemController.getItems)
 
-router.patch("/edit-item/:itemId", ItemController.editItem)
+router.patch("/edit-item/:itemId", upload.single("itemImage"), ItemController.editItem)
 
 router.delete("/delete-item/:itemId", ItemController.deleteItem)
 

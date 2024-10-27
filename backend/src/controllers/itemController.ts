@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createItemSchema, itemImageSchema } from "../lib/validation";
+import { createItemSchema, editItemSchema, itemImageSchema } from "../lib/validation";
 import Item from "../models/item";
 import createHttpError from "http-errors";
 import { ZodError } from "zod";
@@ -73,45 +73,50 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
 export const editItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const itemId = req.params.itemId;
-        const data = await createItemSchema.safeParseAsync(req.body);
+        if (!isValidObjectId(itemId) || !itemId) {
+            throw createHttpError(400, "Invalid userId")
+        }
+        const data = await editItemSchema.safeParseAsync(req.body);
         // const imageData = await itemImageSchema.safeParseAsync(req.file)
         if (itemId && data.success) {
-            if (!isValidObjectId(itemId)) {
-                throw createHttpError(400, "Invalid userId")
-            }
+            console.log(data.data.activeStatus)
+
             const itemExists = await Item.findOne({ _id: itemId });
-            if (!itemExists) { res.status(400).json({ message: 'Item does not exist' }) };
-
-            //update image if new image is provided
-            // const command = new PutObjectCommand({
-            //     Bucket: envSanitisedSchema.BUCKET_NAME,
-            //     Key: imageData.data.originalname,
-            //     Body: imageData.data.buffer,
-            //     ContentType: imageData.data.mimetype
-            // })
-
-            // await s3.send(command)
             if (itemExists) {
-                itemExists.summary = data.data.summary
-                itemExists.description = data.data.description
-                itemExists.name = data.data.name
-                itemExists.donationGoalValue = parseInt(data.data.donationGoalValue)
-                itemExists.totalDonationValue = parseInt(data.data.totalDonationValue)
-                itemExists.activeStatus = JSON.parse(data.data.activeStatus)
-                itemExists.orgId = data.data.orgId
+                console.log(itemExists)
+                //update image if new image is provided
+                // const command = new PutObjectCommand({
+                //     Bucket: envSanitisedSchema.BUCKET_NAME,
+                //     Key: imageData.data.originalname,
+                //     Body: imageData.data.buffer,
+                //     ContentType: imageData.data.mimetype
+                // })
 
-                await itemExists.save();
+                // await s3.send(command)
 
-                res.status(200).json({ message: 'Item updated successfully' });
-            } else {
-                res.status(400).json({ message: 'Invalid item data' });
+                itemExists.summary = (data.data.summary || itemExists.summary)
+                itemExists.description = (data.data.description || itemExists.description)
+                itemExists.name = (data.data.name || itemExists.name)
+                itemExists.activeStatus = (data.data.activeStatus ?? itemExists.activeStatus)
+                itemExists.donationGoalValue = (data.data.donationGoalValue || itemExists.donationGoalValue)
+                itemExists.totalDonationValue = (data.data.totalDonationValue || itemExists.totalDonationValue)
+                itemExists.orgId = (data.data.orgId || itemExists.orgId)
+
+
+                const updatedItem = await itemExists.save();
+
+                res.status(200).json(updatedItem);
             }
+            else { res.status(400).json({ message: 'Item does not exist' }) };
         }
-        // catch (error) {
-        //     throw createHttpError(400, `Failed to upload image. Error message: ${error}`)
-        // }
-
-    } catch (error) {
+        else {
+            throw createHttpError(400, `Invalid data,  ${data.error ? `Data details: ${data.error.message}` : ""} `);
+        }
+    }
+    // catch (error) {
+    //     throw createHttpError(400, `Failed to upload image. Error message: ${error}`)
+    // }
+    catch (error) {
         if (error instanceof ZodError) {
             throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
         }

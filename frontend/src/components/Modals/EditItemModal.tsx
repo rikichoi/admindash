@@ -63,35 +63,29 @@ export default function EditItemModal({
       name,
       summary,
       totalDonationValue,
-      itemImage,
+      // itemImage,
       orgId,
     } = data;
 
-    const formData = new FormData();
-    formData.append("activeStatus", activeStatus.toString());
-    formData.append("description", description);
-    formData.append("donationGoalValue", donationGoalValue);
-    formData.append("name", name);
-    formData.append("summary", summary);
-    formData.append("totalDonationValue", totalDonationValue);
-    formData.append("itemImage", itemImage);
-    formData.append("orgId", orgId);
-
-    formData.forEach((e) => console.log(e));
-
-    // await axios
-    //   .post(`http://localhost:5000/api/item/edit-item/${_id}`, formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     reset();
-    //     setShowModal(false);
-    //     router.push("/");
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    await axios
+      .post(`http://localhost:5000/api/item/edit-item/${_id}`, {
+        activeStatus,
+        description,
+        donationGoalValue,
+        name,
+        summary,
+        totalDonationValue,
+        orgId,
+      })
+      .then(function (response) {
+        console.log(response);
+        reset();
+        setShowModal(false);
+        router.refresh();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   async function deleteItem() {
