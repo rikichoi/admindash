@@ -23,7 +23,7 @@ const ItemSchema = new Schema({
     activeStatus: { type: Boolean, required: true },
     itemImage: { type: String, required: true },
     imageUrl: { type: String, required: false },
-    orgId: [{ type: Schema.Types.ObjectId, ref: "Organisation", required: true }]
+    orgId: { type: Schema.Types.ObjectId, ref: "Organisation", required: true }
 }, { timestamps: true });
 
 export default model<Item>("Item", ItemSchema);

@@ -1,6 +1,6 @@
 "use client";
 import { Item } from "@/lib/types";
-import { createItemSchema, CreateItemSchema } from "@/lib/validation";
+import { editItemSchema, EditItemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -29,8 +29,8 @@ export default function EditItemModal({
     reset,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<CreateItemSchema>({
-    resolver: zodResolver(createItemSchema),
+  } = useForm<EditItemSchema>({
+    resolver: zodResolver(editItemSchema),
     defaultValues: {
       activeStatus: item?.activeStatus,
       description: item?.description,
@@ -38,7 +38,6 @@ export default function EditItemModal({
       name: item?.name,
       summary: item?.summary,
       totalDonationValue: item?.totalDonationValue.toString(),
-      itemImage: item?.itemImage,
       orgId: item?.orgId,
     },
   });
@@ -51,11 +50,10 @@ export default function EditItemModal({
     setValue("name", item.name);
     setValue("summary", item.summary);
     setValue("totalDonationValue", item.totalDonationValue.toString());
-    setValue("itemImage", item.itemImage);
     setValue("orgId", item.orgId);
   }, [item]);
 
-  const onSubmit: SubmitHandler<CreateItemSchema> = async (data) => {
+  const onSubmit: SubmitHandler<EditItemSchema> = async (data) => {
     const {
       activeStatus,
       description,
@@ -63,19 +61,24 @@ export default function EditItemModal({
       name,
       summary,
       totalDonationValue,
-      // itemImage,
+      itemImage,
       orgId,
     } = data;
+    console.log(data);
+    const formData = new FormData();
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    formData.append("donationGoalValue", donationGoalValue);
+    formData.append("name", name);
+    formData.append("summary", summary);
+    formData.append("totalDonationValue", totalDonationValue);
+    formData.append("itemImage", itemImage || undefined);
+    formData.append("orgId", orgId);
 
+    formData.forEach((e) => console.log(e));
     await axios
-      .post(`http://localhost:5000/api/item/edit-item/${_id}`, {
-        activeStatus,
-        description,
-        donationGoalValue,
-        name,
-        summary,
-        totalDonationValue,
-        orgId,
+      .patch(`http://localhost:5000/api/item/edit-item/${itemId}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then(function (response) {
         console.log(response);

@@ -77,30 +77,33 @@ export const editItem = async (req: Request, res: Response, next: NextFunction):
             throw createHttpError(400, "Invalid userId")
         }
         const data = await editItemSchema.safeParseAsync(req.body);
-        // const imageData = await itemImageSchema.safeParseAsync(req.file)
+        const imageData = await itemImageSchema.safeParseAsync(req.file)
         if (itemId && data.success) {
-            console.log(data.data.activeStatus)
-
             const itemExists = await Item.findOne({ _id: itemId });
             if (itemExists) {
-                console.log(itemExists)
-                //update image if new image is provided
-                // const command = new PutObjectCommand({
-                //     Bucket: envSanitisedSchema.BUCKET_NAME,
-                //     Key: imageData.data.originalname,
-                //     Body: imageData.data.buffer,
-                //     ContentType: imageData.data.mimetype
-                // })
+                if (imageData.data) {
+                    try {
+                        const command = new PutObjectCommand({
+                            Bucket: envSanitisedSchema.BUCKET_NAME,
+                            Key: imageData.data.originalname,
+                            Body: imageData.data.buffer,
+                            ContentType: imageData.data.mimetype
+                        })
 
-                // await s3.send(command)
+                        await s3.send(command)
+                    } catch (error) {
+                        createHttpError(400, `Failed to upload image. ${error}`)
+                    }
+                }
 
                 itemExists.summary = (data.data.summary || itemExists.summary)
                 itemExists.description = (data.data.description || itemExists.description)
                 itemExists.name = (data.data.name || itemExists.name)
-                itemExists.activeStatus = (data.data.activeStatus ?? itemExists.activeStatus)
-                itemExists.donationGoalValue = (data.data.donationGoalValue || itemExists.donationGoalValue)
-                itemExists.totalDonationValue = (data.data.totalDonationValue || itemExists.totalDonationValue)
+                itemExists.activeStatus = (JSON.parse(data.data.activeStatus) || itemExists.activeStatus)
+                itemExists.donationGoalValue = (parseInt(data.data.donationGoalValue) || itemExists.donationGoalValue)
+                itemExists.totalDonationValue = (parseInt(data.data.totalDonationValue) || itemExists.totalDonationValue)
                 itemExists.orgId = (data.data.orgId || itemExists.orgId)
+                itemExists.itemImage = (imageData.data?.originalname || itemExists.itemImage)
 
 
                 const updatedItem = await itemExists.save();

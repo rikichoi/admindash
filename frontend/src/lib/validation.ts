@@ -44,3 +44,26 @@ export const createItemSchema = z.object({
 }).and(itemImageSchema)
 
 export type CreateItemSchema = z.infer<typeof createItemSchema>
+
+const editItemImageSchema = z.object({
+    itemImage: z
+        .any()
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+        .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+        ).optional()
+})
+
+export const editItemSchema = z.object({
+    summary: z.string().min(1, "Required"),
+    description: requiredString,
+    name: requiredString,
+    donationGoalValue: requiredNumericString,
+    totalDonationValue: requiredNumericString,
+    activeStatus: z.boolean(),
+    orgId: z.string()
+}).and(editItemImageSchema)
+
+export type EditItemSchema = z.infer<typeof editItemSchema>
+

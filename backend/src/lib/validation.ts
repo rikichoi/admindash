@@ -47,9 +47,9 @@ export const editItemSchema = z.object({
     summary: z.string().min(1, "Required"),
     description: z.string().min(1, "Required"),
     name: z.string().min(1, "Required"),
-    donationGoalValue: z.number(),
-    totalDonationValue: z.number(),
-    activeStatus: z.boolean().optional(),
+    donationGoalValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
+    totalDonationValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
+    activeStatus: z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean"),
     orgId: z.string().min(1, "Required")
 })
 
@@ -71,6 +71,15 @@ export const itemImageSchema = z.object({
     buffer: z.any(),
     size: z.number()
 })
+
+export const editItemImageSchema = z.object({
+    fieldname: z.string(),
+    originalname: z.string(),
+    encoding: z.string(),
+    mimetype: z.string(),
+    buffer: z.any(),
+    size: z.number()
+}).optional()
 
 const requiredNumericString = z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number")
 const requiredString = z.string().min(1, "Required")
