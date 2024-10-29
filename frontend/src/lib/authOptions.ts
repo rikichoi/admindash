@@ -60,6 +60,9 @@ export const authOptions: NextAuthOptions = {
             return session; // Session interface we declared in next-auth.d.ts
         },
     },
+    session: {
+        maxAge: 24 * 60 * 60, // 24 hours
+    },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: "/login",

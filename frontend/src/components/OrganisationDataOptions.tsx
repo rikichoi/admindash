@@ -5,15 +5,15 @@ import Dialog from "./OrganisationDialog";
 import AddOrganisationModal from "./Modals/AddOrganisationModal";
 import DeleteOrganisationModal from "./Modals/DeleteOrganisationModal";
 import EditOrganisationModal from "./Modals/EditOrganisationModal";
-import { Organisation } from "@/app/lib/types";
+import { Organisation } from "../lib/types";
 
 type OrganisationDataOptionsProps = {
-  name?: string;
+  _id?: string;
   organisations: Organisation[] | null;
 };
 
 export default function OrganisationDataOptions({
-  name,
+  _id,
   organisations,
 }: OrganisationDataOptionsProps) {
   const [showModal, setShowModal] = useState(false);
@@ -25,14 +25,14 @@ export default function OrganisationDataOptions({
   useEffect(() => {
     const selectedOrg: Organisation | undefined = organisations?.filter(
       (org) => {
-        return org.name == name;
+        return org._id == _id;
       }
     )[0];
     setSelectedOrganisation(selectedOrg);
-  }, [name]);
+  }, [_id]);
 
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center gap-2 text-white">
       <Dialog
         title={modalContent}
         showModal={showModal}
@@ -48,7 +48,7 @@ export default function OrganisationDataOptions({
           />
         )}
         {modalContent == "Delete Organisation" && (
-          <DeleteOrganisationModal name={name} setShowModal={setShowModal} />
+          <DeleteOrganisationModal _id={_id} setShowModal={setShowModal} />
         )}
       </Dialog>
       <button
@@ -57,17 +57,17 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex gap-2 hover:bg-blue-700 bg-blue-600 items-center border-2 rounded-lg p-3"
+        className="flex duration-200 gap-2 hover:bg-blue-700 bg-blue-600 items-center rounded-lg p-3"
       >
         <Plus size={20} /> Organisation
       </button>
-      {name && (
+      {_id && (
         <>
           <button
             onClick={() => (
               setModalContent("Edit Organisation"), setShowModal(true)
             )}
-            className="flex gap-2 hover:bg-orange-700 bg-orange-600 items-center border-2 rounded-lg p-3"
+            className="flex duration-200 gap-2 hover:bg-orange-700 bg-orange-600 items-center rounded-lg p-3"
           >
             <Edit size={20} /> Edit
           </button>
@@ -75,7 +75,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Delete Organisation"), setShowModal(true)
             )}
-            className="flex gap-2 hover:bg-red-700 bg-red-600 items-center border-2 rounded-lg p-3"
+            className="flex duration-200 gap-2 hover:bg-red-700 bg-red-600 items-center rounded-lg p-3"
           >
             <Trash2 size={20} /> Delete
           </button>
