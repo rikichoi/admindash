@@ -4,7 +4,11 @@ const envSchema = z.object({
     MONGO_DB_CONNECTION_STRING: z.string().url(),
     PORT: z.coerce.number().min(1000),
     JWT_SECRET: z.string(),
-    STRIPE_SECRET_KEY: z.string()
+    STRIPE_SECRET_KEY: z.string(),
+    BUCKET_NAME: z.string(),
+    BUCKET_REGION: z.string(),
+    ACCESS_KEY: z.string(),
+    SECRET_ACCESS_KEY: z.string()
 });
 
 export const envSanitisedSchema = envSchema.parse(process.env);
@@ -36,15 +40,46 @@ export const updateUserSchema = z.object({
     message: "Object must have at least one property defined"
 });
 
+// const MAX_FILE_SIZE = 5000000;
+// const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+export const editItemSchema = z.object({
+    summary: z.string().min(1, "Required"),
+    description: z.string().min(1, "Required"),
+    name: z.string().min(1, "Required"),
+    donationGoalValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
+    totalDonationValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
+    activeStatus: z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean"),
+    orgId: z.string().min(1, "Required")
+})
+
 export const createItemSchema = z.object({
     summary: z.string().min(1, "Required"),
     description: z.string().min(1, "Required"),
     name: z.string().min(1, "Required"),
     donationGoalValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
     totalDonationValue: z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number"),
-    activeStatus: z.string().min(1, "Required").refine(value => value == "true" || value == "false", "This value must be a boolean"),
-    itemImage: z.string().min(1, "Required")
+    activeStatus: z.string().min(1, "Required").refine(value => value != "true" || "false", "This value must be a boolean"),
+    orgId: z.string().min(1, "Required")
 })
+
+export const itemImageSchema = z.object({
+    fieldname: z.string(),
+    originalname: z.string(),
+    encoding: z.string(),
+    mimetype: z.string(),
+    buffer: z.any(),
+    size: z.number()
+})
+
+export const editItemImageSchema = z.object({
+    fieldname: z.string(),
+    originalname: z.string(),
+    encoding: z.string(),
+    mimetype: z.string(),
+    buffer: z.any(),
+    size: z.number()
+}).optional()
 
 const requiredNumericString = z.string().min(1, "Required").regex(/^(0|[1-9]\d*(\.\d{1})?|0\.\d{1})$/, "Must be a number")
 const requiredString = z.string().min(1, "Required")
@@ -66,21 +101,20 @@ export const createDonationSchema = z.object({
     orgName: requiredString,
     comment: requiredString,
     donorName: z.string().optional(),
-
     itemId: requiredString,
 }).and(contactSchema)
 
 export type CreateDonationSchema = z.infer<typeof createDonationSchema>
 
 export const createOrganisationSchema = z.object({
-    ABN: z.string().optional(),
+    ABN: z.number(),
     activeStatus: z.boolean(),
     description: requiredString,
-    image: requiredString,
     name: requiredString,
     phone: z.number(),
     summary: requiredString,
     website: requiredString,
+    image: requiredString,
     totalDonationsCount: z.number(),
     totalDonationItemsCount: z.number(),
     totalDonationsValue: z.number(),

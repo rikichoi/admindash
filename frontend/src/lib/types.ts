@@ -12,3 +12,18 @@ export type Organisation = {
     totalDonationItemsCount: number,
     totalDonationsValue: number,
 }
+
+export type Item = {
+    _id: string;
+    summary: string;
+    description: string;
+    name: string;
+    donationGoalValue: number;
+    totalDonationValue: number;
+    activeStatus: boolean;
+    itemImage: string;
+    imageUrl?: string;
+    orgId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

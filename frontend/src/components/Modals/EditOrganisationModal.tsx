@@ -1,36 +1,73 @@
 "use client";
+import { Organisation } from "@/lib/types";
 import {
   createOrganisationSchema,
   CreateOrganisationSchema,
-} from "@/app/lib/validation";
+} from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type AddItemModalProps = {
+type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  organisation: Organisation | undefined;
 };
 
-export default function AddItemModal({
+export default function AddOrganisationModal({
   setShowModal,
-}: AddItemModalProps) {
-  
+  organisation,
+}: EditOrganisationModalProps) {
   const router = useRouter();
+
+  useEffect(() => {
+    if (!organisation) return;
+    setValue("ABN", organisation.ABN);
+    setValue("activeStatus", organisation.activeStatus);
+    setValue("description", organisation.description);
+    setValue("image", organisation.image);
+    setValue("name", organisation.name);
+    setValue("phone", organisation.phone.toString());
+    setValue("summary", organisation.summary);
+    setValue("website", organisation.website);
+    setValue(
+      "totalDonationItemsCount",
+      organisation.totalDonationItemsCount.toString()
+    );
+    setValue(
+      "totalDonationsCount",
+      organisation.totalDonationsCount.toString()
+    );
+    setValue(
+      "totalDonationsValue",
+      organisation.totalDonationsValue.toString()
+    );
+  }, [organisation]);
+
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
     defaultValues: {
-      totalDonationItemsCount: "0",
-      totalDonationsCount: "0",
-      totalDonationsValue: "0",
+      ABN: organisation?.ABN,
+      activeStatus: organisation?.activeStatus,
+      description: organisation?.description,
+      image: organisation?.image,
+      name: organisation?.name,
+      phone: organisation?.phone.toString(),
+      summary: organisation?.summary,
+      website: organisation?.website,
+      totalDonationItemsCount: organisation?.totalDonationItemsCount.toString(),
+      totalDonationsCount: organisation?.totalDonationsCount.toString(),
+      totalDonationsValue: organisation?.totalDonationsValue.toString(),
     },
   });
+
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
     const {
       activeStatus,
@@ -45,31 +82,39 @@ export default function AddItemModal({
       website,
       ABN,
     } = data;
-    console.log(data.activeStatus);
+    console.log(data);
 
-    await axios
-      .post("http://localhost:5000/api/organisation/create-organisation", {
-        activeStatus,
-        ABN,
-        description,
-        image,
-        name,
-        phone,
-        summary,
-        totalDonationItemsCount,
-        totalDonationsCount,
-        totalDonationsValue,
-        website,
-      })
-      .then(function (response) {
-        console.log(response);
-        reset();
-        setShowModal(false);
-        router.push("/");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (organisation) {
+      await axios
+        .patch(
+          `http://localhost:5000/api/organisation/edit-organisation/${organisation._id}`,
+          {
+            activeStatus,
+            ABN,
+            description,
+            image,
+            name,
+            phone: parseInt(phone),
+            summary,
+            totalDonationItemsCount: parseInt(totalDonationItemsCount),
+            totalDonationsCount: parseInt(totalDonationsCount),
+            totalDonationsValue: parseInt(totalDonationsValue),
+            website,
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+          reset();
+          setShowModal(false);
+          router.push("/");
+          router.refresh();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      console.error("Organisation is undefined");
+    }
   };
 
   return (

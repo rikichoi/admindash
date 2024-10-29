@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import createHttpError from "http-errors";
 import Organisation from "../models/organisation";
 import { isValidObjectId } from "mongoose";
+import Item from "../models/item";
 
 export const getOrganisations = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -91,13 +92,26 @@ export const editOrganisation = async (req: Request, res: Response, next: NextFu
 
 export const deleteOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const name = req.params.name;
-        const organisation = Organisation.find({ name: name }).exec();
+        const orgId = req.params.orgId;
+        console.log(req.params.orgId, orgId)
+        if (!isValidObjectId(orgId)) {
+            throw createHttpError(400, "Invalid orgId")
+        }
+        const organisation = Organisation.find({ _id: orgId }).exec();
         if (!organisation) {
             res.status(400).json({ message: 'Organisation does not exist' });
         } else {
-            await Organisation.deleteOne({ name: name }).exec()
-            res.status(201).json({ message: 'Organisation deleted successfully' });
+            const transaction = await Organisation.startSession()
+            transaction.startTransaction();
+            try {
+                await Item.deleteMany({ orgId: orgId }).exec()
+                await Organisation.deleteOne({ _id: orgId }).exec()
+                await transaction.commitTransaction();
+                res.status(201).json({ message: 'Organisation and associated items deleted successfully' });
+            } catch (error) {
+                await transaction.abortTransaction()
+                res.status(400).json({ message: `Error occured in transaction. Aborting... ${error}` });
+            }
         }
     }
     catch (error) {
