@@ -18,7 +18,7 @@ const OrganisationSchema = new Schema<Organisation>({
     ABN: { type: Number, required: false },
     activeStatus: { type: Boolean, required: true },
     description: { type: String, required: true },
-    image: { type: String, required: true },
+    image: [{ type: String, required: true }],
     name: { type: String, required: true, unique: true },
     phone: { type: Number, required: true },
     summary: { type: String, required: true },

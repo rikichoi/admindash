@@ -35,13 +35,6 @@ export default function AddOrganisationModal({
     },
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
-    // try {
-    //   await postOrganisation(data);
-    //   reset();
-    //   setShowModal(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
     const {
       ABN,
       activeStatus,
@@ -68,8 +61,8 @@ export default function AddOrganisationModal({
     formData.append("totalDonationsCount", totalDonationsCount);
     formData.append("totalDonationsValue", totalDonationsValue);
     formData.append("website", website);
-    formData.forEach(e=>console.log(e))
-     
+    formData.forEach((e) => console.log(e));
+
     await axios
       .post(
         "http://localhost:5000/api/organisation/create-organisation",
@@ -80,9 +73,9 @@ export default function AddOrganisationModal({
       )
       .then(function (response) {
         console.log(response);
-        // reset();
-        // setShowModal(false);
-        // router.push("/");
+        reset();
+        setShowModal(false);
+        router.push("/");
       })
       .catch(function (error) {
         console.log(error);
