@@ -5,9 +5,12 @@ import {
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import { postOrganisation } from "./actions";
+import ImageDropzone from "../ImageDropzone";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type AddOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -16,10 +19,12 @@ type AddOrganisationModalProps = {
 export default function AddOrganisationModal({
   setShowModal,
 }: AddOrganisationModalProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
@@ -30,17 +35,80 @@ export default function AddOrganisationModal({
     },
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
-    try {
-      await postOrganisation(data);
-      reset();
-      setShowModal(false);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await postOrganisation(data);
+    //   reset();
+    //   setShowModal(false);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    const {
+      ABN,
+      activeStatus,
+      description,
+      image,
+      name,
+      phone,
+      summary,
+      totalDonationItemsCount,
+      totalDonationsCount,
+      totalDonationsValue,
+      website,
+    } = data;
+
+    const formData = new FormData();
+    formData.append("ABN", ABN);
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    image.forEach((file) => formData.append("image", file));
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("summary", summary);
+    formData.append("totalDonationItemsCount", totalDonationItemsCount);
+    formData.append("totalDonationsCount", totalDonationsCount);
+    formData.append("totalDonationsValue", totalDonationsValue);
+    formData.append("website", website);
+    formData.forEach(e=>console.log(e))
+     
+    await axios
+      .post(
+        "http://localhost:5000/api/organisation/create-organisation",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        // reset();
+        // setShowModal(false);
+        // router.push("/");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col">
+        <h2>name</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("name")} />
+        {errors.name && (
+          <span className="text-red-500">{errors.name.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Image</h2>
+        <Controller
+          control={control}
+          render={({ field }) => <ImageDropzone field={field} />}
+          name="image"
+        />
+        {errors.image && (
+          <span className="text-red-500">{errors.image.message}</span>
+        )}
+      </div>
       <div className="flex flex-col">
         <h2>ABN</h2>
         <input className="border-2 p-2 rounded-lg" {...register("ABN")} />
@@ -67,20 +135,6 @@ export default function AddOrganisationModal({
         />
         {errors.description && (
           <span className="text-red-500">{errors.description.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>image</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("image")} />
-        {errors.image && (
-          <span className="text-red-500">{errors.image.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>name</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("name")} />
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
         )}
       </div>
       <div className="flex flex-col">

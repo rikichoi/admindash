@@ -42,21 +42,22 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
                 setModalContent("Edit Item"),
                 setShowModal(true)
               )}
-              className="w-full h-full hover:shadow-lg border-2 drop-shadow-md p-2 rounded-lg items-center justify-center mx-auto flex flex-col gap-2"
+              className="w-full font-rubik h-72 hover:border border border-transparent hover:border-black drop-shadow-md duration-300 p-4 bg-zinc-50 rounded-2xl justify-center mx-auto flex flex-col gap-2"
               key={index}
             >
+              <h3 className="font-semibold text-xl">{item.name}</h3>
               {item.imageUrl && (
                 <img
                   key={item.imageUrl}
                   width={400}
                   height={400}
-                  className="w-40 h-40 object-center object-contain"
+                  className="w-40 h-40 object-center mx-auto object-contain"
                   alt={item.name}
                   src={item.imageUrl}
                 ></img>
               )}
-              <p>{item.name}</p>
-              <p>{item.itemImage}</p>
+
+              <p>{item.summary}</p>
             </button>
           ))}
         {_id && <ItemAddButton _id={_id} />}

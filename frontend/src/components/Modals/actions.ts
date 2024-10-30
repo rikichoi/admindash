@@ -30,7 +30,7 @@ export async function postOrganisation(data: CreateOrganisationSchema) {
     const { ABN, activeStatus, description, image, name, phone, summary,
         totalDonationItemsCount, totalDonationsCount, totalDonationsValue, website
     } = data
-
+    console.log
     await axios
         .post("http://localhost:5000/api/organisation/create-organisation", {
             activeStatus,

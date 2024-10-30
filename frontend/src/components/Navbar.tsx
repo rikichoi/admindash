@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function Navbar() {
   return (
-    <div className="fixed w-full justify-between bg-slate-50 border-b flex items-center p-3  max-h-20  text-black">
+    <div className="fixed w-full justify-between bg-white border-b flex items-center p-3  max-h-20  text-black">
       <div className="flex items-center gap-3">
         <div className="flex items-center pointer-events-none">
           <Image

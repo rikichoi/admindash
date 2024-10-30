@@ -17,29 +17,33 @@ export const getOrganisations = async (req: Request, res: Response, next: NextFu
 
 export const createOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await createOrganisationSchema.safeParseAsync(req.body)
-        if (data.success) {
-            const organisation = await Organisation.create({
-                ABN: data.data?.ABN,
-                activeStatus: data.data?.activeStatus,
-                description: data.data?.description,
-                image: data.data?.image,
-                name: data.data?.name,
-                phone: data.data?.phone,
-                summary: data.data?.summary,
-                totalDonationItemsCount: data.data?.totalDonationItemsCount,
-                totalDonationsCount: data.data?.totalDonationsCount,
-                totalDonationsValue: data.data?.totalDonationsValue,
-                website: data.data?.website,
-            });
-            if (organisation) {
-                res.status(201).json({ message: 'Organisation created successfully' });
-            } else {
-                res.status(400).json({ message: 'Invalid Organisation data' });
-            }
-        } else {
-            throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
-        }
+        // const data = await createOrganisationSchema.safeParseAsync(req.body)
+        const imageData = req.files
+        console.log(imageData)
+        res.status(201).json({ message: `Organisation created successfully + ${imageData}` });
+
+        // if (data.success) {
+        //     const organisation = await Organisation.create({
+        //         ABN: data.data?.ABN,
+        //         activeStatus: data.data?.activeStatus,
+        //         description: data.data?.description,
+        //         image: data.data?.image,
+        //         name: data.data?.name,
+        //         phone: data.data?.phone,
+        //         summary: data.data?.summary,
+        //         totalDonationItemsCount: data.data?.totalDonationItemsCount,
+        //         totalDonationsCount: data.data?.totalDonationsCount,
+        //         totalDonationsValue: data.data?.totalDonationsValue,
+        //         website: data.data?.website,
+        //     });
+        //     if (organisation) {
+        //         res.status(201).json({ message: 'Organisation created successfully' });
+        //     } else {
+        //         res.status(400).json({ message: 'Invalid Organisation data' });
+        //     }
+        // } else {
+        //     throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
+        // }
     } catch (error) {
         if (error instanceof ZodError) {
             throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
