@@ -30,12 +30,14 @@ async function getOrganisations(): Promise<Organisation[] | null> {
 export default async function Home({ searchParams: { _id } }: HomeProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
-  
+
   async function getItems(): Promise<Item[] | null> {
+    if (!_id) return null;
     try {
       const response = await axios.get(
         `http://localhost:5000/api/item/get-org-items/${_id}`
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

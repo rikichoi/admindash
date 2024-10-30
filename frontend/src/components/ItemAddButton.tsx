@@ -12,7 +12,7 @@ export default function ItemAddButton({ _id }: ItemAddButtonProps) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState("Add Item");
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-center">
       <ItemDialog
         title={modalContent}
         showModal={showModal}

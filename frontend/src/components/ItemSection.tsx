@@ -33,7 +33,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
           />
         )}
       </ItemDialog>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {items &&
           items.map((item, index) => (
             <button
@@ -42,11 +42,12 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
                 setModalContent("Edit Item"),
                 setShowModal(true)
               )}
-              className="w-fit h-full items-center justify-center mx-auto flex flex-col gap-2"
+              className="w-full h-full hover:shadow-lg border-2 drop-shadow-md p-2 rounded-lg items-center justify-center mx-auto flex flex-col gap-2"
               key={index}
             >
               {item.imageUrl && (
                 <img
+                  key={item.imageUrl}
                   width={400}
                   height={400}
                   className="w-40 h-40 object-center object-contain"

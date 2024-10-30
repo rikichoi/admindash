@@ -4,11 +4,10 @@ import {
   CreateOrganisationSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
+import { postOrganisation } from "./actions";
 
 type AddOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -17,7 +16,6 @@ type AddOrganisationModalProps = {
 export default function AddOrganisationModal({
   setShowModal,
 }: AddOrganisationModalProps) {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,45 +30,13 @@ export default function AddOrganisationModal({
     },
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
-    const {
-      activeStatus,
-      description,
-      image,
-      name,
-      phone,
-      summary,
-      totalDonationItemsCount,
-      totalDonationsCount,
-      totalDonationsValue,
-      website,
-      ABN,
-    } = data;
-    console.log(data.activeStatus);
-
-    await axios
-      .post("http://localhost:5000/api/organisation/create-organisation", {
-        activeStatus,
-        ABN: parseInt(ABN),
-        description,
-        image,
-        name,
-        phone: parseInt(phone),
-        summary,
-        totalDonationItemsCount: parseInt(totalDonationItemsCount),
-        totalDonationsCount: parseInt(totalDonationsCount),
-        totalDonationsValue: parseInt(totalDonationsValue),
-        website,
-      })
-      .then(function (response) {
-        console.log(response);
-        reset();
-        setShowModal(false);
-        router.push("/");
-        router.refresh();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+      await postOrganisation(data);
+      reset();
+      setShowModal(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -174,7 +140,9 @@ export default function AddOrganisationModal({
           </span>
         )}
       </div>
-      <FormSubmitButton className=" bg-black " isLoading={isSubmitting}>Submit</FormSubmitButton>
+      <FormSubmitButton className=" bg-black " isLoading={isSubmitting}>
+        Submit
+      </FormSubmitButton>
     </form>
   );
 }

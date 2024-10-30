@@ -45,6 +45,7 @@ export default function OrganisationDataOptions({
           <EditOrganisationModal
             setShowModal={setShowModal}
             organisation={selectedOrganisation}
+            _id={_id}
           />
         )}
         {modalContent == "Delete Organisation" && (
