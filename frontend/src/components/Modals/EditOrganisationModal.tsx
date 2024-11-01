@@ -9,6 +9,7 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
+import axios from "axios";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -74,14 +75,58 @@ export default function EditOrganisationModal({
 
   const onSubmit: SubmitHandler<EditOrganisationSchema> = async (data) => {
     if (!_id) return;
+    const {
+      activeStatus,
+      description,
+      newImages,
+      previousImages,
+      name,
+      phone,
+      summary,
+      totalDonationItemsCount,
+      totalDonationsCount,
+      totalDonationsValue,
+      website,
+      ABN,
+  } = data;
     console.log(data);
-    // try {
-    //   await editOrganisation(data, _id);
-    //   reset();
-    //   setShowModal(false);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+
+    const formData = new FormData();
+    formData.append("ABN", ABN);
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    if (newImages) {
+      newImages.forEach((image) => formData.append("newImages", image));
+    }
+    if (previousImages) {
+      previousImages.forEach((image) => {
+        if (image) {
+          formData.append("previousImages[]", image);
+        }
+      });
+    }
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("summary", summary);
+    formData.append("totalDonationItemsCount", totalDonationItemsCount);
+    formData.append("totalDonationsCount", totalDonationsCount);
+    formData.append("totalDonationsValue", totalDonationsValue);
+    formData.append("website", website);
+    formData.forEach((e) => console.log(e));
+    await axios
+      .patch(
+        `http://localhost:5000/api/organisation/edit-organisation/${_id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -105,7 +150,7 @@ export default function EditOrganisationModal({
         <Controller
           control={control}
           render={({ field }) => (
-            <ImageDropzone selectedOrg={organisation} selectedOrgId={_id} previousImageField={field} />
+            <ImageDropzone previousImageField={field} />
           )}
           name="previousImages"
         />

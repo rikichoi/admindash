@@ -4,7 +4,7 @@ type Organisation = {
     ABN: number,
     activeStatus: boolean,
     description: string,
-    image: string,
+    image: string[],
     name: string,
     phone: number,
     summary: string,

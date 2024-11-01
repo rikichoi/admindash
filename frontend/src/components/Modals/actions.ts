@@ -1,5 +1,5 @@
 "use server"
-import { CreateOrganisationSchema } from "@/lib/validation";
+import { CreateOrganisationSchema, EditOrganisationSchema } from "@/lib/validation";
 import axios from "axios";
 import { redirect } from "next/navigation";
 
@@ -30,7 +30,6 @@ export async function postOrganisation(data: CreateOrganisationSchema) {
     const { ABN, activeStatus, description, image, name, phone, summary,
         totalDonationItemsCount, totalDonationsCount, totalDonationsValue, website
     } = data
-    console.log
     await axios
         .post("http://localhost:5000/api/organisation/create-organisation", {
             activeStatus,
@@ -48,11 +47,12 @@ export async function postOrganisation(data: CreateOrganisationSchema) {
     redirect("/")
 }
 
-export async function editOrganisation(data: CreateOrganisationSchema, orgId: string) {
+export async function editOrganisation(data: EditOrganisationSchema, orgId: string) {
     const {
         activeStatus,
         description,
-        image,
+        newImages,
+        previousImages,
         name,
         phone,
         summary,
@@ -69,7 +69,8 @@ export async function editOrganisation(data: CreateOrganisationSchema, orgId: st
                 activeStatus,
                 ABN: parseInt(ABN),
                 description,
-                image,
+                newImages,
+                previousImages,
                 name,
                 phone: parseInt(phone),
                 summary,

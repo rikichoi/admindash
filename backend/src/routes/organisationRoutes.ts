@@ -12,6 +12,6 @@ router.get("/get-organisations", OrganisationController.getOrganisations)
 
 router.delete("/delete-organisation/:orgId", OrganisationController.deleteOrganisation)
 
-router.patch("/edit-organisation/:orgId", OrganisationController.editOrganisation)
+router.patch("/edit-organisation/:orgId", upload.array("newImages"), OrganisationController.editOrganisation)
 
 export default router;

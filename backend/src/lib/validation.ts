@@ -136,19 +136,6 @@ export const createOrganisationImageSchema = z.object({
         ),
 })
 
-export const editOrganisationSchema = z.object({
-    ABN: requiredNumericString,
-    activeStatus: requiredBooleanString,
-    description: requiredString,
-    name: requiredString,
-    phone: requiredNumericString,
-    summary: requiredString,
-    website: requiredString,
-    totalDonationsCount: requiredNumericString,
-    totalDonationItemsCount: requiredNumericString,
-    totalDonationsValue: requiredNumericString,
-})
-
 export const editOrganisationImageSchema = z.object({
     image: z.array(z.instanceof(File)
         .refine((file) => file.size < 2 * 1024 * 1024, 'File size must be less than 2MB'),
@@ -160,4 +147,18 @@ export const editOrganisationImageSchema = z.object({
         .refine(
             (files) => files.every((file) => file.size <= MAX_FILE_SIZE), `Max image size is 5MB.`
         ),
+})
+
+export const editOrganisationSchema = z.object({
+    ABN: requiredNumericString,
+    activeStatus: requiredBooleanString,
+    description: requiredString,
+    name: requiredString,
+    phone: requiredNumericString,
+    summary: requiredString,
+    website: requiredString,
+    totalDonationsCount: requiredNumericString,
+    totalDonationItemsCount: requiredNumericString,
+    totalDonationsValue: requiredNumericString,
+    previousImages: z.array(requiredString),
 })

@@ -1,4 +1,3 @@
-import { Organisation } from "@/lib/types";
 import {
   CreateOrganisationSchema,
   EditOrganisationSchema,
@@ -16,16 +15,12 @@ type ImageDropzoneProps = {
     "previousImages"
   >;
   field?: ControllerRenderProps<CreateOrganisationSchema, "image">;
-  selectedOrgId?: string;
-  selectedOrg?: Organisation;
 };
 
 export default function ImageDropzone({
   newImageField,
   previousImageField,
   field,
-  selectedOrgId,
-  selectedOrg,
 }: ImageDropzoneProps) {
   // const onDrop = useCallback((acceptedFiles: FileList) => {
   //   // Do something with the files
@@ -49,7 +44,7 @@ export default function ImageDropzone({
   useEffect(() => {
     if (previousImageField) {
       if (
-        previousImageField.value.length == 1 ||
+        previousImageField.value.length < 1 ||
         previousImageField.value.some((image) => previousImages.includes(image))
       ) {
         return;

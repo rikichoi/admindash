@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createOrganisationSchema, envSanitisedSchema } from "../lib/validation";
+import { createOrganisationSchema, editOrganisationSchema, envSanitisedSchema } from "../lib/validation";
 import { ZodError } from "zod";
 import createHttpError from "http-errors";
 import Organisation from "../models/organisation";
@@ -87,32 +87,57 @@ export const getOrganisations = async (req: Request, res: Response, next: NextFu
 export const editOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const orgId = req.params.orgId
-        const data = req.files
-        console.log("orgId", orgId, "data", data)
-        // if (!isValidObjectId(orgId)) {
-        //     throw createHttpError(400, "Invalid orgId")
-        // }
-        // if (data.success) {
-        // const organisation = await Organisation.findOne({ _id: orgId }).exec();
-        // if (!organisation) { throw createHttpError(404, "Organisation does not exist") }
-        // else {
-        //     organisation.ABN = (parseInt(data.data.ABN) || organisation.ABN)
-        //     organisation.activeStatus = (data.data.activeStatus || organisation.activeStatus)
-        //     organisation.description = (data.data.description || organisation.description)
-        //     organisation.image = (data.data.image || organisation.image)
-        //     organisation.name = (data.data.name || organisation.name)
-        //     organisation.phone = (parseInt(data.data.phone) || organisation.phone)
-        //     organisation.summary = (data.data.summary || organisation.summary)
-        //     organisation.website = (data.data.website || organisation.website)
-        //     organisation.totalDonationsCount = (parseInt(data.data.totalDonationsCount) || organisation.totalDonationsCount)
-        //     organisation.totalDonationItemsCount = (parseInt(data.data.totalDonationItemsCount) || organisation.totalDonationItemsCount)
-        //     organisation.totalDonationsValue = (parseInt(data.data.totalDonationsValue) || organisation.totalDonationsValue)
-        //     const edittedOrganisation = await organisation.save();
-        //     res.status(200).json(edittedOrganisation)
-        // }
-        // } else {
-        //     throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
-        // }
+        const data = await editOrganisationSchema.safeParseAsync(req.body)
+        const newImageData = req.files
+        if (!isValidObjectId(orgId)) {
+            throw createHttpError(400, "Invalid orgId")
+        }
+        if (data.success) {
+            const organisation = await Organisation.findOne({ _id: orgId }).exec();
+            if (!organisation) { throw createHttpError(404, "Organisation does not exist") }
+            else {
+                const imageNameArray: string[] = [];
+                if (newImageData && Array.isArray(newImageData)) {
+                    await Promise.all(newImageData.map(async (image) => {
+                        const imageName = generateUniqueImageName();
+                        const command = new PutObjectCommand({
+                            Bucket: envSanitisedSchema.BUCKET_NAME,
+                            Key: imageName,
+                            Body: image.buffer,
+                            ContentType: image.mimetype
+                        });
+
+                        await s3.send(command);
+                        imageNameArray.push(imageName)
+                        console.log(imageNameArray)
+                    }));
+                }
+//TODO: implement delete function for any removed previousimage items from s3 bucket
+                data.data.previousImages.map(item => {
+                    if (item) {
+                        imageNameArray.push(item);
+                    }
+                });
+
+                console.log(imageNameArray)
+
+                organisation.ABN = (parseInt(data.data.ABN) || organisation.ABN)
+                organisation.activeStatus = (JSON.parse(data.data.activeStatus) || organisation.activeStatus)
+                organisation.description = (data.data.description || organisation.description)
+                organisation.image = (imageNameArray || organisation.image)
+                organisation.name = (data.data.name || organisation.name)
+                organisation.phone = (parseInt(data.data.phone) || organisation.phone)
+                organisation.summary = (data.data.summary || organisation.summary)
+                organisation.website = (data.data.website || organisation.website)
+                organisation.totalDonationsCount = (parseInt(data.data.totalDonationsCount) || organisation.totalDonationsCount)
+                organisation.totalDonationItemsCount = (parseInt(data.data.totalDonationItemsCount) || organisation.totalDonationItemsCount)
+                organisation.totalDonationsValue = (parseInt(data.data.totalDonationsValue) || organisation.totalDonationsValue)
+                const edittedOrganisation = await organisation.save();
+                res.status(200).json(edittedOrganisation)
+            }
+        } else {
+            throw createHttpError(400, `'Invalid data', details: ${data.error.message}`);
+        }
     } catch (error) {
         if (error instanceof ZodError) {
             throw createHttpError(404, `error: 'Invalid data', details: ${error.message} `)
