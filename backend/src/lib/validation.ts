@@ -135,3 +135,29 @@ export const createOrganisationImageSchema = z.object({
             (files) => files.every((file) => file.size <= MAX_FILE_SIZE), `Max image size is 5MB.`
         ),
 })
+
+export const editOrganisationSchema = z.object({
+    ABN: requiredNumericString,
+    activeStatus: requiredBooleanString,
+    description: requiredString,
+    name: requiredString,
+    phone: requiredNumericString,
+    summary: requiredString,
+    website: requiredString,
+    totalDonationsCount: requiredNumericString,
+    totalDonationItemsCount: requiredNumericString,
+    totalDonationsValue: requiredNumericString,
+})
+
+export const editOrganisationImageSchema = z.object({
+    image: z.array(z.instanceof(File)
+        .refine((file) => file.size < 2 * 1024 * 1024, 'File size must be less than 2MB'),
+    )
+        .min(1, 'At least 1 file is required').refine(
+            (files) => files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+        )
+        .refine(
+            (files) => files.every((file) => file.size <= MAX_FILE_SIZE), `Max image size is 5MB.`
+        ),
+})

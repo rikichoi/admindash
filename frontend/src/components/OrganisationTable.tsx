@@ -33,13 +33,13 @@ export default function OrganisationTable({
                 Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Active Status
+                Active
               </th>
               <th scope="col" className="px-6 py-3">
                 Item Count
               </th>
               <th scope="col" className="px-6 py-3">
-                Donations Count
+                Total Donations
               </th>
               <th scope="col" className="px-6 py-3">
                 Donations Value

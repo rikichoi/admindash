@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
-import { postOrganisation } from "./actions";
 import ImageDropzone from "../ImageDropzone";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -75,7 +74,7 @@ export default function AddOrganisationModal({
         console.log(response);
         reset();
         setShowModal(false);
-        router.push("/");
+        router.refresh();
       })
       .catch(function (error) {
         console.log(error);

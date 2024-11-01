@@ -2,8 +2,6 @@
 import { Item } from "@/lib/types";
 import { editItemSchema, EditItemSchema } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
@@ -23,7 +21,6 @@ export default function EditItemModal({
   itemId,
 }: EditItemModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
-  const router = useRouter();
   const {
     register,
     handleSubmit,

@@ -1,14 +1,14 @@
 "use client";
 import { Organisation } from "@/lib/types";
 import {
-  createOrganisationSchema,
-  CreateOrganisationSchema,
+  editOrganisationSchema,
+  EditOrganisationSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { editOrganisation } from "./actions";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
+import ImageDropzone from "../ImageDropzone";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -16,48 +16,51 @@ type EditOrganisationModalProps = {
   _id?: string;
 };
 
-export default function AddOrganisationModal({
-  setShowModal,
+export default function EditOrganisationModal({
+  // setShowModal,
   organisation,
   _id,
 }: EditOrganisationModalProps) {
   useEffect(() => {
-    if (!organisation) return;
-    setValue("ABN", organisation.ABN.toString());
-    setValue("activeStatus", organisation.activeStatus);
-    setValue("description", organisation.description);
-    setValue("image", organisation.image);
-    setValue("name", organisation.name);
-    setValue("phone", organisation.phone.toString());
-    setValue("summary", organisation.summary);
-    setValue("website", organisation.website);
-    setValue(
-      "totalDonationItemsCount",
-      organisation.totalDonationItemsCount.toString()
-    );
-    setValue(
-      "totalDonationsCount",
-      organisation.totalDonationsCount.toString()
-    );
-    setValue(
-      "totalDonationsValue",
-      organisation.totalDonationsValue.toString()
-    );
+    if (organisation) {
+      setValue("ABN", organisation.ABN.toString());
+      setValue("activeStatus", organisation.activeStatus);
+      setValue("description", organisation.description);
+      setValue("previousImages", organisation.image);
+      setValue("name", organisation.name);
+      setValue("phone", organisation.phone.toString());
+      setValue("summary", organisation.summary);
+      setValue("website", organisation.website);
+      setValue(
+        "totalDonationItemsCount",
+        organisation.totalDonationItemsCount.toString()
+      );
+      setValue(
+        "totalDonationsCount",
+        organisation.totalDonationsCount.toString()
+      );
+      setValue(
+        "totalDonationsValue",
+        organisation.totalDonationsValue.toString()
+      );
+    }
+    console.log(organisation)
   }, [organisation]);
 
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
+    // reset,
+    control,
     formState: { errors, isSubmitting },
-  } = useForm<CreateOrganisationSchema>({
-    resolver: zodResolver(createOrganisationSchema),
+  } = useForm<EditOrganisationSchema>({
+    resolver: zodResolver(editOrganisationSchema),
     defaultValues: {
       ABN: organisation?.ABN,
       activeStatus: organisation?.activeStatus,
       description: organisation?.description,
-      image: organisation?.image,
+      previousImages: organisation?.image,
       name: organisation?.name,
       phone: organisation?.phone.toString(),
       summary: organisation?.summary,
@@ -68,25 +71,57 @@ export default function AddOrganisationModal({
     },
   });
 
-  const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
+
+  const onSubmit: SubmitHandler<EditOrganisationSchema> = async (data) => {
     if (!_id) return;
     console.log(data);
-    try {
-      await editOrganisation(data, _id);
-      reset();
-      setShowModal(false);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await editOrganisation(data, _id);
+    //   reset();
+    //   setShowModal(false);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col">
+        <h2>name</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("name")} />
+        {errors.name && (
+          <span className="text-red-500">{errors.name.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
         <h2>ABN</h2>
         <input className="border-2 p-2 rounded-lg" {...register("ABN")} />
         {errors.ABN && (
           <span className="text-red-500">{errors.ABN.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Old Images</h2>
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <ImageDropzone selectedOrg={organisation} selectedOrgId={_id} previousImageField={field} />
+          )}
+          name="previousImages"
+        />
+        {errors.previousImages && (
+          <span className="text-red-500">{errors.previousImages.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>New Images</h2>
+        <Controller
+          control={control}
+          render={({ field }) => <ImageDropzone newImageField={field} />}
+          name="newImages"
+        />
+        {errors.newImages && (
+          <span className="text-red-500">{errors.newImages.message}</span>
         )}
       </div>
       <div className="flex flex-col">
@@ -108,20 +143,6 @@ export default function AddOrganisationModal({
         />
         {errors.description && (
           <span className="text-red-500">{errors.description.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>image</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("image")} />
-        {errors.image && (
-          <span className="text-red-500">{errors.image.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>name</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("name")} />
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
         )}
       </div>
       <div className="flex flex-col">
