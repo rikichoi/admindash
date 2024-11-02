@@ -1,12 +1,16 @@
-// import axios from "axios";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import OrganisationDataOptions from "../../components/OrganisationDataOptions";
 import OrganisationTable from "../../components/OrganisationTable";
-import OrganisationGraph from "../../components/OrganisationGraph";
+import OrganisationGraphSection from "../../components/OrganisationGraphSection";
 import { Item, Organisation } from "../../lib/types";
 import axios from "axios";
 import ItemSection from "../../components/ItemSection";
+import { Metadata } from "next";
+// TODO: make this dynamic so that selected org name gets displayed *optional*
+export const metadata: Metadata = {
+  title: 'AdminDash - Dashboard',
+}
 
 type HomeProps = {
   searchParams: {
@@ -57,7 +61,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
           <OrganisationTable _id={_id} organisations={organisations} />
         </div>
         <div className="flex-1">
-          <OrganisationGraph _id={_id} />
+          <OrganisationGraphSection _id={_id} />
         </div>
       </div>
       <div>

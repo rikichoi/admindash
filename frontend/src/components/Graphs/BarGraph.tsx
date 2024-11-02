@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
 } from "recharts";
 
 const data = [
@@ -54,44 +55,26 @@ const data = [
   },
 ];
 
-export default function LineGraph() {
+export default function BarGraph() {
   return (
-    <AreaChart
+    <BarChart
       width={600}
-      height={400}
+      height={300}
       data={data}
       margin={{
-        top: 10,
+        top: 5,
         right: 30,
-        left: 0,
-        bottom: 0,
+        left: 20,
+        bottom: 5,
       }}
+      barSize={20}
     >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
+      <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
       <YAxis />
       <Tooltip />
-      <Area
-        type="monotone"
-        dataKey="uv"
-        stackId="1"
-        stroke="#8884d8"
-        fill="#8884d8"
-      />
-      <Area
-        type="monotone"
-        dataKey="pv"
-        stackId="1"
-        stroke="#82ca9d"
-        fill="#82ca9d"
-      />
-      <Area
-        type="monotone"
-        dataKey="amt"
-        stackId="1"
-        stroke="#ffc658"
-        fill="#ffc658"
-      />
-    </AreaChart>
+      <Legend />
+      <CartesianGrid strokeDasharray="3 3" />
+      <Bar dataKey="pv" fill="#8884d8" background={{ fill: "#eee" }} />
+    </BarChart>
   );
 }
