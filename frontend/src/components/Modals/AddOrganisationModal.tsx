@@ -4,11 +4,12 @@ import {
   CreateOrganisationSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React, { Dispatch, SetStateAction } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import FormSubmitButton from "../FormSubmitButton";
+import ImageDropzone from "../ImageDropzone";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import FormSubmitButton from "../FormSubmitButton";
 
 type AddOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ export default function AddOrganisationModal({
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CreateOrganisationSchema>({
     resolver: zodResolver(createOrganisationSchema),
@@ -33,6 +35,7 @@ export default function AddOrganisationModal({
   });
   const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
     const {
+      ABN,
       activeStatus,
       description,
       image,
@@ -43,29 +46,34 @@ export default function AddOrganisationModal({
       totalDonationsCount,
       totalDonationsValue,
       website,
-      ABN,
     } = data;
-    console.log(data.activeStatus);
+
+    const formData = new FormData();
+    formData.append("ABN", ABN);
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    image.forEach((file) => formData.append("image", file));
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("summary", summary);
+    formData.append("totalDonationItemsCount", totalDonationItemsCount);
+    formData.append("totalDonationsCount", totalDonationsCount);
+    formData.append("totalDonationsValue", totalDonationsValue);
+    formData.append("website", website);
+    formData.forEach((e) => console.log(e));
 
     await axios
-      .post("http://localhost:5000/api/organisation/create-organisation", {
-        activeStatus,
-        ABN: parseInt(ABN),
-        description,
-        image,
-        name,
-        phone: parseInt(phone),
-        summary,
-        totalDonationItemsCount: parseInt(totalDonationItemsCount),
-        totalDonationsCount: parseInt(totalDonationsCount),
-        totalDonationsValue: parseInt(totalDonationsValue),
-        website,
-      })
+      .post(
+        "http://localhost:5000/api/organisation/create-organisation",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      )
       .then(function (response) {
         console.log(response);
         reset();
         setShowModal(false);
-        router.push("/");
         router.refresh();
       })
       .catch(function (error) {
@@ -75,6 +83,24 @@ export default function AddOrganisationModal({
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col">
+        <h2>name</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("name")} />
+        {errors.name && (
+          <span className="text-red-500">{errors.name.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Image</h2>
+        <Controller
+          control={control}
+          render={({ field }) => <ImageDropzone field={field} />}
+          name="image"
+        />
+        {errors.image && (
+          <span className="text-red-500">{errors.image.message}</span>
+        )}
+      </div>
       <div className="flex flex-col">
         <h2>ABN</h2>
         <input className="border-2 p-2 rounded-lg" {...register("ABN")} />
@@ -101,20 +127,6 @@ export default function AddOrganisationModal({
         />
         {errors.description && (
           <span className="text-red-500">{errors.description.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>image</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("image")} />
-        {errors.image && (
-          <span className="text-red-500">{errors.image.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>name</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("name")} />
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
         )}
       </div>
       <div className="flex flex-col">
@@ -174,7 +186,9 @@ export default function AddOrganisationModal({
           </span>
         )}
       </div>
-      <FormSubmitButton className=" bg-black " isLoading={isSubmitting}>Submit</FormSubmitButton>
+      <FormSubmitButton className=" bg-black " isLoading={isSubmitting}>
+        Submit
+      </FormSubmitButton>
     </form>
   );
 }

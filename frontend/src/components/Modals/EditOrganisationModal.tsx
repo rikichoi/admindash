@@ -1,63 +1,67 @@
 "use client";
 import { Organisation } from "@/lib/types";
 import {
-  createOrganisationSchema,
-  CreateOrganisationSchema,
+  editOrganisationSchema,
+  EditOrganisationSchema,
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import FormSubmitButton from "../FormSubmitButton";
+import ImageDropzone from "../ImageDropzone";
+import axios from "axios";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
   organisation: Organisation | undefined;
+  _id?: string;
 };
 
-export default function AddOrganisationModal({
-  setShowModal,
+export default function EditOrganisationModal({
+  // setShowModal,
   organisation,
+  _id,
 }: EditOrganisationModalProps) {
-  const router = useRouter();
-
   useEffect(() => {
-    if (!organisation) return;
-    setValue("ABN", organisation.ABN);
-    setValue("activeStatus", organisation.activeStatus);
-    setValue("description", organisation.description);
-    setValue("image", organisation.image);
-    setValue("name", organisation.name);
-    setValue("phone", organisation.phone.toString());
-    setValue("summary", organisation.summary);
-    setValue("website", organisation.website);
-    setValue(
-      "totalDonationItemsCount",
-      organisation.totalDonationItemsCount.toString()
-    );
-    setValue(
-      "totalDonationsCount",
-      organisation.totalDonationsCount.toString()
-    );
-    setValue(
-      "totalDonationsValue",
-      organisation.totalDonationsValue.toString()
-    );
+    if (organisation) {
+      setValue("ABN", organisation.ABN.toString());
+      setValue("activeStatus", organisation.activeStatus);
+      setValue("description", organisation.description);
+      setValue("previousImages", organisation.image);
+      setValue("name", organisation.name);
+      setValue("phone", organisation.phone.toString());
+      setValue("summary", organisation.summary);
+      setValue("website", organisation.website);
+      setValue(
+        "totalDonationItemsCount",
+        organisation.totalDonationItemsCount.toString()
+      );
+      setValue(
+        "totalDonationsCount",
+        organisation.totalDonationsCount.toString()
+      );
+      setValue(
+        "totalDonationsValue",
+        organisation.totalDonationsValue.toString()
+      );
+    }
+    console.log(organisation)
   }, [organisation]);
 
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
-    formState: { errors },
-  } = useForm<CreateOrganisationSchema>({
-    resolver: zodResolver(createOrganisationSchema),
+    // reset,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<EditOrganisationSchema>({
+    resolver: zodResolver(editOrganisationSchema),
     defaultValues: {
       ABN: organisation?.ABN,
       activeStatus: organisation?.activeStatus,
       description: organisation?.description,
-      image: organisation?.image,
+      previousImages: organisation?.image,
       name: organisation?.name,
       phone: organisation?.phone.toString(),
       summary: organisation?.summary,
@@ -68,11 +72,14 @@ export default function AddOrganisationModal({
     },
   });
 
-  const onSubmit: SubmitHandler<CreateOrganisationSchema> = async (data) => {
+
+  const onSubmit: SubmitHandler<EditOrganisationSchema> = async (data) => {
+    if (!_id) return;
     const {
       activeStatus,
       description,
-      image,
+      newImages,
+      previousImages,
       name,
       phone,
       summary,
@@ -81,49 +88,85 @@ export default function AddOrganisationModal({
       totalDonationsValue,
       website,
       ABN,
-    } = data;
+  } = data;
     console.log(data);
 
-    if (organisation) {
-      await axios
-        .patch(
-          `http://localhost:5000/api/organisation/edit-organisation/${organisation._id}`,
-          {
-            activeStatus,
-            ABN,
-            description,
-            image,
-            name,
-            phone: parseInt(phone),
-            summary,
-            totalDonationItemsCount: parseInt(totalDonationItemsCount),
-            totalDonationsCount: parseInt(totalDonationsCount),
-            totalDonationsValue: parseInt(totalDonationsValue),
-            website,
-          }
-        )
-        .then(function (response) {
-          console.log(response);
-          reset();
-          setShowModal(false);
-          router.push("/");
-          router.refresh();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } else {
-      console.error("Organisation is undefined");
+    const formData = new FormData();
+    formData.append("ABN", ABN);
+    formData.append("activeStatus", activeStatus.toString());
+    formData.append("description", description);
+    if (newImages) {
+      newImages.forEach((image) => formData.append("newImages", image));
     }
+    if (previousImages) {
+      previousImages.forEach((image) => {
+        if (image) {
+          formData.append("previousImages[]", image);
+        }
+      });
+    }
+    formData.append("name", name);
+    formData.append("phone", phone);
+    formData.append("summary", summary);
+    formData.append("totalDonationItemsCount", totalDonationItemsCount);
+    formData.append("totalDonationsCount", totalDonationsCount);
+    formData.append("totalDonationsValue", totalDonationsValue);
+    formData.append("website", website);
+    formData.forEach((e) => console.log(e));
+    await axios
+      .patch(
+        `http://localhost:5000/api/organisation/edit-organisation/${_id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col">
+        <h2>name</h2>
+        <input className="border-2 p-2 rounded-lg" {...register("name")} />
+        {errors.name && (
+          <span className="text-red-500">{errors.name.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
         <h2>ABN</h2>
         <input className="border-2 p-2 rounded-lg" {...register("ABN")} />
         {errors.ABN && (
           <span className="text-red-500">{errors.ABN.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>Old Images</h2>
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <ImageDropzone previousImageField={field} />
+          )}
+          name="previousImages"
+        />
+        {errors.previousImages && (
+          <span className="text-red-500">{errors.previousImages.message}</span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <h2>New Images</h2>
+        <Controller
+          control={control}
+          render={({ field }) => <ImageDropzone newImageField={field} />}
+          name="newImages"
+        />
+        {errors.newImages && (
+          <span className="text-red-500">{errors.newImages.message}</span>
         )}
       </div>
       <div className="flex flex-col">
@@ -145,20 +188,6 @@ export default function AddOrganisationModal({
         />
         {errors.description && (
           <span className="text-red-500">{errors.description.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>image</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("image")} />
-        {errors.image && (
-          <span className="text-red-500">{errors.image.message}</span>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <h2>name</h2>
-        <input className="border-2 p-2 rounded-lg" {...register("name")} />
-        {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
         )}
       </div>
       <div className="flex flex-col">
@@ -218,10 +247,13 @@ export default function AddOrganisationModal({
           </span>
         )}
       </div>
-      <input
+      <FormSubmitButton
         type="submit"
+        isLoading={isSubmitting}
         className="p-2 border-2 bg-black text-white hover:cursor-pointer rounded-lg"
-      />
+      >
+        Submit
+      </FormSubmitButton>
     </form>
   );
 }
