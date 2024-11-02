@@ -9,7 +9,7 @@ export default function GeneralGraphSection() {
   const [graphType, setGraphType] = useState("line");
 
   return (
-    <div className="justify-end flex flex-col">
+    <div className="justify-end flex flex-col mt-5 gap-3">
       <GraphSettingsButton graphType={graphType} setGraphType={setGraphType} />
       {graphType == "line" && <LineGraph />}
       {graphType == "pie" && <PieGraph />}
