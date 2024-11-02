@@ -271,7 +271,7 @@ const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("z-50 h-7 w-7 border", className)}
+      className={cn("z-50 h-7 w-7 fixed border", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()

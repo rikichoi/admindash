@@ -35,7 +35,7 @@ const renderActiveShape = (props: any) => {
   const textAnchor = cos >= 0 ? "start" : "end";
 
   return (
-    <g>
+    <g >
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
         {payload.name}
       </text>
@@ -97,7 +97,7 @@ export default function PieGraph() {
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={data}
-        cx={200}
+        cx={300}
         cy={200}
         innerRadius={60}
         outerRadius={80}

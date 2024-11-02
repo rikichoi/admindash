@@ -3,7 +3,7 @@ import SignOutButton from "./SignOutButton";
 
 export default async function Navbar() {
   return (
-    <div className="fixed w-full justify-end bg-white border-b flex items-center p-2  max-h-20  text-black">
+    <div className="fixed w-full z-40 justify-end bg-white border-b flex items-center p-2 min-h-12 max-h-20  text-black">
       {/* <div className="flex items-center gap-3">
 
 
