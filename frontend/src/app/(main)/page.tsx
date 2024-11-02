@@ -63,7 +63,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
       direction="vertical"
       className="mt-12 border bg-[#f7fafc]"
     >
-      <ResizablePanel defaultSize={60}>
+      <ResizablePanel defaultSize={70}>
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={40}>
             <div className="flex flex-col p-2 gap-2">
@@ -77,13 +77,13 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
           <ResizableHandle />
           <ResizablePanel defaultSize={60}>
             <div className="flex flex-col p-2">
-              <OrganisationGraphSection _id={_id} />
+              <OrganisationGraphSection items={items} organisations={organisations} _id={_id} />
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={40}>
+      <ResizablePanel defaultSize={30}>
         <div className="flex p-2 ">
           {items ? (
             <ItemSection items={items} _id={_id} />
