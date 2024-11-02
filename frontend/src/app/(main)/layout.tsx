@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         <AppSidebar />
         <SidebarTrigger />
-        <main className="w-full min-h-screen bg-[#f7fafc]">{children}</main>
+        <main className="w-full min-h-screen font-rubik bg-[#f7fafc]">{children}</main>
       </SidebarProvider>
     </>
   );

@@ -26,8 +26,8 @@ export default function OrganisationTable({
         setNameFilter={setNameFilter}
       />
       <div className="overflow-x-auto">
-        <table className="w-full text-xs text-left text-gray-500">
-          <thead className="uppercase text-gray-400 border-b-2">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-black border-b-2">
             <tr className="text-left">
               <th scope="col" className="px-6 py-3">
                 Name
@@ -36,13 +36,13 @@ export default function OrganisationTable({
                 Active
               </th>
               <th scope="col" className="px-6 py-3">
-                Item Count
+                Items
               </th>
               <th scope="col" className="px-6 py-3">
-                Total Donations
+                Donations
               </th>
               <th scope="col" className="px-6 py-3">
-                Donations Value
+                Total
               </th>
             </tr>
           </thead>
@@ -115,7 +115,7 @@ export default function OrganisationTable({
                           : `?_id=${organisation._id}`
                       }
                     >
-                      {organisation.totalDonationsValue}
+                      {(organisation.totalDonationsValue).toLocaleString()}
                     </Link>
                   </td>
                 </tr>

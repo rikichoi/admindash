@@ -26,7 +26,7 @@ export default function ItemAddButton({ _id }: ItemAddButtonProps) {
         )} */}
       </ItemDialog>
       <button
-        className="text-white flex flex-col hover:border border border-transparent hover:border-black shadow duration-300 h-full justify-center gap-5 hover:bg-blue-700 bg-blue-600 items-center rounded-xl p-5"
+        className="text-black font-semibold flex tracking-tight flex-col hover:border border border-transparent hover:border-black shadow duration-300 h-full justify-center gap-5 hover:bg-[#4ac5ac] bg-[#75ddc8] items-center rounded-xl p-5"
         onClick={() => (setModalContent("Add Item"), setShowModal(true))}
       >
         <Plus size={20} /> Add Item

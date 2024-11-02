@@ -56,14 +56,13 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
 
   const organisations = await getOrganisations();
   const items = await getItems();
-  console.log(organisations);
 
   return (
     <ResizablePanelGroup
       direction="vertical"
-      className="mt-12 border bg-[#f7fafc]"
+      className="pt-12 border bg-[#f7fafc]"
     >
-      <ResizablePanel defaultSize={70}>
+      <ResizablePanel defaultSize={75}>
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={40}>
             <div className="flex flex-col p-2 gap-2">
@@ -74,16 +73,20 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
               <OrganisationTable _id={_id} organisations={organisations} />
             </div>
           </ResizablePanel>
-          <ResizableHandle />
+          <ResizableHandle withHandle />
           <ResizablePanel defaultSize={60}>
             <div className="flex flex-col p-2">
-              <OrganisationGraphSection items={items} organisations={organisations} _id={_id} />
+              <OrganisationGraphSection
+                items={items}
+                organisations={organisations}
+                _id={_id}
+              />
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={30}>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={25}>
         <div className="flex p-2 ">
           {items ? (
             <ItemSection items={items} _id={_id} />

@@ -1,14 +1,13 @@
 "use client";
+import { Item, Organisation } from "@/lib/types";
 import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-
+type PieGraphProps = {
+  organisations?: Organisation[] | null;
+  items?: Item[] | null;
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderActiveShape = (props: any) => {
   const RADIAN = Math.PI / 180;
   const {
@@ -68,7 +67,7 @@ const renderActiveShape = (props: any) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`PV ${value}`}</text>
+      >{`Total $${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -82,9 +81,10 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-export default function PieGraph() {
+export default function PieGraph({ items, organisations }: PieGraphProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (_: any, index: React.SetStateAction<number>) => {
       setActiveIndex(index);
     },
@@ -92,21 +92,43 @@ export default function PieGraph() {
   );
 
   return (
-    <ResponsiveContainer width={"100%"} height={400}>
-      <PieChart>
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          data={data}
-          cx={300}
-          cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="value"
-          onMouseEnter={onPieEnter}
-        />
-      </PieChart>
-    </ResponsiveContainer>
+    (organisations && (
+      <ResponsiveContainer width={"100%"} height={400}>
+        <PieChart>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={organisations}
+            cx={350}
+            cy={200}
+            innerRadius={110}
+            outerRadius={130}
+            fill="#8884d8"
+            dataKey="totalDonationsValue"
+            onMouseEnter={onPieEnter}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    )) ||
+    (items && items.length ? (
+      <ResponsiveContainer width={"100%"} height={400}>
+        <PieChart>
+          <Pie
+            activeIndex={activeIndex}
+            activeShape={renderActiveShape}
+            data={items}
+            cx={300}
+            cy={200}
+            innerRadius={110}
+            outerRadius={130}
+            fill="#8884d8"
+            dataKey="totalDonationValue"
+            onMouseEnter={onPieEnter}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    ) : (
+      <span>No Items Exist...</span>
+    ))
   );
 }

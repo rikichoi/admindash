@@ -31,7 +31,7 @@ export default function ItemDialog({
       className="fixed top-50 left-50 -translate-x-50 -translate-y-50 z-10  rounded-xl backdrop:bg-gray-800/50"
     >
       <div className="w-[500px] max-w-fullbg-gray-200 flex flex-col">
-        <div className="flex items-center flex-row justify-between mb-4 pt-2 px-5 bg-yellow-400">
+        <div className="flex items-center flex-row justify-between mb-4 pt-2 px-5 bg-[#1ab394]">
           <h1 className="text-2xl">{title}</h1>
           <button
             onClick={() => (

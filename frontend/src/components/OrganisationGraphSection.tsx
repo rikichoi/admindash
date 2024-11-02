@@ -6,7 +6,7 @@ import { Item, Organisation } from "@/lib/types";
 type OrganisationGraphProps = {
   organisations?: Organisation[] | null;
   _id?: string;
-  items: Item[] | null;
+  items?: Item[] | null;
 };
 export default function OrganisationGraphSection({
   _id,

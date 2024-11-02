@@ -1,5 +1,5 @@
+"use client"
 import { Calendar, Home, Inbox } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import logo from "../assets/logo.png";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const items = [
@@ -34,6 +35,7 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
   return (
     <Sidebar className="z-50">
       <SidebarContent className="gap-3">
@@ -56,7 +58,12 @@ export function AppSidebar() {
             <SidebarMenu className="mt-3">
               {items.map((item) => (
                 <SidebarMenuItem className="" key={item.title}>
-                  <SidebarMenuButton className="h-full w-full p-3" asChild>
+                  <SidebarMenuButton
+                    className={`${
+                      pathname == item.url && " bg-[#d9f3ee] "
+                    } h-full w-full p-3 hover:bg-[#81eeda]`}
+                    asChild
+                  >
                     <Link
                       className="relative text-xl tracking-tighter block after:block after:content-[''] after:absolute after:mt-9 after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-90 after:transition after:duration-300 after:origin-left"
                       href={item.url}

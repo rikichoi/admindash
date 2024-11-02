@@ -10,7 +10,7 @@ export default function SignOutButton() {
     status === "authenticated" && (
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}
-        className="p-1 px-2 hover:bg-white hover:text-black hover:border-black border-2 border-transparent duration-200 bg-black rounded-lg text-white"
+        className="p-1 px-2 font-rubik  tracking-tighter hover:border-black border-2 border-transparent duration-200 hover:bg-[#4ac5ac] bg-[#75ddc8] rounded-lg text-black"
       >
         Sign out
       </button>

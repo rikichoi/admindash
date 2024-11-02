@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,9 +25,9 @@ export function GraphSettingsButton({
 }: GraphSettingsButtonProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-fit ms-auto" asChild>
+      <DropdownMenuTrigger className="w-fit ms-auto p-5 hover:bg-[#4ac5ac]  hover:border-black duration-300 bg-[#75ddc8]" asChild>
         <Button variant="outline">
-          <Settings2 />
+          <Settings2 size={26}/>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
