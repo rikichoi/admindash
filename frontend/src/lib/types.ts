@@ -3,7 +3,7 @@ export type Organisation = {
     ABN: string,
     activeStatus: boolean,
     description: string,
-    image: string,
+    image: string[],
     name: string,
     phone: number,
     summary: string,

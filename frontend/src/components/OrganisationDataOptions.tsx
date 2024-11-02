@@ -32,7 +32,7 @@ export default function OrganisationDataOptions({
   }, [_id]);
 
   return (
-    <div className="flex items-center gap-2 text-white">
+    <div className="flex items-center gap-1 text-black">
       <Dialog
         title={modalContent}
         showModal={showModal}
@@ -45,6 +45,7 @@ export default function OrganisationDataOptions({
           <EditOrganisationModal
             setShowModal={setShowModal}
             organisation={selectedOrganisation}
+            _id={_id}
           />
         )}
         {modalContent == "Delete Organisation" && (
@@ -57,9 +58,9 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex duration-200 gap-2 hover:bg-blue-700 bg-blue-600 items-center rounded-lg p-3"
+        className="flex tracking-tight duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#75ddc8] items-center rounded-lg p-2"
       >
-        <Plus size={20} /> Organisation
+        <Plus size={19} /> Add
       </button>
       {_id && (
         <>
@@ -67,7 +68,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Edit Organisation"), setShowModal(true)
             )}
-            className="flex duration-200 gap-2 hover:bg-orange-700 bg-orange-600 items-center rounded-lg p-3"
+            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-orange-700 bg-orange-600 items-center rounded-lg p-2"
           >
             <Edit size={20} /> Edit
           </button>
@@ -75,7 +76,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Delete Organisation"), setShowModal(true)
             )}
-            className="flex duration-200 gap-2 hover:bg-red-700 bg-red-600 items-center rounded-lg p-3"
+            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-red-600 bg-red-400 items-center rounded-lg p-2"
           >
             <Trash2 size={20} /> Delete
           </button>
