@@ -1,16 +1,16 @@
 import Navbar from "@/components/Navbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSideBar";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar />
-      <main className="p-4 min-h-screen bg-[#f7fafc]">
-        {children}
-      </main>
+      <SidebarProvider>
+        <Navbar />
+        <AppSidebar />
+        <SidebarTrigger />
+        <main className="pr-5 w-full min-h-screen bg-[#f7fafc]">{children}</main>
+      </SidebarProvider>
     </>
   );
 }

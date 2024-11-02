@@ -49,9 +49,9 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="mt-20 flex flex-col gap-5">
+    <main className="mt-16 flex flex-col gap-5">
       <OrganisationDataOptions _id={_id} organisations={organisations} />
-      <div className="flex flex-col lg:flex-row justify-between gap-8 items-center ">
+      <div className="flex flex-col xl:flex-row justify-between gap-8">
         {/* <ItemForm /> */}
         <div className="w-full lg:w-auto">
           <OrganisationTable _id={_id} organisations={organisations} />
