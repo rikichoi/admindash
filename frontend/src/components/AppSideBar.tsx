@@ -61,7 +61,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     className={`${
                       pathname == item.url && " bg-[#d9f3ee] "
-                    } h-full w-full p-3 hover:bg-[#81eeda]`}
+                    } h-full w-full p-3 hover:bg-[#75ddc8]`}
                     asChild
                   >
                     <Link

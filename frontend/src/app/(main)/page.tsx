@@ -7,11 +7,7 @@ import { Item, Organisation } from "../../lib/types";
 import axios from "axios";
 import ItemSection from "../../components/ItemSection";
 import { Metadata } from "next";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+
 // TODO: make this dynamic so that selected org name gets displayed *optional*
 export const metadata: Metadata = {
   title: "AdminDash - Dashboard",
@@ -58,57 +54,29 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <ResizablePanelGroup
-      direction="vertical"
-      className="pt-12 border bg-[#f7fafc]"
-    >
-      <ResizablePanel defaultSize={75}>
-        <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel defaultSize={40}>
-            <div className="flex flex-col p-2 gap-2">
-              <OrganisationDataOptions
-                _id={_id}
-                organisations={organisations}
-              />
-              <OrganisationTable _id={_id} organisations={organisations} />
-            </div>
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={60}>
-            <div className="flex flex-col p-2">
-              <OrganisationGraphSection
-                items={items}
-                organisations={organisations}
-                _id={_id}
-              />
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={25}>
-        <div className="flex p-2 ">
+    <main className="py-12 border h-full  bg-[#f7fafc]">
+      <div className="flex flex-col xl:flex-row">
+        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-2 ">
           {items ? (
             <ItemSection items={items} _id={_id} />
           ) : (
             <span className="">No Organisation Selected...</span>
           )}
         </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
-    // <main className="mt-12 flex flex-col gap-5 p-3">
-    //   <OrganisationDataOptions _id={_id} organisations={organisations} />
-    //   <div className="flex flex-col xl:flex-row justify-between gap-8">
-    //     <div className="w-full lg:w-auto">
-    //       <OrganisationTable _id={_id} organisations={organisations} />
-    //     </div>
-    //     <div className="flex-1">
-    //       <OrganisationGraphSection _id={_id} />
-    //     </div>
-    //   </div>
-    //   <div>
-    //     <ItemSection items={items} _id={_id} />
-    //   </div>
-    // </main>
+        <div className="flex border-t xl:border-l w-full xl:w-1/2 h-full flex-col p-2">
+          <OrganisationGraphSection
+            items={items}
+            organisations={organisations}
+            _id={_id}
+          />
+        </div>
+      </div>
+      <div>
+        <div className="border-t flex h-full flex-col p-2 gap-2">
+          <OrganisationDataOptions _id={_id} organisations={organisations} />
+          <OrganisationTable _id={_id} organisations={organisations} />
+        </div>
+      </div>
+    </main>
   );
 }

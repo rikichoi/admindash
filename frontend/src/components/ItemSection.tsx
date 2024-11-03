@@ -18,7 +18,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
     items?.find((item) => item._id === selectedItemId) || null;
 
   return (
-    <div className="text-black">
+    <div className="w-full text-black">
       <ItemDialog
         title={modalContent}
         showModal={showModal}
@@ -33,7 +33,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
           />
         )}
       </ItemDialog>
-      <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+      <div className="grid gap-5 w-full sm:grid-cols-2 md:grid-cols-3">
         {items &&
           items.map((item, index) => (
             <button

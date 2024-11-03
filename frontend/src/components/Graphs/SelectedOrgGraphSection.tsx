@@ -15,7 +15,7 @@ export default function SelectedOrgGraphSection({
 }: SelectedOrgGraphSectionProps) {
   const [graphType, setGraphType] = useState("line");
   return (
-    <div className="justify-end flex flex-col mt-5 gap-3">
+    <div className="justify-end flex flex-col gap-1">
       <GraphSettingsButton graphType={graphType} setGraphType={setGraphType} />
       {graphType == "line" && <LineGraph items={items} />}
       {graphType == "pie" && <PieGraph />}
