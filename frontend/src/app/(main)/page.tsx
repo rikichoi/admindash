@@ -56,7 +56,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   return (
     <main className="py-12 border h-full  bg-[#f7fafc]">
       <div className="flex flex-col xl:flex-row">
-        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-2 ">
+        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-4">
           {items ? (
             <ItemSection items={items} _id={_id} />
           ) : (

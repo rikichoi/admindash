@@ -263,7 +263,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar, open } = useSidebar();
+  const { toggleSidebar, open, isMobile } = useSidebar();
 
   return (
     <Button
@@ -272,7 +272,7 @@ const SidebarTrigger = React.forwardRef<
       variant="ghost"
       size="icon"
       className={cn(
-        `${open ? " ml-64 " : " ml-0 "} z-50 h-7 w-7 border`,
+        `${isMobile&& " !ml-0 "} ${open ? " ml-64 " : " ml-0 "} z-50 h-7 w-7 border`,
         className
       )}
       onClick={(event) => {

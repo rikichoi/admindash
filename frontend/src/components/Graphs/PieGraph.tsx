@@ -99,8 +99,6 @@ export default function PieGraph({ items, organisations }: PieGraphProps) {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={organisations}
-            cx={350}
-            cy={200}
             innerRadius={110}
             outerRadius={130}
             fill="#8884d8"
@@ -117,8 +115,6 @@ export default function PieGraph({ items, organisations }: PieGraphProps) {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={items}
-            cx={300}
-            cy={200}
             innerRadius={110}
             outerRadius={130}
             fill="#8884d8"
