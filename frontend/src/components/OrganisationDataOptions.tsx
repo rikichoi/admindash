@@ -1,5 +1,4 @@
 "use client";
-import { Edit, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Dialog from "./OrganisationDialog";
 import AddOrganisationModal from "./Modals/AddOrganisationModal";
@@ -32,7 +31,7 @@ export default function OrganisationDataOptions({
   }, [_id]);
 
   return (
-    <div className="flex items-center gap-1 text-black">
+    <div className="flex justify-end items-center gap-1 text-black">
       <Dialog
         title={modalContent}
         showModal={showModal}
@@ -58,9 +57,9 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex tracking-tight duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#75ddc8] items-center rounded-lg p-2"
+        className="flex tracking-tight  duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#def2b1] items-center rounded-lg px-4 p-2"
       >
-        <Plus size={19} /> Add
+        Add
       </button>
       {_id && (
         <>
@@ -68,17 +67,17 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Edit Organisation"), setShowModal(true)
             )}
-            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-orange-700 bg-orange-600 items-center rounded-lg p-2"
+            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-orange-700 bg-orange-600 items-center rounded-lg px-4 p-2"
           >
-            <Edit size={20} /> Edit
+            Edit
           </button>
           <button
             onClick={() => (
               setModalContent("Delete Organisation"), setShowModal(true)
             )}
-            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-red-600 bg-red-400 items-center rounded-lg p-2"
+            className="flex duration-300 tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-red-600 bg-red-400 items-center rounded-lg px-4 p-2"
           >
-            <Trash2 size={20} /> Delete
+            Delete
           </button>
         </>
       )}

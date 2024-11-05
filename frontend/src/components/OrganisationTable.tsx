@@ -60,6 +60,7 @@ export default function OrganisationTable({
                     className="font-medium text-gray-900 whitespace-nowrap"
                   >
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -72,6 +73,7 @@ export default function OrganisationTable({
                   </th>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -84,6 +86,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -96,6 +99,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -108,6 +112,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -115,7 +120,7 @@ export default function OrganisationTable({
                           : `?_id=${organisation._id}`
                       }
                     >
-                      {(organisation.totalDonationsValue).toLocaleString()}
+                      {organisation.totalDonationsValue.toLocaleString()}
                     </Link>
                   </td>
                 </tr>

@@ -54,27 +54,29 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="py-12 border h-full  bg-[#f7fafc]">
-      <div className="flex flex-col xl:flex-row">
-        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-4">
+    <main className="pt-14 h-full bg-[#f7fcec]">
+      <div className="p-8">
+        <div className="bg-white rounded-xl p-4 flex flex-col gap-2">
+          <OrganisationDataOptions _id={_id} organisations={organisations} />
+          <OrganisationTable _id={_id} organisations={organisations} />
+        </div>
+      </div>
+      <div className="flex flex-col xl:flex-row ">
+        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-8">
           {items ? (
             <ItemSection items={items} _id={_id} />
           ) : (
-            <span className="">No Organisation Selected...</span>
+            <div className="justify-center items-center bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
+              <span className="text-xl">No Organisation Selected...</span>
+            </div>
           )}
         </div>
-        <div className="flex border-t xl:border-l w-full xl:w-1/2 h-full flex-col p-2">
+        <div className="flex w-full xl:w-1/2 max-h-[493px] h-full flex-col p-8">
           <OrganisationGraphSection
             items={items}
             organisations={organisations}
             _id={_id}
           />
-        </div>
-      </div>
-      <div>
-        <div className="border-t flex h-full flex-col p-2 gap-2">
-          <OrganisationDataOptions _id={_id} organisations={organisations} />
-          <OrganisationTable _id={_id} organisations={organisations} />
         </div>
       </div>
     </main>

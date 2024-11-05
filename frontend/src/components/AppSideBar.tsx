@@ -60,12 +60,12 @@ export function AppSidebar() {
                 <SidebarMenuItem className="" key={item.title}>
                   <SidebarMenuButton
                     className={`${
-                      pathname == item.url && " bg-[#d9f3ee] "
-                    } h-full w-full p-3 hover:bg-[#75ddc8]`}
+                      pathname == item.url && " bg-[#def2b1] font-bold "
+                    } h-full w-full p-5 hover:bg-[#def2b1] rounded-full`}
                     asChild
                   >
                     <Link
-                      className="relative text-xl tracking-tighter block after:block after:content-[''] after:absolute after:mt-9 after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-90 after:transition after:duration-300 after:origin-left"
+                      className="relative text-xl tracking-tighter block after:block after:content-[''] after:absolute after:mt-9 after:ml-3 after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-75 after:transition after:duration-300 after:origin-left"
                       href={item.url}
                     >
                       <div className="flex gap-6 items-center">

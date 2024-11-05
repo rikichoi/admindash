@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <SidebarProvider>
         <Navbar />
         <AppSidebar />
-        <main className="w-full min-h-screen font-rubik bg-[#f7fafc]">
+        <main className="w-full min-h-screen font-rubik bg-[#f7fcec]">
           {children}
         </main>
       </SidebarProvider>
