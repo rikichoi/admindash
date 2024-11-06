@@ -33,7 +33,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
           />
         )}
       </ItemDialog>
-      <div className="grid gap-5 w-full sm:grid-cols-2 md:grid-cols-3 bg-white rounded-xl p-4">
+      <div className="border max-h-[480px] overflow-y-scroll grid gap-5 w-full sm:grid-cols-2 md:grid-cols-3 bg-white rounded-xl p-4">
         {items &&
           items.map((item, index) => (
             <button

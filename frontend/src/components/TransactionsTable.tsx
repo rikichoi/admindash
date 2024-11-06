@@ -69,7 +69,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
     0
   );
   return (
-    <div className="bg-white rounded-xl p-4">
+    <div className="bg-white border rounded-xl p-4">
       {transactions && (
         <Table>
           <TableCaption>A list of your recent transactions.</TableCaption>

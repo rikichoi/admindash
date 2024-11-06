@@ -34,7 +34,6 @@ export function ReportsTable({ donations }: ReportsTableProps) {
     console.log("changes are going through");
   }
 
-
   function removeSection(section: keyof Donation) {
     const updatedDonations = donationsData.map((donation, index) => {
       deletedSections.push({
@@ -49,46 +48,113 @@ export function ReportsTable({ donations }: ReportsTableProps) {
     setDonationsData(updatedDonations);
   }
 
+  const downloadCSV = () => {
+    // Convert the data array into a CSV string
+    const csvString = [
+      donationsData
+        .filter((donation, index) => index < 1)
+        .map((donation) => Object.keys(donation)), // Specify your headers here
+      ...donationsData.map((donation) => [
+        donation._id,
+        donation.refundStatus,
+        donation.amount,
+        donation.orgName,
+        donation.comment,
+        donation.donorName,
+        donation.email,
+        donation.phone,
+        donation.itemId,
+        donation.createdAt,
+        donation.updatedAt,
+      ]), // Map your data fields accordingly
+    ]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    // Create a Blob from the CSV string
+    const blob = new Blob([csvString], { type: "text/csv" });
+
+    // Generate a download link and initiate the download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "donation_data.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="bg-white rounded-xl p-4">
-      <Button onClick={() => console.log(donationsData)}>Log</Button>
+    <div>
+      <Button
+        className="flex gap-2 mb-4 w-fit ms-auto bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-2 px-4 font-semibold"
+        onClick={downloadCSV}
+      >
+        Download CSV
+      </Button>
+      <div className="border bg-white rounded-xl p-4">
         <Table>
-          <TableCaption>A list of your recent transactions.</TableCaption>
+          <TableCaption>A list of your recent donations.</TableCaption>
           <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">
-                <div className="flex items-center gap-2">
-                  Name
-                  <Button onClick={() => removeSection("donorName")}>
-                    <MinusCircleIcon />
-                  </Button>
-                </div>
-              </TableHead>
-              <TableHead className="">
-                <div className="flex items-center gap-2">
-                  Comment
-                  <Button onClick={() => removeSection("comment")}>
-                    <MinusCircleIcon />
-                  </Button>
-                </div>
-              </TableHead>
-              <TableHead className="">
-                <div className="flex items-center gap-2">
-                  Organisation
-                  <Button onClick={() => removeSection("orgName")}>
-                    <MinusCircleIcon />
-                  </Button>
-                </div>
-              </TableHead>
-              <TableHead className="text-right">
-                <div className="flex items-center gap-2">
-                  Amount
-                  <Button onClick={() => removeSection("amount")}>
-                    <MinusCircleIcon />
-                  </Button>
-                </div>
-              </TableHead>
-            </TableRow>
+            {donationsData
+              .filter((donation, index) => index < 1)
+              .map((data, index) => (
+                <TableRow key={index}>
+                  {data.donorName && (
+                    <TableHead className="w-[100px]">
+                      <div className="flex items-center gap-2">
+                        Name
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("donorName")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
+                  {data.comment && (
+                    <TableHead className="">
+                      <div className="flex items-center gap-2">
+                        Comment
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("comment")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
+                  {data.orgName && (
+                    <TableHead className="">
+                      <div className="flex items-center gap-2">
+                        Organisation
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("orgName")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
+                  {data.amount && (
+                    <TableHead className="text-right">
+                      <div className="flex items-center gap-2">
+                        Amount
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("amount")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
+                </TableRow>
+              ))}
           </TableHeader>
           <TableBody>
             {donationsData.map((donation, index) => (
@@ -102,37 +168,52 @@ export function ReportsTable({ donations }: ReportsTableProps) {
                     ></Input>
                   </TableCell>
                 )}
-                <TableCell>
-                  <Input
-                    name="comment"
-                    onChange={(e) => handleChange(e, index)}
-                    defaultValue={donation.comment}
-                  ></Input>
-                </TableCell>
-                <TableCell>
-                  <Input
-                    name="orgName"
-                    onChange={(e) => handleChange(e, index)}
-                    defaultValue={donation.orgName}
-                  ></Input>
-                </TableCell>
-                <TableCell className="text-right">
-                  <Input
-                    name="amount"
-                    onChange={(e) => handleChange(e, index)}
-                    defaultValue={donation.amount}
-                  ></Input>
-                </TableCell>
+                {donation.comment && (
+                  <TableCell>
+                    <Input
+                      name="comment"
+                      onChange={(e) => handleChange(e, index)}
+                      defaultValue={donation.comment}
+                    ></Input>
+                  </TableCell>
+                )}
+                {donation.orgName && (
+                  <TableCell>
+                    <Input
+                      name="orgName"
+                      onChange={(e) => handleChange(e, index)}
+                      defaultValue={donation.orgName}
+                    ></Input>
+                  </TableCell>
+                )}
+                {donation.amount && (
+                  <TableCell className="text-right">
+                    <Input
+                      name="amount"
+                      onChange={(e) => handleChange(e, index)}
+                      defaultValue={donation.amount}
+                    ></Input>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
+              <TableCell className="text-right">
+                $
+                {donationsData
+                  .reduce(
+                    (accumulator, donation) => donation.amount + accumulator,
+                    0
+                  )
+                  .toLocaleString()}
+              </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
+      </div>
     </div>
   );
 }

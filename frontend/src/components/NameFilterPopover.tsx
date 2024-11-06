@@ -25,8 +25,7 @@ export default function NameFilterPopover() {
       <PopoverTrigger disabled asChild>
         <Button variant="outline">
           <PlusCircle size={14} />
-          Name
-        </Button>
+          Name        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

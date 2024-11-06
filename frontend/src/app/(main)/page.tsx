@@ -54,19 +54,19 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="py-12 h-full bg-[#f7fcec]">
-      <div className="p-8">
-        <div className="bg-white rounded-xl p-4 flex flex-col gap-2">
-          <OrganisationDataOptions _id={_id} organisations={organisations} />
+    <main className="py-12 pb-8 h-full bg-[#f7fcec]">
+      <div className="p-8 pb-1 space-y-2">
+        <OrganisationDataOptions _id={_id} organisations={organisations} />
+        <div className="bg-white border rounded-xl p-4 flex flex-col gap-2">
           <OrganisationTable _id={_id} organisations={organisations} />
         </div>
       </div>
       <div className="flex flex-col xl:flex-row ">
-        <div className="flex overflow-y-scroll max-h-[493px] w-full xl:w-1/2 h-full p-8">
+        <div className="flex w-full xl:w-1/2 h-full p-8">
           {items ? (
             <ItemSection items={items} _id={_id} />
           ) : (
-            <div className="justify-center items-center bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
+            <div className="justify-center items-center border bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
               <span className="text-xl">No Organisation Selected...</span>
             </div>
           )}

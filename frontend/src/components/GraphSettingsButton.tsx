@@ -25,9 +25,12 @@ export function GraphSettingsButton({
 }: GraphSettingsButtonProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-fit ms-auto p-5 hover:bg-[#4ac5ac] bg-[#def2b1] hover:border-black duration-300" asChild>
+      <DropdownMenuTrigger
+        className="w-fit ms-auto p-5 hover:bg-[#4ac5ac] bg-[#49b989] hover:border-black duration-300"
+        asChild
+      >
         <Button variant="outline">
-          <Settings2 size={26}/>
+          <Settings2 size={26} color="white" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

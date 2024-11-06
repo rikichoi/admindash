@@ -57,7 +57,7 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex tracking-tight  duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#def2b1] items-center rounded-lg px-4 p-2"
+        className="flex tracking-tight text-white duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#49b989] items-center rounded-lg px-4 p-2"
       >
         Add
       </button>
