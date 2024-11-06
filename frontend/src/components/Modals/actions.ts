@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 // Item functions
 export async function postItem(formData: FormData, orgId: string) {
     await axios
-        .post("http://localhost:5000/api/item/create-item", formData, {
+        .post("http://3.128.24.35:5000/api/item/create-item", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
     redirect(`/?_id=${orgId}`)
@@ -14,14 +14,14 @@ export async function postItem(formData: FormData, orgId: string) {
 
 export async function editItem(formData: FormData, itemId: string, orgId: string) {
     await axios
-        .patch(`http://localhost:5000/api/item/edit-item/${itemId}`, formData, {
+        .patch(`http://3.128.24.35:5000/api/item/edit-item/${itemId}`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
     redirect(`/?_id=${orgId}`)
 }
 
 export async function deleteItem(itemId: string, orgId: string) {
-    await axios.delete(`http://localhost:5000/api/item/delete-item/${itemId}`)
+    await axios.delete(`http://3.128.24.35:5000/api/item/delete-item/${itemId}`)
     redirect(`/?_id=${orgId}`)
 }
 
@@ -31,7 +31,7 @@ export async function postOrganisation(data: CreateOrganisationSchema) {
         totalDonationItemsCount, totalDonationsCount, totalDonationsValue, website
     } = data
     await axios
-        .post("http://localhost:5000/api/organisation/create-organisation", {
+        .post("http://3.128.24.35:5000/api/organisation/create-organisation", {
             activeStatus,
             ABN: parseInt(ABN),
             description,
@@ -64,7 +64,7 @@ export async function editOrganisation(data: EditOrganisationSchema, orgId: stri
     } = data;
     await axios
         .patch(
-            `http://localhost:5000/api/organisation/edit-organisation/${orgId}`,
+            `http://3.128.24.35:5000/api/organisation/edit-organisation/${orgId}`,
             {
                 activeStatus,
                 ABN: parseInt(ABN),
@@ -86,7 +86,7 @@ export async function editOrganisation(data: EditOrganisationSchema, orgId: stri
 export async function deleteOrganisation(orgId: string) {
     await axios
         .delete(
-            `http://localhost:5000/api/organisation/delete-organisation/${orgId}`
+            `http://3.128.24.35:5000/api/organisation/delete-organisation/${orgId}`
         )
     redirect("/")
 }

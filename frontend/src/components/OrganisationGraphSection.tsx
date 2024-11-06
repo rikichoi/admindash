@@ -15,7 +15,7 @@ export default function OrganisationGraphSection({
 }: OrganisationGraphProps) {
   console.log(_id);
   return (
-    <div className="text-black">
+    <div className="text-black h-full">
       {_id ? (
         <SelectedOrgGraphSection items={items} />
       ) : (
