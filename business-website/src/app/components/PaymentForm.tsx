@@ -1,10 +1,5 @@
 "use client";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   useStripe,
   useElements,
@@ -65,7 +60,7 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
   const formSubmitHandler: SubmitHandler<CreateDonationSchema> = (data) => {
     stripeSubmitHandler(data);
   };
-// add debounce function for these things and perhaps clean up
+  // add debounce function for these things and perhaps clean up
   useEffect(() => {
     if (amount > 10) {
       createPaymentIntent(amount).then((res) => {
