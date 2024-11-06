@@ -23,7 +23,7 @@ async function getOrganisations(): Promise<Organisation[] | null> {
   "use server";
   try {
     const response = await axios.get(
-      "http://localhost:5000/api/organisation/get-organisations"
+      "http://3.128.24.35:5000/api/organisation/get-organisations"
     );
     return response.data;
   } catch (error) {
@@ -40,7 +40,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
     if (!_id) return null;
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/item/get-org-items/${_id}`
+        `http://3.128.24.35:5000/api/item/get-org-items/${_id}`
       );
       console.log(response.data);
       return response.data;
@@ -54,7 +54,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="py-12 pb-8 h-full bg-[#f7fcec]">
+    <main className="py-12 h-full bg-[#f7fcec]">
       <div className="p-8 pb-1 space-y-2">
         <OrganisationDataOptions _id={_id} organisations={organisations} />
         <div className="bg-white border rounded-xl p-4 flex flex-col gap-2">
