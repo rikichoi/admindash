@@ -104,7 +104,7 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url: `http://localhost:3000/api/checkout/new-donation/${amount}/${orgName}/${encodeURIComponent(
+        return_url: `https://admindash-sooty.vercel.app/api/checkout/new-donation/${amount}/${orgName}/${encodeURIComponent(
           comment
         )}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId}/${
           email || null

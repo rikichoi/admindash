@@ -15,7 +15,7 @@ type Donation = {
 async function getDonations(): Promise<Donation[] | undefined> {
   try {
     const response = await axios.get(
-      "http://localhost:5000/api/donation/get-donations"
+      "http://3.128.24.35:5000/api/donation/get-donations"
     );
     return response.data;
   } catch (error) {
