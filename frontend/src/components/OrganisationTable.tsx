@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Organisation } from "../lib/types";
 import Link from "next/link";
 import OrganisationFilterSection from "./OrganisationFilterSection";
@@ -13,19 +13,19 @@ export default function OrganisationTable({
   _id,
   organisations,
 }: OrganisationTableProps) {
-  const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
-  const [nameSort, setNameSort] = useState<string | undefined>(undefined);
+  // const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
+  // const [nameSort, setNameSort] = useState<string | undefined>(undefined);
 
-  const sortedOrganisations = organisations?.sort(nameSort && eval(nameSort));
+  // const sortedOrganisations = organisations?.sort(nameSort && eval(nameSort));
 
   return (
     <>
       <OrganisationFilterSection
-        nameSort={nameSort}
-        setNameSort={setNameSort}
-        setNameFilter={setNameFilter}
+        // nameSort={nameSort}
+        // setNameSort={setNameSort}
+        // setNameFilter={setNameFilter}
       />
-      <div className="overflow-x-auto">
+      <div className="bg-white overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-black border-b-2">
             <tr className="text-left">
@@ -47,8 +47,8 @@ export default function OrganisationTable({
             </tr>
           </thead>
           <tbody className="">
-            {sortedOrganisations ? (
-              sortedOrganisations.map((organisation, index) => (
+            {organisations ? (
+              organisations.map((organisation, index) => (
                 <tr
                   key={index}
                   className={`${
@@ -60,6 +60,7 @@ export default function OrganisationTable({
                     className="font-medium text-gray-900 whitespace-nowrap"
                   >
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -72,6 +73,7 @@ export default function OrganisationTable({
                   </th>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -84,6 +86,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -96,6 +99,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -108,6 +112,7 @@ export default function OrganisationTable({
                   </td>
                   <td>
                     <Link
+                      scroll={false}
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
@@ -115,7 +120,7 @@ export default function OrganisationTable({
                           : `?_id=${organisation._id}`
                       }
                     >
-                      {(organisation.totalDonationsValue).toLocaleString()}
+                      {organisation.totalDonationsValue.toLocaleString()}
                     </Link>
                   </td>
                 </tr>

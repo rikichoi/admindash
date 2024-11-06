@@ -1,9 +1,10 @@
 import React from "react";
 import SignOutButton from "./SignOutButton";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export default async function Navbar() {
   return (
-    <div className="fixed w-full z-40 justify-end bg-white border-b flex items-center p-2 min-h-12 max-h-20  text-black">
+    <div className="fixed w-full z-40 justify-between bg-white border-b flex items-center p-2 min-h-14 max-h-20  text-black">
       {/* <div className="flex items-center gap-3">
 
 
@@ -38,7 +39,10 @@ export default async function Navbar() {
         </ul>
       </div> */}
       {/* TODO: Insert theme change toggle button */}
-      <SignOutButton />
+      <SidebarTrigger />
+      <div className="flex gap-2 items-center">
+        <SignOutButton />
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ type LineGraphProps = {
 export default function LineGraph({ organisations, items }: LineGraphProps) {
   return (
     (organisations && (
-      <ResponsiveContainer width={"100%"} height={400}>
+      <ResponsiveContainer width={"80%"} height={400}>
         <AreaChart
           data={organisations}
           margin={{
@@ -58,7 +58,7 @@ export default function LineGraph({ organisations, items }: LineGraphProps) {
       </ResponsiveContainer>
     )) ||
     (items && items.length ? (
-      <ResponsiveContainer width={"100%"} height={400}>
+      <ResponsiveContainer width={"80%"} height={400}>
         <AreaChart
           data={items}
           margin={{
@@ -89,7 +89,9 @@ export default function LineGraph({ organisations, items }: LineGraphProps) {
         </AreaChart>
       </ResponsiveContainer>
     ) : (
-      <span>No Items Exist...</span>
+      <div className="h-full text-xl flex shrink-0 m-auto">
+        <p>No Items Exist...</p>
+      </div>
     ))
   );
 }
