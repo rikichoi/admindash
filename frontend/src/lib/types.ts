@@ -27,3 +27,15 @@ export type Item = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type Donation = {
+    refundStatus: boolean;
+    amount: number;
+    orgName?: string;
+    comment: string;
+    donorName?: string;
+    // orgId: string;
+    itemId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

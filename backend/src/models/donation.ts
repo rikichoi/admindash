@@ -6,6 +6,7 @@ type Donation = {
     orgName?: string;
     comment: string;
     donorName?: string;
+    // TODO: append orgId to donation controller and this model and schema
     // orgId: string;
     itemId: string;
     createdAt: Date;

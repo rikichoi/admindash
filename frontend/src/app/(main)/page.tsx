@@ -54,7 +54,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
   const items = await getItems();
 
   return (
-    <main className="pt-14 h-full bg-[#f7fcec]">
+    <main className="py-12 h-full bg-[#f7fcec]">
       <div className="p-8">
         <div className="bg-white rounded-xl p-4 flex flex-col gap-2">
           <OrganisationDataOptions _id={_id} organisations={organisations} />

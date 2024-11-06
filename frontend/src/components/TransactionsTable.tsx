@@ -69,32 +69,40 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
     0
   );
   return (
-    <Table>
-      <TableCaption>A list of your recent transactions.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Transaction</TableHead>
-          {/* <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead> */}
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {transactions.map((transaction, index) => (
-          <TableRow key={index}>
-            <TableCell className="font-medium">{transaction.id}</TableCell>
-            {/* <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell> */}
-            <TableCell className="text-right">{transaction.amount}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">${totalAmount.toLocaleString()}</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+    <div className="bg-white rounded-xl p-4">
+      {transactions && (
+        <Table>
+          <TableCaption>A list of your recent transactions.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead colSpan={3} className="">
+                Transaction
+              </TableHead>
+              <TableHead className="text-right">Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {transactions.map((transaction, index) => (
+              <TableRow key={index}>
+                <TableCell colSpan={3} className="font-medium">
+                  {transaction.id}
+                </TableCell>
+                <TableCell className="text-right">
+                  ${transaction.amount.toLocaleString()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell className="text-right">
+                ${totalAmount.toLocaleString()}
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      )}
+    </div>
   );
 }

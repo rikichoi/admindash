@@ -42,7 +42,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
                 setModalContent("Edit Item"),
                 setShowModal(true)
               )}
-              className="w-full font-rubik h-72 hover:border border border-transparent hover:border-black drop-shadow-md duration-300 p-4 bg-zinc-50 rounded-2xl justify-center mx-auto flex flex-col gap-2"
+              className="w-full font-rubik h-72 hover:border border border-transparent hover:border-black duration-300 p-4 bg-zinc-100 rounded-2xl justify-center mx-auto flex flex-col gap-2"
               key={index}
             >
               <h3 className="font-semibold text-xl">{item.name}</h3>
