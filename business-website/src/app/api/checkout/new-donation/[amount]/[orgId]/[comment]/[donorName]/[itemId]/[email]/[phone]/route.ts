@@ -16,7 +16,7 @@ type DonationProps = {
 
 export async function GET(request: Request, context: { params: DonationProps }) {
     const { amount, comment, itemId, donorName, email, orgId, phone } = context.params
-    const donation = await axios.post(`https://3.128.24.35/api/donation/create-donation/${amount}&${orgId}&${comment}&${donorName}&${itemId && itemId}${email && `&${email}`}${phone && `&${phone}`}`)
+    const donation = await axios.post(`https://3.128.24.35:5000/api/donation/create-donation/${amount}&${orgId}&${comment}&${donorName}&${itemId && itemId}${email && `&${email}`}${phone && `&${phone}`}`)
     if (!donation) { return new NextResponse(`There was an unexpected error!`, { status: 400 }); }
 
     return redirect("https://admindash-sooty.vercel.app/payment-success");

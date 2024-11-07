@@ -14,7 +14,7 @@ export async function getNews() {
 
 export async function getOrganisations(): Promise<Organisation[] | undefined> {
     try {
-        const organisations = (await fetch("https://3.128.24.35/api/organisation/get-organisations")).json()
+        const organisations = (await axios.get("https://3.128.24.35:5000/api/organisation/get-organisations")).data
         return organisations
     } catch (error) {
         console.log(error)
@@ -23,7 +23,7 @@ export async function getOrganisations(): Promise<Organisation[] | undefined> {
 
 export async function getOrganisationItems(orgId: string): Promise<Item[] | undefined> {
     try {
-        const organisations = (await fetch(`https://3.128.24.35/api/item/get-org-items/${orgId}`)).json()
+        const organisations = (await fetch(`https://3.128.24.35:5000/api/item/get-org-items/${orgId}`)).json()
         return organisations
     } catch (error) {
         console.log(error)
@@ -32,7 +32,7 @@ export async function getOrganisationItems(orgId: string): Promise<Item[] | unde
 
 export async function getDonations(): Promise<Donation[] | undefined> {
     try {
-        const donations = (await fetch("https://3.128.24.35/api/donation/get-donations")).json()
+        const donations = (await fetch("https://3.128.24.35:5000/api/donation/get-donations")).json()
         return donations
     } catch (error) {
         console.log(error)
