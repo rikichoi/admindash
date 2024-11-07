@@ -11,18 +11,29 @@ import { createPaymentIntent } from "../checkout/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateDonationSchema, createDonationSchema } from "../lib/validation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Item, Organisation } from "../lib/types";
+import { useRouter } from "next/navigation";
 
 type CheckoutFormProps = {
   amount: number;
   setAmount: Dispatch<SetStateAction<number>>;
+  organisations: Organisation[] | undefined;
+  items: Item[] | undefined;
+  orgId: string;
 };
 
 type PaymentFormProps = {
   STRIPE_PUBLISHABLE_KEY: string;
+  organisations: Organisation[] | undefined;
+  items: Item[] | undefined;
+  orgId: string;
 };
 
 export default function PaymentForm({
   STRIPE_PUBLISHABLE_KEY,
+  organisations,
+  items,
+  orgId,
 }: PaymentFormProps) {
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
   const [amount, setAmount] = useState(0);
@@ -36,17 +47,31 @@ export default function PaymentForm({
         currency: "usd",
       }}
     >
-      <CheckoutForm amount={amount} setAmount={setAmount} />
+      <CheckoutForm
+        orgId={orgId}
+        items={items}
+        organisations={organisations}
+        amount={amount}
+        setAmount={setAmount}
+      />
     </Elements>
   );
 }
 
-function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
+function CheckoutForm({
+  amount,
+  setAmount,
+  organisations,
+  items,
+  orgId,
+}: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
+  const [donationType, setDonationType] = useState<string>("general");
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -56,6 +81,10 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
     formState: { errors },
   } = useForm<CreateDonationSchema>({
     resolver: zodResolver(createDonationSchema),
+    defaultValues: {
+      itemId: "",
+      orgId: orgId,
+    },
   });
   const formSubmitHandler: SubmitHandler<CreateDonationSchema> = (data) => {
     stripeSubmitHandler(data);
@@ -82,7 +111,7 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
   }, [amountValue]);
 
   const stripeSubmitHandler = async (data: CreateDonationSchema) => {
-    const { amount, comment, itemId, orgName, donorName, email, phone } = data;
+    const { amount, comment, itemId, orgId, donorName, email, phone } = data;
     if (!stripe || !elements) {
       return;
     }
@@ -95,15 +124,12 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
       return;
     }
     // TODO: Implement RHF and Zod for "return_url" values. This should be possible because the entire form is client side
+              // return_url: `https://admindash-sooty.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(
     const result = await stripe.confirmPayment({
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url: `https://admindash-sooty.vercel.app/api/checkout/new-donation/${amount}/${orgName}/${encodeURIComponent(
-          comment
-        )}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId}/${
-          email || null
-        }/${phone || null}`,
+        return_url: `https://admindash-sooty.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId || null}/${email || null}/${phone || null}`,
       },
     });
     console.log(result);
@@ -119,7 +145,7 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto h-full border-2 rounded-lg">
+    <div className="max-w-3xl mx-auto border-2 rounded-lg">
       <form
         onSubmit={handleSubmit(formSubmitHandler)}
         className="bg-white p-2 rounded-md text-black "
@@ -127,11 +153,58 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
         <h1 className="text-3xl">Make a donation</h1>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col">
-            <h2>Item ID</h2>
-            <input
+            <h2>Donation Type</h2>
+            <div className="flex justify-between max-w-64 w-full mx-auto">
+              <div className="flex gap-3">
+                <h3>General</h3>
+                <input
+                  type="radio"
+                  name="donationType"
+                  defaultChecked={donationType == "general"}
+                  onClick={(e) =>
+                    setDonationType((e.target as HTMLInputElement).value)
+                  }
+                  value={"general"}
+                  className="border-2 p-2 w-5 rounded-lg"
+                />
+              </div>
+              <div className="flex gap-3">
+                <h3>Item</h3>
+                <input
+                  type="radio"
+                  name="donationType"
+                  defaultChecked={donationType == "item"}
+                  onClick={(e) =>
+                    setDonationType((e.target as HTMLInputElement).value)
+                  }
+                  value={"item"}
+                  className="border-2 p-2 w-5 rounded-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div hidden={donationType !== "item"} className="flex flex-col gap-3">
+          <div hidden={donationType !== "item"} className="flex flex-col">
+            <h2 hidden={donationType !== "item"}>Item</h2>
+            <select
+              hidden={donationType !== "item"}
               className="border-2 p-2 rounded-lg"
               {...register("itemId")}
-            />
+            >
+              <option value={""}>Select an Item</option>
+              {items && items.length > 0 ? (
+                items?.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.name}
+                  </option>
+                ))
+              ) : (
+                <option disabled value={""}>
+                  No items...
+                </option>
+              )}
+            </select>
             {/* errors will return when field validation fails  */}
             <p className="text-red-500">{errors.itemId?.message}</p>
           </div>
@@ -146,12 +219,19 @@ function CheckoutForm({ amount, setAmount }: CheckoutFormProps) {
           </div>
           <div className="flex flex-col">
             <h2>Organisation</h2>
-            <input
-              className="border-2 p-2 rounded-lg"
-              {...register("orgName")}
-            />
+            <select className="border-2 p-2 rounded-lg" {...register("orgId")}>
+              {organisations?.map((organisation) => (
+                <option
+                  onClick={() => router.push(`/donate/${organisation._id}`)}
+                  key={organisation._id}
+                  value={organisation._id}
+                >
+                  {organisation.name}
+                </option>
+              ))}
+            </select>
             {/* errors will return when field validation fails  */}
-            <p className="text-red-500">{errors.orgName?.message}</p>
+            <p className="text-red-500">{errors.orgId?.message}</p>
           </div>
           <div className="flex flex-col">
             <h2>Full Name</h2>
