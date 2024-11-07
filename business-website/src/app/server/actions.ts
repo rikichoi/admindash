@@ -14,7 +14,7 @@ export async function getNews() {
 
 export async function getOrganisations(): Promise<Organisation[] | undefined> {
     try {
-        const organisations = (await axios.get("https://3.128.24.35/api/organisation/get-organisations")).data
+        const organisations = (await fetch("https://3.128.24.35/api/organisation/get-organisations")).json()
         return organisations
     } catch (error) {
         console.log(error)
