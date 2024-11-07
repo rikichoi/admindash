@@ -27,10 +27,10 @@ const contactSchema = z.object({
 
 export const createDonationSchema = z.object({
     amount: requiredNumericString,
-    orgName: requiredString,
+    orgId: requiredString,
     comment: requiredString,
     donorName: z.string().optional(),
-    itemId: requiredString,
+    itemId: z.string().optional(),
 }).and(contactSchema)
 
 export type CreateDonationSchema = z.infer<typeof createDonationSchema>
