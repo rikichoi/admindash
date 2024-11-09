@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
                 password: {}
             },
             async authorize(credentials) {
-                const res = await axios.post<LoginResponse>(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/auth/login`, {
+                const res = await axios.post<LoginResponse>(`http://3.128.24.35:5000/api/auth/login`, {
                     email: credentials?.email,
                     password: credentials?.password,
                 });

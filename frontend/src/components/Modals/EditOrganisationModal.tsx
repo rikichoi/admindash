@@ -45,7 +45,7 @@ export default function EditOrganisationModal({
         organisation.totalDonationsValue.toString()
       );
     }
-    console.log(organisation)
+    console.log(organisation);
   }, [organisation]);
 
   const {
@@ -72,7 +72,6 @@ export default function EditOrganisationModal({
     },
   });
 
-
   const onSubmit: SubmitHandler<EditOrganisationSchema> = async (data) => {
     if (!_id) return;
     const {
@@ -88,7 +87,7 @@ export default function EditOrganisationModal({
       totalDonationsValue,
       website,
       ABN,
-  } = data;
+    } = data;
     console.log(data);
 
     const formData = new FormData();
@@ -115,7 +114,7 @@ export default function EditOrganisationModal({
     formData.forEach((e) => console.log(e));
     await axios
       .patch(
-        `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/edit-organisation/${_id}`,
+        `http://3.128.24.35:5000/api/organisation/edit-organisation/${_id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -149,9 +148,7 @@ export default function EditOrganisationModal({
         <h2>Old Images</h2>
         <Controller
           control={control}
-          render={({ field }) => (
-            <ImageDropzone previousImageField={field} />
-          )}
+          render={({ field }) => <ImageDropzone previousImageField={field} />}
           name="previousImages"
         />
         {errors.previousImages && (

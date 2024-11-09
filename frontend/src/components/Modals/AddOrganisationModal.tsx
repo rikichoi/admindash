@@ -64,7 +64,7 @@ export default function AddOrganisationModal({
 
     await axios
       .post(
-        `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/create-organisation`,
+        `http://3.128.24.35:5000/api/organisation/create-organisation`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
