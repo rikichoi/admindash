@@ -8,7 +8,6 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
 type AddOrganisationModalProps = {
@@ -62,12 +61,10 @@ export default function AddOrganisationModal({
     formData.append("website", website);
     formData.forEach((e) => console.log(e));
 
-    await axios
-      .post(
+    await fetch(
         `http://3.128.24.35:5000/api/organisation/create-organisation`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
+        {method: 'POST',
+          body: formData
         }
       )
       .then(function (response) {
