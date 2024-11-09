@@ -9,6 +9,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
 import { useRouter } from "next/navigation";
+import { createOrganisation } from "@/server/api/actions";
 
 type AddOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -61,21 +62,14 @@ export default function AddOrganisationModal({
     formData.append("website", website);
     formData.forEach((e) => console.log(e));
 
-    await fetch(
-        `http://3.128.24.35:5000/api/organisation/create-organisation`,
-        {method: 'POST',
-          body: formData
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        reset();
-        setShowModal(false);
-        router.refresh();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+      await createOrganisation(formData);
+      reset();
+      setShowModal(false);
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
