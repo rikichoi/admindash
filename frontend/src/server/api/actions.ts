@@ -6,6 +6,6 @@ export async function getTransactions() {
 }
 
 export async function getDonations() {
-    const donations = (await fetch("http://3.128.24.35:5000/api/donation/get-donations")).json()
+    const donations = (await fetch("http://3.128.24.35:5000/api/donation/get-donations", { cache: "no-store" })).json()
     return donations
 }

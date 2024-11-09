@@ -23,6 +23,7 @@ async function getOrganisations(): Promise<Organisation[] | null> {
   "use server";
   try {
     const response = await axios.get(
+      // "http://localhost:5000/api/organisation/get-organisations"
       "http://3.128.24.35:5000/api/organisation/get-organisations"
     );
     return response.data;

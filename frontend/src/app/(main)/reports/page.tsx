@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 export default async function ReportsPage() {
   const donations = await getDonations();
+  console.log(donations)
   return (
     <div className="pt-20 p-8">
       <ReportsTable donations={donations}/>
