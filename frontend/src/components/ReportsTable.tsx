@@ -21,7 +21,7 @@ type ReportsTableProps = {
 
 export function ReportsTable({ donations }: ReportsTableProps) {
   const [donationsData, setDonationsData] = useState<Donation[]>(donations);
-
+  console.log(donations)
   const deletedSections: {
     donationIndex: number;
     section: keyof Donation;
@@ -88,7 +88,7 @@ export function ReportsTable({ donations }: ReportsTableProps) {
   return (
     <div>
       <Button
-        className="flex gap-2 mb-4 w-fit ms-auto bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-2 px-4 font-semibold"
+        className="flex gap-2 mb-4 w-fit ms-auto text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
         onClick={downloadCSV}
       >
         Download CSV
