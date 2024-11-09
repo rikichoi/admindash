@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
                 password: {}
             },
             async authorize(credentials) {
-                const res = await axios.post<LoginResponse>(`http://${process.env.next_public_endpoint_url}/api/auth/login`, {
+                const res = await axios.post<LoginResponse>(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/auth/login`, {
                     email: credentials?.email,
                     password: credentials?.password,
                 });
