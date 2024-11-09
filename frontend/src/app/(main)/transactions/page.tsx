@@ -4,12 +4,16 @@ import { TransactionsTable } from "@/components/TransactionsTable";
 import { getTransactions } from "@/server/api/actions";
 import Link from "next/link";
 import { ChevronsRight } from "lucide-react";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "AdminDash - Transactions",
 };
 
 export default async function TransactionsPage() {
+  const session = await getServerSession();
+  if (!session) redirect("/login");
   const transactions = await getTransactions();
   console.log(transactions);
   return (

@@ -21,7 +21,7 @@ type ReportsTableProps = {
 
 export function ReportsTable({ donations }: ReportsTableProps) {
   const [donationsData, setDonationsData] = useState<Donation[]>(donations);
-  console.log(donations)
+  console.log(donations);
   const deletedSections: {
     donationIndex: number;
     section: keyof Donation;
@@ -55,17 +55,17 @@ export function ReportsTable({ donations }: ReportsTableProps) {
         .filter((donation, index) => index < 1)
         .map((donation) => Object.keys(donation)), // Specify your headers here
       ...donationsData.map((donation) => [
-        donation._id,
+        donation._id ? donation._id : null,
         donation.refundStatus,
-        donation.amount,
-        donation.orgName,
-        donation.comment,
-        donation.donorName,
-        donation.email,
-        donation.phone,
-        donation.itemId,
-        donation.createdAt,
-        donation.updatedAt,
+        donation.amount ? donation.amount : null,
+        donation.orgName ? donation.orgName : null,
+        donation.comment ? donation.comment : null,
+        donation.donorName ? donation.donorName : null,
+        donation.email ? donation.email : null,
+        donation.phone ? donation.phone : null,
+        donation.itemId ? donation.itemId : null,
+        donation.createdAt ? donation.createdAt : null,
+        donation.updatedAt ? donation.updatedAt : null,
       ]), // Map your data fields accordingly
     ]
       .map((row) => row.join(","))
