@@ -115,7 +115,7 @@ export default function EditOrganisationModal({
     formData.forEach((e) => console.log(e));
     await axios
       .patch(
-        `http://${process.env.ENDPOINT_URL}/api/organisation/edit-organisation/${_id}`,
+        `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/edit-organisation/${_id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
