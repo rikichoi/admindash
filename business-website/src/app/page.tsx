@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { getOrganisations } from "./server/actions";
 import GridCarousel from "./components/GridCarousel";
 import Link from "next/link";
+import Mapbox from "./components/Mapbox";
 
 // type Donation = {
 //   refundStatus: boolean;
@@ -32,11 +33,11 @@ import Link from "next/link";
 
 export default async function Home() {
   const organisations = await getOrganisations();
-  console.log(organisations)
+  console.log(organisations);
   return (
     <div className="font-rubik justify-center bg-slate-50 flex flex-col min-h-screen pt-16 gap-16 ">
       <div className="flex flex-col gap-6">
-        <h1 className="text-black text-5xl font-bold text-center">
+        <h1 className="text-black text-3xl lg:text-5xl font-bold text-center">
           Change Lives & Support Children
         </h1>
         <p className="text-gray-500 text-lg max-w-xl items-center text-center mx-auto">
@@ -44,7 +45,10 @@ export default async function Home() {
           children&apos;s lives and to help them fulfil their potential. And we
           never give up.
         </p>
-        <Link href={"/donate"} className="flex gap-2 group relative overflow-hidden transition-all ease-in-out duration-300 items-center mx-auto w-fit py-3 px-20 text-lg  text-white rounded-lg bg-[#1ab394] hover:bg-[#00cca3]">
+        <Link
+          href={"/donate"}
+          className="flex gap-2 group relative overflow-hidden transition-all ease-in-out duration-300 items-center mx-auto w-fit py-3 px-2 md:px-20 text-lg  text-white rounded-lg bg-[#1ab394] hover:bg-[#00cca3]"
+        >
           <span className="flex gap-2 items-center transition-transform duration 300 ease-in-out group-hover:translate-x-2">
             Make a Donation <ArrowRight />
           </span>
@@ -79,8 +83,8 @@ export default async function Home() {
         </h1>
         <GridCarousel organisations={organisations} />
       </div>
-      <div className="grid grid-cols-2 gap-12 min-h-screen">
-        <div className="flex flex-col gap-10 pl-40 justify-center align-middle">
+      <div className="grid lg:grid-cols-2 gap-12 min-h-[90vh]">
+        <div className="flex flex-col gap-10 items-center lg:items-baseline lg:pl-40 justify-center">
           <h1 className="text-black tracking-tighter  text-4xl font-semibold">
             Reach Out
           </h1>
@@ -115,7 +119,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        <div></div>
+          <Mapbox />
       </div>
     </div>
   );

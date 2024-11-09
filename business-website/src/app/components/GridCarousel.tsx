@@ -40,46 +40,48 @@ export default function GridCarousel({ organisations }: GridCarouselProps) {
     <div className="relative max-w-6xl w-full mx-auto">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {[0, 1].map((gridIndex) => (
-            <div key={gridIndex} className="flex-[0_0_100%] min-w-0">
-              <div className="grid grid-cols-2 gap-8 p-4">
-                {organisations &&
-                  organisations
-                    .slice(gridIndex * 4, gridIndex * 4 + 4)
-                    .map((organisation, index) => (
-                      <OrganisationListItem
-                        key={index}
-                        organisation={organisation}
-                      />
-                    ))}
-              </div>
-            </div>
-          ))}
+          {organisations &&
+            Array.from({ length: Math.ceil(organisations.length / 4) }).map(
+              (_, gridIndex) => (
+                <div key={gridIndex} className="flex-[0_0_100%] min-w-0">
+                  <div className="grid lg:grid-cols-2 gap-8 p-4">
+                    {organisations
+                      .slice(gridIndex * 4, gridIndex * 4 + 4)
+                      .map((organisation, index) => (
+                        <OrganisationListItem
+                          key={index}
+                          organisation={organisation}
+                        />
+                      ))}
+                  </div>
+                </div>
+              )
+            )}
         </div>
       </div>
       <button
         className={`${
-          !prevBtnEnabled ? "bg-white" : "bg-gray-300"
-        } absolute -left-12 top-1/2 transform rounded-lg -translate-y-1/2 border-2 p-3`}
+          !prevBtnEnabled ? "bg-white" : "bg-gray-100"
+        } absolute lg:-left-12 lg:top-1/2 left-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
         onClick={scrollPrev}
         disabled={!prevBtnEnabled}
       >
         <ChevronLeft
           size={30}
-          className={!prevBtnEnabled ? "text-gray-200" : "animate-pulse text-black"}
+          className={!prevBtnEnabled ? "text-gray-200" : " text-black"}
         />
         <span className="sr-only">Previous items</span>
       </button>
       <button
         className={`${
           !nextBtnEnabled ? "bg-white" : "bg-gray-100"
-        } absolute -right-12 top-1/2 transform rounded-lg -translate-y-1/2 border-2 p-3`}
+        } absolute lg:-right-12 lg:top-1/2 right-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
         onClick={scrollNext}
         disabled={!nextBtnEnabled}
       >
         <ChevronRight
           size={30}
-          className={!nextBtnEnabled ? "text-gray-200" : "animate-pulse text-black"}
+          className={!nextBtnEnabled ? "text-gray-200" : " text-black"}
         />
         <span className="sr-only">Next items</span>
       </button>
