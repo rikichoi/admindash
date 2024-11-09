@@ -99,7 +99,7 @@ export const editItem = async (req: Request, res: Response, next: NextFunction):
                 itemExists.description = (data.data.description || itemExists.description)
                 itemExists.name = (data.data.name || itemExists.name)
                 itemExists.activeStatus = (JSON.parse(data.data.activeStatus) || itemExists.activeStatus)
-                itemExists.donationGoalValue = (parseInt(data.data.donationGoalValue) || itemExists.donationGoalValue)
+                itemExists.donationGoalValue = (data.data.donationGoalValue == "0" ? 0 : parseInt(data.data.donationGoalValue) || itemExists.donationGoalValue)
                 itemExists.totalDonationValue = (data.data.totalDonationValue == "0" ? 0 : parseInt(data.data.totalDonationValue) || itemExists.totalDonationValue)
                 itemExists.orgId = (data.data.orgId || itemExists.orgId)
                 itemExists.itemImage = (imageData.data?.originalname || itemExists.itemImage)
