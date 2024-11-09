@@ -37,12 +37,12 @@ export default function GridCarousel({ organisations }: GridCarouselProps) {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative max-w-6xl mx-auto">
+    <div className="relative max-w-6xl w-full mx-auto">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {[0, 1].map((gridIndex) => (
             <div key={gridIndex} className="flex-[0_0_100%] min-w-0">
-              <div className="grid grid-cols-2 gap-4 p-4">
+              <div className="grid grid-cols-2 gap-8 p-4">
                 {organisations &&
                   organisations
                     .slice(gridIndex * 4, gridIndex * 4 + 4)
