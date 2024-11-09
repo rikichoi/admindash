@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { getOrganisations } from "./server/actions";
 import GridCarousel from "./components/GridCarousel";
 import Link from "next/link";
-import Mapbox from "./components/Mapbox";
+import dynamic from "next/dynamic";
 
 // type Donation = {
 //   refundStatus: boolean;
@@ -32,6 +32,10 @@ import Mapbox from "./components/Mapbox";
 // }
 
 export default async function Home() {
+  const Mapbox = dynamic(() => import("./components/Mapbox"), {
+    ssr: false,
+  });
+
   const organisations = await getOrganisations();
   console.log(organisations);
   return (
@@ -119,7 +123,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-          <Mapbox />
+        <Mapbox />
       </div>
     </div>
   );

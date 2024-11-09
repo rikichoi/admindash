@@ -10,7 +10,7 @@ export default function Mapbox() {
   const markerRef = useRef<mapboxgl.Marker | null>(null);
 
   const popup = useMemo(() => {
-    return new mapboxgl.Popup().setText("NexaGrid Main Office Address");
+    return new mapboxgl.Popup().setHTML("<h3>NexaGrid Main Office Address<h3>");
   }, []);
 
   return (
