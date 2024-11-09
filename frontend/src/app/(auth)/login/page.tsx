@@ -86,12 +86,17 @@ export default function LoginPage() {
                   className="border-2 focus:ring-2 focus:ring-[#FDC62D] text-black focus:outline-2  outline-none border-gray-950 p-2 w-full"
                   placeholder="Password"
                 ></input>
-                <Link
-                  href={"/login"}
-                  className="tracking-tight text-black hover:underline decoration-2"
-                >
-                  Forgot your password?
-                </Link>
+                <div className="flex flex-col items-center">
+                  <p className="tracking-tight font-semibold text-black">
+                    Demo Account:
+                  </p>
+                  <p className="tracking-tight text-black">
+                    admin@gmail.com
+                  </p>
+                  <p className="tracking-tight text-black">
+                    admin
+                  </p>
+                </div>
               </div>
             </div>
             <span className="text-xs text-red-500 font-space_grotesque">

@@ -1,5 +1,5 @@
-"use client"
-import { Calendar, Home, Inbox } from "lucide-react";
+"use client";
+import { ArrowRightFromLine, Calendar, Home, Inbox } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +31,11 @@ const items = [
     title: "Reports",
     url: "/reports",
     icon: Calendar,
+  },
+  {
+    title: "Website",
+    url: "https://nexagrid.vercel.app/",
+    icon: ArrowRightFromLine,
   },
 ];
 
@@ -65,6 +70,7 @@ export function AppSidebar() {
                     asChild
                   >
                     <Link
+                      target={item.title == "Website"? "_blank":"_self"}
                       className="relative text-xl tracking-tighter block after:block after:content-[''] after:absolute after:mt-9 after:ml-12 after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-50 after:transition after:duration-300 after:origin-left"
                       href={item.url}
                     >
