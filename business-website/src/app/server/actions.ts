@@ -1,6 +1,5 @@
 "use server"
 
-import axios from "axios"
 import { Donation, Item, Organisation } from "../lib/types"
 
 export async function getNews() {
@@ -14,7 +13,7 @@ export async function getNews() {
 
 export async function getOrganisations(): Promise<Organisation[] | undefined> {
     try {
-        const organisations = (await axios.get(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`)).data
+        const organisations = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`, { "cache": "no-cache" })).json()
         return organisations
     } catch (error) {
         console.log(error)

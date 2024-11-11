@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import logo from "../assets/logo.png";
 import Link from "next/link";
+import MobileNavbarMenu from "./MobileNavbarMenu";
 
 export default function Navbar() {
   return (
@@ -19,7 +20,8 @@ export default function Navbar() {
             NexaGrid
           </span>
         </Link>
-        <div className="flex items-center gap-2 flex-1 justify-center">
+        <MobileNavbarMenu/>
+        <div className="hidden lg:flex items-center gap-2 flex-1 justify-center">
           <Link
             className="p-2 px-6 rounded-lg text-gray-800 font-semibold transition-all duration-300 hover:text-[#00cca3bb] hover:bg-[#00cca313]"
             href={"/"}
@@ -64,7 +66,7 @@ export default function Navbar() {
             Pricing
           </Link>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="hidden lg:flex gap-2 items-center">
           <button className="px-2 py-1.5 h-fit rounded-lg text-sm text-gray-800 border-2 transition-all duration-300 hover:bg-[#00cca313]">
             Sign Up
           </button>
