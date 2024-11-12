@@ -37,14 +37,13 @@ export default async function Home() {
   });
 
   const organisations = await getOrganisations();
-  console.log(organisations);
   return (
     <div className="font-rubik justify-center bg-slate-50 flex flex-col min-h-screen pt-16 gap-16 ">
       <div className="flex flex-col gap-6">
         <h1 className="text-black text-3xl lg:text-5xl font-bold text-center">
           Change Lives & Support Children
         </h1>
-        <p className="text-gray-500 text-lg max-w-xl items-center text-center mx-auto">
+        <p className="text-gray-500 text-sm lg:text-lg max-w-xl items-center text-center mx-auto">
           NexaGrid works over 190 countries and territories to save
           children&apos;s lives and to help them fulfil their potential. And we
           never give up.
@@ -82,17 +81,17 @@ export default async function Home() {
         <InfiniteSlider />
       </section>
       <div className="flex flex-col gap-12">
-        <h1 className="text-black tracking-tighter text-4xl font-semibold text-center">
+        <h1 className="text-black tracking-tighter text-2xl lg:text-4xl font-semibold text-center">
           Sponsored Organisations
         </h1>
         <GridCarousel organisations={organisations} />
       </div>
-      <div className="grid lg:grid-cols-2 gap-12 min-h-[90vh]">
+      <div className="grid p-5 lg:p-0 lg:grid-cols-2 gap-12 min-h-[90vh]">
         <div className="flex flex-col gap-10 items-center lg:items-baseline lg:pl-40 justify-center">
-          <h1 className="text-black tracking-tighter  text-4xl font-semibold">
+          <h1 className="text-black tracking-tighter text-2xl lg:text-4xl font-semibold">
             Reach Out
           </h1>
-          <p className="text-gray-500 text-xl max-w-xl items-center">
+          <p className="text-gray-500 text-sm lg:text-xl max-w-xl items-center">
             We always enjoy hearing from you. Have a story to tell or have a
             question? Contact us anytime.
           </p>

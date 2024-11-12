@@ -7,7 +7,7 @@ import MobileNavbarMenu from "./MobileNavbarMenu";
 export default function Navbar() {
   return (
     <div className="z-50 font-rubik fixed text-black w-full items-center flex max-h-24 border-b bg-white">
-      <div className="flex justify-between w-full mx-auto max-w-6xl p-4">
+      <div className="flex lg:justify-between w-full mx-auto max-w-6xl p-4">
         <Link className="flex gap-2 items-center" href={"/"}>
           <Image
             alt="NexaGrid Logo"
@@ -66,11 +66,11 @@ export default function Navbar() {
             Pricing
           </Link>
         </div>
-        <div className="hidden lg:flex gap-2 items-center">
-          <button className="px-2 py-1.5 h-fit rounded-lg text-sm text-gray-800 border-2 transition-all duration-300 hover:bg-[#00cca313]">
+        <div className="flex gap-2 ms-auto items-center">
+          <button className="hidden lg:flex px-2 py-1.5 h-fit rounded-lg text-sm text-gray-800 border-2 transition-all duration-300 hover:bg-[#00cca313]">
             Sign Up
           </button>
-          <button className="p-2 px-4 rounded-lg text-sm text-gray-800  transition-all duration-300 hover:text-[#00cca3bb] hover:bg-[#00cca313]">
+          <button className="hidden lg:flex p-2 px-4 rounded-lg text-sm text-gray-800  transition-all duration-300 hover:text-[#00cca3bb] hover:bg-[#00cca313]">
             Log In
           </button>
           <Link
