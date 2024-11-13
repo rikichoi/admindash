@@ -15,10 +15,12 @@ type DonationProps = {
 
 export async function GET(request: Request, context: { params: DonationProps }) {
     const { amount, comment, itemId, donorName, email, orgId, phone } = context.params
+
     const donation = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/create-donation/${amount}&${orgId}&${comment}&${donorName}&${itemId && itemId}${email && `&${email}`}${phone && `&${phone}`}`, {
         method: "POST"
     })
-    if (!donation) { return new NextResponse(`There was an unexpected error!`, { status: 400 }); }
+    
+    if (!donation) { return (redirect("/payment-error"), new NextResponse(`There was an unexpected error!`, { status: 400 })); }
 
     return redirect("https://nexagrid.vercel.app/payment-success");
 }
