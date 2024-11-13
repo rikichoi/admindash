@@ -3,6 +3,7 @@ import { Organisation } from "../lib/types";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { abbreviateNumber } from "../lib/utils";
 
 type OrganisationListItemProps = {
   organisation: Organisation;
@@ -15,7 +16,7 @@ export default function OrganisationListItem({
     <article className="flex group relative p-6 hover:border-[#00cca3] after:transition-all after:duration-1000 hover:bg-[#00cca31f] hover:-translate-y-1  lg:hover:-translate-y-2 lg:hover:-translate-x-3 duration-300 ease-in-out transition-all max-h-96 flex-col border rounded-lg text-black">
       <div className="flex flex-col lg:flex-row gap-3 object-contain border-b w-full p-3">
         <div className="flex gap-3 flex-1">
-          <div>
+          <div className="">
             {organisation.imageUrls ? (
               organisation.imageUrls
                 .slice(0, 1)
@@ -26,7 +27,7 @@ export default function OrganisationListItem({
                     src={img}
                     height={400}
                     width={400}
-                    className="max-w-16 rounded-lg"
+                    className="max-w-16 object-cover rounded-lg"
                   />
                 ))
             ) : (
@@ -46,12 +47,12 @@ export default function OrganisationListItem({
             <p className=" text-gray-600">{organisation.summary}</p>
           </div>
         </div>
-        <div className="flex flex-col bg-gray-100 group-hover:bg-white p-3 rounded-xl">
+        <div className="flex flex-col max-w-32 w-full h-fit bg-gray-100 group-hover:bg-white p-3 rounded-xl">
           <p className="uppercase text-xs tracking-widest text-gray-600">
             Total raised
           </p>
-          <p className="text-center text-xl tracking-wide font-medium">
-            ${organisation.totalDonationsValue.toLocaleString() || 0}
+          <p className="text-center text-xl tracking-wide font-medium truncate text-ellipsis">
+            ${abbreviateNumber(organisation.totalDonationsValue / 100) || 0}
             <span className="text-xs font-normal">/AUD</span>
           </p>
         </div>
