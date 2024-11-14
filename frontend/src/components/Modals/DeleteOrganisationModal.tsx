@@ -26,10 +26,10 @@ export default function DeleteOrganisationModal({
       <input hidden readOnly className="border-2 p-2 rounded-lg" value={_id} />
       <p>Are you sure you want to delete this organisation?</p>
       <div className="flex ">
-        <input
+        <button
           type="submit"
           className="p-2 border-2 bg-black text-white hover:cursor-pointer rounded-lg"
-        />
+        >Delete</button>
         <button
           type="button"
           onClick={() => setShowModal(false)}
