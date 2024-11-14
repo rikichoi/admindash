@@ -124,7 +124,7 @@ export default function PieGraph({ items, organisations }: PieGraphProps) {
         </PieChart>
       </ResponsiveContainer>
     ) : (
-      <div className="h-full text-xl flex shrink-0 m-auto">
+      <div className="h-full text-base lg:text-xl flex shrink-0 m-auto">
       <p>No Items Exist...</p>
       </div>
     ))

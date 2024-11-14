@@ -51,6 +51,7 @@ export default function OrganisationDataOptions({
           <DeleteOrganisationModal _id={_id} setShowModal={setShowModal} />
         )}
       </Dialog>
+      <h1 className="text-2xl font-medium me-auto">Organisations</h1>
       <button
         onClick={() => (
           (document.body.style.overflow = "hidden"),

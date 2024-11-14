@@ -67,8 +67,13 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
           {items ? (
             <ItemSection items={items} _id={_id} />
           ) : (
-            <div className="justify-center items-center border bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
-              <span className="text-xl">No Organisation Selected...</span>
+            <div className=" border bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
+              <h1 className="font-medium text-2xl">
+                Campaign Items
+              </h1>
+              <p className="text-base lg:text-xl m-auto justify-center flex">
+                No Organisation Selected...
+              </p>
             </div>
           )}
         </div>

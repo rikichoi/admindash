@@ -89,7 +89,7 @@ export default function LineGraph({ organisations, items }: LineGraphProps) {
         </AreaChart>
       </ResponsiveContainer>
     ) : (
-      <div className="h-full text-xl flex shrink-0 m-auto">
+      <div className="h-full text-base lg:text-xl flex shrink-0 m-auto">
         <p>No Items Exist...</p>
       </div>
     ))

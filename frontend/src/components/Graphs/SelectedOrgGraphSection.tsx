@@ -16,7 +16,13 @@ export default function SelectedOrgGraphSection({
   const [graphType, setGraphType] = useState("line");
   return (
     <div className="border justify-start items-center bg-white rounded-xl min-h-80 p-4 flex flex-col gap-1">
-      <GraphSettingsButton graphType={graphType} setGraphType={setGraphType} />
+      <div className="flex justify-between w-full">
+        <h1 className="font-medium text-2xl">Analytics</h1>
+        <GraphSettingsButton
+          graphType={graphType}
+          setGraphType={setGraphType}
+        />
+      </div>
       {graphType == "line" && <LineGraph items={items} />}
       {graphType == "pie" && <PieGraph items={items} />}
       {graphType == "bar" && <BarGraph items={items} />}

@@ -17,9 +17,15 @@ export default function GeneralGraphSection({
 
   return (
     <div className="border justify-start items-center bg-white rounded-xl min-h-80 p-4 flex flex-col gap-1">
-      <GraphSettingsButton graphType={graphType} setGraphType={setGraphType} />
+      <div className="flex justify-between w-full">
+        <h1 className="font-medium text-2xl">Analytics</h1>
+        <GraphSettingsButton
+          graphType={graphType}
+          setGraphType={setGraphType}
+        />
+      </div>
       {graphType == "line" && <LineGraph organisations={organisations} />}
-      {graphType == "pie" && <PieGraph organisations={organisations}/>}
+      {graphType == "pie" && <PieGraph organisations={organisations} />}
       {graphType == "bar" && <BarGraph organisations={organisations} />}
     </div>
   );
