@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function PaymentSuccess() {
   return (
-    <main className="flex bg-slate-50 min-h-screen flex-col gap-y-4 items-center justify-center">
+    <main className="flex text-black bg-slate-50 min-h-screen flex-col gap-y-4 items-center justify-center">
       <h1 className=" text-5xl font-extrabold">Thank You!</h1>
       <h2 className=" text-2xl ">Your payment has been processed</h2>
       <Link
