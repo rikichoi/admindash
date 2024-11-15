@@ -168,12 +168,12 @@ export function ReportsTable({ donations }: ReportsTableProps) {
                     ></Input>
                   </TableCell>
                 )}
-                {donation.comment && (
+                {donation._id && (
                   <TableCell>
                     <Input
                       name="comment"
                       onChange={(e) => handleChange(e, index)}
-                      defaultValue={donation.comment}
+                      defaultValue={donation._id}
                     ></Input>
                   </TableCell>
                 )}

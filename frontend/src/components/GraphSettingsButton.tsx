@@ -26,7 +26,7 @@ export function GraphSettingsButton({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-      className="flex w-fit group ms-auto gap-2 mb-4 bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-2 px-4 font-semibold"
+        className="flex w-fit group ms-auto gap-2 mb-4 bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-2 px-4 font-semibold"
         asChild
       >
         <Button variant="outline">
@@ -37,8 +37,8 @@ export function GraphSettingsButton({
         <DropdownMenuLabel>Graph Type</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={graphType} onValueChange={setGraphType}>
-          <DropdownMenuRadioItem value="line">Line</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="bar">Bar</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="line">Line</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="pie">Pie</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>

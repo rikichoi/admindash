@@ -13,7 +13,7 @@ type GeneralGraphSectionProps = {
 export default function GeneralGraphSection({
   organisations,
 }: GeneralGraphSectionProps) {
-  const [graphType, setGraphType] = useState("line");
+  const [graphType, setGraphType] = useState("bar");
 
   return (
     <div className="border justify-start items-center bg-white rounded-xl min-h-80 p-4 flex flex-col gap-1">
@@ -24,8 +24,8 @@ export default function GeneralGraphSection({
           setGraphType={setGraphType}
         />
       </div>
-      {graphType == "line" && <LineGraph organisations={organisations} />}
       {graphType == "pie" && <PieGraph organisations={organisations} />}
+      {graphType == "line" && <LineGraph organisations={organisations} />}
       {graphType == "bar" && <BarGraph organisations={organisations} />}
     </div>
   );

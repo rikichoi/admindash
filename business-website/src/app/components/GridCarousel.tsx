@@ -46,6 +46,9 @@ export default function GridCarousel({ organisations }: GridCarouselProps) {
                 <div key={gridIndex} className="flex-[0_0_100%] min-w-0">
                   <div className="grid lg:grid-cols-2 gap-8 p-4">
                     {organisations
+                      .filter(
+                        (organisation) => organisation.activeStatus == true
+                      )
                       .slice(gridIndex * 4, gridIndex * 4 + 4)
                       .map((organisation, index) => (
                         <OrganisationListItem

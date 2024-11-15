@@ -68,9 +68,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
             <ItemSection items={items} _id={_id} />
           ) : (
             <div className=" border bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
-              <h1 className="font-medium text-2xl">
-                Campaign Items
-              </h1>
+              <h1 className="font-medium text-2xl">Campaign Items</h1>
               <p className="text-base lg:text-xl m-auto justify-center flex">
                 No Organisation Selected...
               </p>
@@ -78,11 +76,20 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
           )}
         </div>
         <div className="flex w-full xl:w-1/2 max-h-[493px] h-full flex-col p-8">
-          <OrganisationGraphSection
-            items={items}
-            organisations={organisations}
-            _id={_id}
-          />
+          {organisations && organisations.length > 0 ? (
+            <OrganisationGraphSection
+              items={items}
+              organisations={organisations}
+              _id={_id}
+            />
+          ) : (
+            <div className=" border bg-white rounded-xl w-full min-h-80 p-4 flex flex-col gap-1">
+              <h1 className="font-medium text-2xl">Analytics</h1>
+              <p className="text-base lg:text-xl m-auto justify-center flex">
+                No Organisation Selected...
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </main>

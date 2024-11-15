@@ -58,7 +58,7 @@ export default function OrganisationListItem({
         </div>
       </div>
       <div className="flex flex-col lg:flex-row gap-3 lg:gap-0 object-contain w-full items-center p-3">
-        <div className="flex-1 truncate text-ellipsis text-sm text-gray-800">
+        <div className="flex-1 text-sm text-gray-800">
           <p>{organisation.description}</p>
         </div>
         <Link

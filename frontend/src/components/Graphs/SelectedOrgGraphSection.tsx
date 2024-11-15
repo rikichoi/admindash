@@ -13,7 +13,7 @@ type SelectedOrgGraphSectionProps = {
 export default function SelectedOrgGraphSection({
   items,
 }: SelectedOrgGraphSectionProps) {
-  const [graphType, setGraphType] = useState("line");
+  const [graphType, setGraphType] = useState("bar");
   return (
     <div className="border justify-start items-center bg-white rounded-xl min-h-80 p-4 flex flex-col gap-1">
       <div className="flex justify-between w-full">
@@ -23,9 +23,9 @@ export default function SelectedOrgGraphSection({
           setGraphType={setGraphType}
         />
       </div>
+      {graphType == "bar" && <BarGraph items={items} />}
       {graphType == "line" && <LineGraph items={items} />}
       {graphType == "pie" && <PieGraph items={items} />}
-      {graphType == "bar" && <BarGraph items={items} />}
     </div>
   );
 }
