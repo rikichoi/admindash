@@ -18,7 +18,7 @@ type EditOrganisationModalProps = {
 };
 
 export default function EditOrganisationModal({
-  // setShowModal,
+  setShowModal,
   organisation,
   _id,
 }: EditOrganisationModalProps) {
@@ -52,7 +52,7 @@ export default function EditOrganisationModal({
     register,
     handleSubmit,
     setValue,
-    // reset,
+    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm<EditOrganisationSchema>({
@@ -122,6 +122,8 @@ export default function EditOrganisationModal({
       )
       .then(function (response) {
         console.log(response);
+        reset();
+        setShowModal(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -148,7 +150,12 @@ export default function EditOrganisationModal({
         <h2>Old Images</h2>
         <Controller
           control={control}
-          render={({ field }) => <ImageDropzone previousImageField={field} />}
+          render={({ field }) => (
+            <ImageDropzone
+              previousImagePreviewUrls={organisation?.imageUrls}
+              previousImageField={field}
+            />
+          )}
           name="previousImages"
         />
         {errors.previousImages && (

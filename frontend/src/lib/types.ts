@@ -1,4 +1,5 @@
 export type Organisation = {
+    imageUrls: string[],
     _id: string,
     ABN: string,
     activeStatus: boolean,

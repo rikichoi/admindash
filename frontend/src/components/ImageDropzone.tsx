@@ -15,12 +15,14 @@ type ImageDropzoneProps = {
     "previousImages"
   >;
   field?: ControllerRenderProps<CreateOrganisationSchema, "image">;
+  previousImagePreviewUrls?: string[];
 };
 
 export default function ImageDropzone({
   newImageField,
   previousImageField,
   field,
+  previousImagePreviewUrls,
 }: ImageDropzoneProps) {
   // const onDrop = useCallback((acceptedFiles: FileList) => {
   //   // Do something with the files
@@ -113,6 +115,7 @@ export default function ImageDropzone({
         {files.map((file, index) => (
           <li key={index} className="relative h-32 w-24 rounded-md shadow-lg">
             <Image
+              // TODO: allow preview for existing images. not just display the id
               src={file.preview}
               alt={file.name}
               width={100}
@@ -137,19 +140,20 @@ export default function ImageDropzone({
           </li>
         ))}
 
-        {previousImages &&
+        {previousImagePreviewUrls &&
+          previousImages &&
           previousImages.map((file, index) => (
             <li key={index} className="relative h-32 w-24 rounded-md shadow-lg">
-              {/* <Image
-                src={file.preview}
-                alt={file.name}
+              <Image
+                src={previousImagePreviewUrls[index]}
+                alt={"Organisation image"}
                 width={100}
                 height={100}
-                onLoad={() => {
-                  URL.revokeObjectURL(file.preview);
-                }}
+                // onLoad={() => {
+                //   URL.revokeObjectURL(file.preview);
+                // }}
                 className="h-full w-full object-contain rounded-md"
-              /> */}
+              />
               <button
                 type="button"
                 className="w-7 h-7 border border-red-400 bg-red-400 rounded-full flex justify-center items-center absolute -top-3 -right-3 hover:bg-white transition-colors"
@@ -157,9 +161,6 @@ export default function ImageDropzone({
               >
                 <X className="w-5 h-5 text-white hover:text-red-400 transition-colors" />
               </button>
-              <p className="mt-2 truncate text-ellipsis text-neutral-500 text-[12px] font-medium">
-                {file}
-              </p>
             </li>
           ))}
       </ul>
