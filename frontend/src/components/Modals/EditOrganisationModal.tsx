@@ -10,6 +10,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ export default function EditOrganisationModal({
   organisation,
   _id,
 }: EditOrganisationModalProps) {
+  const router = useRouter();
   useEffect(() => {
     if (organisation) {
       setValue("ABN", organisation.ABN.toString());
@@ -45,7 +47,6 @@ export default function EditOrganisationModal({
         organisation.totalDonationsValue.toString()
       );
     }
-    console.log(organisation);
   }, [organisation]);
 
   const {
@@ -58,7 +59,7 @@ export default function EditOrganisationModal({
   } = useForm<EditOrganisationSchema>({
     resolver: zodResolver(editOrganisationSchema),
     defaultValues: {
-      ABN: organisation?.ABN,
+      ABN: organisation?.ABN.toString(),
       activeStatus: organisation?.activeStatus,
       description: organisation?.description,
       previousImages: organisation?.image,
@@ -88,7 +89,6 @@ export default function EditOrganisationModal({
       website,
       ABN,
     } = data;
-    console.log(data);
 
     const formData = new FormData();
     formData.append("ABN", ABN);
@@ -111,10 +111,9 @@ export default function EditOrganisationModal({
     formData.append("totalDonationsCount", totalDonationsCount);
     formData.append("totalDonationsValue", totalDonationsValue);
     formData.append("website", website);
-    formData.forEach((e) => console.log(e));
     await axios
       .patch(
-        `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/edit-organisation/${_id}`,
+        `http://localhost:5000/api/organisation/edit-organisation/${_id}`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -124,6 +123,7 @@ export default function EditOrganisationModal({
         console.log(response);
         reset();
         setShowModal(false);
+        router.push("/");
       })
       .catch(function (error) {
         console.log(error);

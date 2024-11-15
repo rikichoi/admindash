@@ -96,6 +96,7 @@ export const getOrganisations = async (req: Request, res: Response, next: NextFu
 export const editOrganisation = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const orgId = req.params.orgId
+        console.log(req.body)
         const data = await editOrganisationSchema.safeParseAsync(req.body)
         const newImageData = req.files
         if (!isValidObjectId(orgId)) {
