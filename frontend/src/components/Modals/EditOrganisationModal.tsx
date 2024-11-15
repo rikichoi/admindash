@@ -9,8 +9,7 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { editOrganisation } from "./actions";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -23,7 +22,6 @@ export default function EditOrganisationModal({
   organisation,
   _id,
 }: EditOrganisationModalProps) {
-  const router = useRouter();
   useEffect(() => {
     if (organisation) {
       setValue("ABN", organisation.ABN.toString());
@@ -111,23 +109,13 @@ export default function EditOrganisationModal({
     formData.append("totalDonationsCount", totalDonationsCount);
     formData.append("totalDonationsValue", totalDonationsValue);
     formData.append("website", website);
-    await axios
-      .patch(
-        `http://localhost:5000/api/organisation/edit-organisation/${_id}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        reset();
-        setShowModal(false);
-        router.push("/");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+      await editOrganisation(formData, _id);
+      reset();
+      setShowModal(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

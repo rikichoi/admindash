@@ -1,5 +1,5 @@
 "use server"
-import { CreateOrganisationSchema, EditOrganisationSchema } from "@/lib/validation";
+import { CreateOrganisationSchema } from "@/lib/validation";
 import axios from "axios";
 import { redirect } from "next/navigation";
 
@@ -47,40 +47,14 @@ export async function postOrganisation(data: CreateOrganisationSchema) {
     redirect("/")
 }
 
-export async function editOrganisation(data: EditOrganisationSchema, orgId: string) {
-    const {
-        activeStatus,
-        description,
-        newImages,
-        previousImages,
-        name,
-        phone,
-        summary,
-        totalDonationItemsCount,
-        totalDonationsCount,
-        totalDonationsValue,
-        website,
-        ABN,
-    } = data;
+export async function editOrganisation(data: FormData, orgId: string) {
+
     await axios
         .patch(
             `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/edit-organisation/${orgId}`,
-            {
-                activeStatus,
-                ABN: parseInt(ABN),
-                description,
-                newImages,
-                previousImages,
-                name,
-                phone: parseInt(phone),
-                summary,
-                totalDonationItemsCount: parseInt(totalDonationItemsCount),
-                totalDonationsCount: parseInt(totalDonationsCount),
-                totalDonationsValue: parseInt(totalDonationsValue),
-                website,
-            }
+            data, { headers: { "Content-Type": "multipart/form-data" }, }
         )
-    redirect(`/?_id=${orgId}`)
+    redirect(`/`)
 }
 
 export async function deleteOrganisation(orgId: string) {
