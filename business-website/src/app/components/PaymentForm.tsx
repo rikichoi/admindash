@@ -129,7 +129,7 @@ function CheckoutForm({
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url: `https://nexagrid.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId || null}/${email || null}/${phone || null}`,
+        return_url: `https://nexagrid.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${itemId && donationType == "item" && itemId || null}/${email || null}/${phone || null}`,
       },
     });
     console.log(result);
