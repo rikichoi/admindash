@@ -87,12 +87,21 @@ export function ReportsTable({ donations }: ReportsTableProps) {
 
   return (
     <div>
-      <Button
-        className="flex gap-2 mb-4 w-fit ms-auto text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
-        onClick={downloadCSV}
-      >
-        Download CSV
-      </Button>
+      <div className="justify-end flex gap-3 mb-4 ">
+        <Button
+          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+          onClick={downloadCSV}
+        >
+          <span className="hidden md:block">Download</span> CSV
+        </Button>
+        <Button
+          disabled
+          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+          onClick={downloadCSV}
+        >
+          <span className="hidden md:block">Generate</span> Invoice
+        </Button>
+      </div>
       <div className="border bg-white rounded-xl p-4">
         <Table>
           <TableCaption>A list of your recent donations.</TableCaption>
