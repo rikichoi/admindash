@@ -9,7 +9,7 @@ import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
 import ImageDropzone from "../ImageDropzone";
-import { editOrganisation } from "./actions";
+import { editOrganisation } from "@/server/api/actions";
 
 type EditOrganisationModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;

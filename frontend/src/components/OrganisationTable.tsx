@@ -120,7 +120,7 @@ export default function OrganisationTable({
                           : `?_id=${organisation._id}`
                       }
                     >
-                      {organisation.totalDonationsValue.toLocaleString()}
+                      ${organisation.totalDonationsValue.toLocaleString()}
                     </Link>
                   </td>
                 </tr>

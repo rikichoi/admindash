@@ -21,17 +21,23 @@ type ReportsTableProps = {
 
 export function ReportsTable({ donations }: ReportsTableProps) {
   const [donationsData, setDonationsData] = useState<Donation[]>(donations);
-  console.log(donations);
   const deletedSections: {
     donationIndex: number;
     section: keyof Donation;
-    value: string | number | boolean | Date | undefined;
+    value:
+      | string
+      | number
+      | boolean
+      | Date
+      | { _id: string; name: string }
+      | undefined;
   }[] = [];
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     const fieldName = e.target.name as keyof Donation;
     (donations[index][fieldName] as string) = e.target.value;
     console.log("changes are going through");
+    console.log(donations)
   }
 
   function removeSection(section: keyof Donation) {
@@ -51,14 +57,24 @@ export function ReportsTable({ donations }: ReportsTableProps) {
   const downloadCSV = () => {
     // Convert the data array into a CSV string
     const csvString = [
-      donationsData
-        .filter((donation, index) => index < 1)
-        .map((donation) => Object.keys(donation)), // Specify your headers here
-      ...donationsData.map((donation) => [
+      [
+        "_id",
+        "refundStatus",
+        "amount",
+        "Organisation",
+        "comment",
+        "donorName",
+        "email",
+        "phone",
+        "itemId",
+        "createdAt",
+        "updatedAt",
+      ], // Specify your headers here
+      ...donations.map((donation) => [
         donation._id ? donation._id : null,
         donation.refundStatus,
         donation.amount ? donation.amount : null,
-        donation.orgName ? donation.orgName : null,
+        donation.orgId.name ? donation.orgId.name : null,
         donation.comment ? donation.comment : null,
         donation.donorName ? donation.donorName : null,
         donation.email ? donation.email : null,
@@ -110,6 +126,19 @@ export function ReportsTable({ donations }: ReportsTableProps) {
               .filter((donation, index) => index < 1)
               .map((data, index) => (
                 <TableRow key={index}>
+                  {data._id && (
+                    <TableHead className="w-[100px]">
+                      <div className="flex items-center gap-2">
+                        ID
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("_id")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
                   {data.donorName && (
                     <TableHead className="w-[100px]">
                       <div className="flex items-center gap-2">
@@ -123,6 +152,19 @@ export function ReportsTable({ donations }: ReportsTableProps) {
                       </div>
                     </TableHead>
                   )}
+                  {data.orgId && (
+                    <TableHead className="">
+                      <div className="flex items-center gap-2">
+                        Organisatin
+                        <Button
+                          className="rounded-full w-7 h-7"
+                          onClick={() => removeSection("orgId")}
+                        >
+                          <MinusCircleIcon />
+                        </Button>
+                      </div>
+                    </TableHead>
+                  )}
                   {data.comment && (
                     <TableHead className="">
                       <div className="flex items-center gap-2">
@@ -130,19 +172,6 @@ export function ReportsTable({ donations }: ReportsTableProps) {
                         <Button
                           className="rounded-full w-7 h-7"
                           onClick={() => removeSection("comment")}
-                        >
-                          <MinusCircleIcon />
-                        </Button>
-                      </div>
-                    </TableHead>
-                  )}
-                  {data.orgName && (
-                    <TableHead className="">
-                      <div className="flex items-center gap-2">
-                        Organisation
-                        <Button
-                          className="rounded-full w-7 h-7"
-                          onClick={() => removeSection("orgName")}
                         >
                           <MinusCircleIcon />
                         </Button>
@@ -168,6 +197,15 @@ export function ReportsTable({ donations }: ReportsTableProps) {
           <TableBody>
             {donationsData.map((donation, index) => (
               <TableRow key={index}>
+                {donation._id && (
+                  <TableCell>
+                    <Input
+                      name="_id"
+                      onChange={(e) => handleChange(e, index)}
+                      defaultValue={donation._id}
+                    ></Input>
+                  </TableCell>
+                )}
                 {donation.donorName && (
                   <TableCell className="font-medium">
                     <Input
@@ -177,21 +215,23 @@ export function ReportsTable({ donations }: ReportsTableProps) {
                     ></Input>
                   </TableCell>
                 )}
-                {donation._id && (
-                  <TableCell>
-                    <Input
-                      name="comment"
-                      onChange={(e) => handleChange(e, index)}
-                      defaultValue={donation._id}
-                    ></Input>
-                  </TableCell>
-                )}
-                {donation.orgName && (
+
+                {donation.orgId && (
                   <TableCell>
                     <Input
                       name="orgName"
                       onChange={(e) => handleChange(e, index)}
-                      defaultValue={donation.orgName}
+                      defaultValue={donation.orgId.name}
+                    ></Input>
+                  </TableCell>
+                )}
+
+                {donation.comment && (
+                  <TableCell>
+                    <Input
+                      name="comment"
+                      onChange={(e) => handleChange(e, index)}
+                      defaultValue={donation.comment}
                     ></Input>
                   </TableCell>
                 )}
@@ -209,7 +249,7 @@ export function ReportsTable({ donations }: ReportsTableProps) {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell colSpan={4}>Total</TableCell>
               <TableCell className="text-right">
                 $
                 {donationsData

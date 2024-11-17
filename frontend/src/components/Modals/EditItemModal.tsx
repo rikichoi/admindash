@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
-import { deleteItem, editItem } from "./actions";
+import { deleteItem, editItem } from "@/server/api/actions";
 
 type EditItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -67,20 +67,6 @@ export default function EditItemModal({
     } catch (error) {
       console.log(error);
     }
-
-    // await axios
-    //   .patch(`http://localhost:5000/api/item/edit-item/${itemId}`, formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     reset();
-    //     setShowModal(false);
-    //     router.refresh();
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   };
 
   async function delItem(e: React.FormEvent) {

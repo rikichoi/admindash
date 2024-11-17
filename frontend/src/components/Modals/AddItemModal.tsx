@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import FormSubmitButton from "../FormSubmitButton";
-import { postItem } from "./actions";
+import { postItem } from "@/server/api/actions";
 
 type AddItemModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -39,41 +39,6 @@ export default function AddItemModal({ setShowModal, _id }: AddItemModalProps) {
     } catch (error) {
       alert(error);
     }
-    // initial approach
-    // const {
-    //   activeStatus,
-    //   description,
-    //   donationGoalValue,
-    //   name,
-    //   summary,
-    //   totalDonationValue,
-    //   itemImage,
-    //   orgId,
-    // } = data;
-
-    // const formData = new FormData();
-    // formData.append("activeStatus", activeStatus.toString());
-    // formData.append("description", description);
-    // formData.append("donationGoalValue", donationGoalValue);
-    // formData.append("name", name);
-    // formData.append("summary", summary);
-    // formData.append("totalDonationValue", totalDonationValue);
-    // formData.append("itemImage", itemImage);
-    // formData.append("orgId", orgId);
-
-    // await axios
-    //   .post("http://localhost:5000/api/item/create-item", formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     reset();
-    //     setShowModal(false);
-    //     router.push("/");
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   };
 
   return (

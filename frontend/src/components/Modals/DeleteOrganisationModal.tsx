@@ -1,6 +1,6 @@
 "use client";
+import { deleteOrganisation } from "@/server/api/actions";
 import React, { Dispatch, SetStateAction } from "react";
-import { deleteOrganisation } from "./actions";
 
 type DeleteOrganisationModalProps = {
   _id?: string;
