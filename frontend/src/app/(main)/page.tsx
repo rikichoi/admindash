@@ -7,6 +7,7 @@ import { Item, Organisation } from "../../lib/types";
 import axios from "axios";
 import ItemSection from "../../components/ItemSection";
 import { Metadata } from "next";
+import PaginationBar from "@/components/PaginationBar";
 
 // TODO: make this dynamic so that selected org name gets displayed *optional*
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 type HomeProps = {
   searchParams: {
     _id: string;
+    page: number;
   };
 };
 
@@ -33,7 +35,9 @@ async function getOrganisations(): Promise<Organisation[] | null> {
   }
 }
 
-export default async function Home({ searchParams: { _id } }: HomeProps) {
+export default async function Home({
+  searchParams: { _id, page = 1 },
+}: HomeProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
 
@@ -60,6 +64,7 @@ export default async function Home({ searchParams: { _id } }: HomeProps) {
         <OrganisationDataOptions _id={_id} organisations={organisations} />
         <div className="bg-white border rounded-xl p-4 flex flex-col gap-2">
           <OrganisationTable _id={_id} organisations={organisations} />
+          <PaginationBar pathname={"/"} currentPage={page} totalPages={5} />
         </div>
       </div>
       <div className="flex flex-col xl:flex-row ">

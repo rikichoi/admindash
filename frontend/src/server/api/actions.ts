@@ -2,17 +2,13 @@
 import { CreateOrganisationSchema } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import axios from "axios"
-
+import { TransactionResponse } from "@/app/models/transactions";
 
 //Stripe transactions functions
 export async function getTransactions() {
-    try {
-        const transactions = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations`)).json()
-        return transactions
-    } catch (error) {
-        console.log(error)
-        return null
-    }
+    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations`);
+    const transactions: TransactionResponse = await response.json()
+    return transactions.data
 }
 
 // Donation functions

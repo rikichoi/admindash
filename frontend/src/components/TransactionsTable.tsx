@@ -8,62 +8,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-// const invoices = [
-//   {
-//     invoice: "INV001",
-//     paymentStatus: "Paid",
-//     totalAmount: "$250.00",
-//     paymentMethod: "Credit Card",
-//   },
-//   {
-//     invoice: "INV002",
-//     paymentStatus: "Pending",
-//     totalAmount: "$150.00",
-//     paymentMethod: "PayPal",
-//   },
-//   {
-//     invoice: "INV003",
-//     paymentStatus: "Unpaid",
-//     totalAmount: "$350.00",
-//     paymentMethod: "Bank Transfer",
-//   },
-//   {
-//     invoice: "INV004",
-//     paymentStatus: "Paid",
-//     totalAmount: "$450.00",
-//     paymentMethod: "Credit Card",
-//   },
-//   {
-//     invoice: "INV005",
-//     paymentStatus: "Paid",
-//     totalAmount: "$550.00",
-//     paymentMethod: "PayPal",
-//   },
-//   {
-//     invoice: "INV006",
-//     paymentStatus: "Pending",
-//     totalAmount: "$200.00",
-//     paymentMethod: "Bank Transfer",
-//   },
-//   {
-//     invoice: "INV007",
-//     paymentStatus: "Unpaid",
-//     totalAmount: "$300.00",
-//     paymentMethod: "Credit Card",
-//   },
-// ];
-
-type Transaction = {
-  id: string;
-  amount: number;
-};
+import PaginationBar from "./PaginationBar";
+import { Transaction } from "@/app/models/transactions";
 
 type TransactionsTableProps = {
   transactions: Transaction[];
+  page: number;
 };
 
-export function TransactionsTable({ transactions }: TransactionsTableProps) {
+export function TransactionsTable({
+  transactions,
+  page,
+}: TransactionsTableProps) {
   const totalAmount = transactions.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amount,
     0
@@ -78,7 +34,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
               <TableHead colSpan={3} className="">
                 Transaction
               </TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead className="text-right">Amount ($AUD)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -88,21 +44,26 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
                   {transaction.id}
                 </TableCell>
                 <TableCell className="text-right">
-                  ${transaction.amount.toLocaleString()}
+                  ${(transaction.amount / 100).toLocaleString()}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
+              <TableCell colSpan={3}>Total ($AUD)</TableCell>
               <TableCell className="text-right">
-                ${totalAmount.toLocaleString()}
+                ${(totalAmount / 100).toLocaleString()}
               </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
       )}
+      <PaginationBar
+        pathname={"/transactions"}
+        currentPage={page}
+        totalPages={5}
+      />
     </div>
   );
 }

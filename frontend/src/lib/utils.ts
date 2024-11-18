@@ -7,8 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 
 export function abbreviateNumber(num: number) {
   const formattedNum = new Intl.NumberFormat('en-GB', {
-      notation: "compact",
-      compactDisplay: "short"
+    notation: "compact",
+    compactDisplay: "short"
   }).format(num)
   return formattedNum;
+}
+
+export function generatePageLink(pathname: string, page?: number, _id?: string) {
+  const searchParams = new URLSearchParams({
+    ...(_id && { _id }),
+    ...(page && { page: page.toString() })
+  });
+
+  return `${pathname}?${searchParams.toString()}`;
 }

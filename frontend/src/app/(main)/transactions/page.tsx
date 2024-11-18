@@ -11,11 +11,19 @@ export const metadata: Metadata = {
   title: "AdminDash - Transactions",
 };
 
-export default async function TransactionsPage() {
+type TransactionsPageProps = {
+  searchParams: {
+    page: number;
+  };
+};
+
+export default async function TransactionsPage({
+  searchParams: { page = 1 },
+}: TransactionsPageProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
   const transactions = await getTransactions();
-  console.log(transactions);
+
   return (
     <div className="pt-20 p-8">
       <Link
@@ -25,7 +33,7 @@ export default async function TransactionsPage() {
       >
         Stripe Dashboard <ChevronsRight />
       </Link>
-      <TransactionsTable transactions={transactions} />
+      <TransactionsTable page={page} transactions={transactions} />
     </div>
   );
 }

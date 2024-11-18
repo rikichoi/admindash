@@ -3,6 +3,8 @@ import React from "react";
 import { Organisation } from "../lib/types";
 import Link from "next/link";
 import OrganisationFilterSection from "./OrganisationFilterSection";
+import { generatePageLink } from "@/lib/utils";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type OrganisationTableProps = {
   _id?: string;
@@ -13,6 +15,9 @@ export default function OrganisationTable({
   _id,
   organisations,
 }: OrganisationTableProps) {
+  const searchParams = useSearchParams();
+  const currentPage = searchParams.get("page");
+  const pathname = usePathname();
   // const [nameFilter, setNameFilter] = useState<string | undefined>(undefined);
   // const [nameSort, setNameSort] = useState<string | undefined>(undefined);
 
@@ -21,9 +26,9 @@ export default function OrganisationTable({
   return (
     <>
       <OrganisationFilterSection
-        // nameSort={nameSort}
-        // setNameSort={setNameSort}
-        // setNameFilter={setNameFilter}
+      // nameSort={nameSort}
+      // setNameSort={setNameSort}
+      // setNameFilter={setNameFilter}
       />
       <div className="bg-white overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500">
@@ -65,7 +70,11 @@ export default function OrganisationTable({
                       href={
                         _id == organisation._id
                           ? "/"
-                          : `?_id=${organisation._id}`
+                          : `${generatePageLink(
+                              pathname,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              organisation._id
+                            )}`
                       }
                     >
                       {organisation.name}
@@ -78,7 +87,11 @@ export default function OrganisationTable({
                       href={
                         _id == organisation._id
                           ? "/"
-                          : `?_id=${organisation._id}`
+                          : `${generatePageLink(
+                              pathname,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              organisation._id
+                            )}`
                       }
                     >
                       {organisation.activeStatus.toString()}
@@ -91,7 +104,11 @@ export default function OrganisationTable({
                       href={
                         _id == organisation._id
                           ? "/"
-                          : `?_id=${organisation._id}`
+                          : `${generatePageLink(
+                              pathname,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              organisation._id
+                            )}`
                       }
                     >
                       {organisation.totalDonationItemsCount}
@@ -104,7 +121,11 @@ export default function OrganisationTable({
                       href={
                         _id == organisation._id
                           ? "/"
-                          : `?_id=${organisation._id}`
+                          : `${generatePageLink(
+                              pathname,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              organisation._id
+                            )}`
                       }
                     >
                       {organisation.totalDonationsCount}
@@ -117,7 +138,11 @@ export default function OrganisationTable({
                       href={
                         _id == organisation._id
                           ? "/"
-                          : `?_id=${organisation._id}`
+                          : `${generatePageLink(
+                              pathname,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              organisation._id
+                            )}`
                       }
                     >
                       ${organisation.totalDonationsValue.toLocaleString()}
