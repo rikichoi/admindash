@@ -1,5 +1,6 @@
 "use client";
 import { Item, Organisation } from "@/lib/types";
+import { abbreviateNumber } from "@/lib/utils";
 import React from "react";
 import {
   AreaChart,
@@ -31,7 +32,7 @@ export default function LineGraph({ organisations, items }: LineGraphProps) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis tickFormatter={abbreviateNumber}/>
           <Tooltip />
           <Area
             type="monotone"
@@ -70,7 +71,7 @@ export default function LineGraph({ organisations, items }: LineGraphProps) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis tickFormatter={abbreviateNumber}/>
           <Tooltip />
           <Area
             type="monotone"

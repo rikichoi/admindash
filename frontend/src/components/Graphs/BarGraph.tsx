@@ -1,5 +1,6 @@
 "use client";
 import { Item, Organisation } from "@/lib/types";
+import { abbreviateNumber } from "@/lib/utils";
 import React from "react";
 import {
   BarChart,
@@ -36,7 +37,7 @@ export default function BarGraph({ items, organisations }: BarGraphProps) {
             scale="point"
             padding={{ left: 10, right: 10 }}
           />
-          <YAxis />
+          <YAxis tickFormatter={abbreviateNumber}/>
           <Tooltip />
           <Legend />
           <CartesianGrid strokeDasharray="3 3" />
@@ -65,7 +66,7 @@ export default function BarGraph({ items, organisations }: BarGraphProps) {
             scale="point"
             padding={{ left: 10, right: 10 }}
           />
-          <YAxis />
+          <YAxis tickFormatter={abbreviateNumber}/>
           <Tooltip />
           <Legend />
           <CartesianGrid strokeDasharray="3 3" />

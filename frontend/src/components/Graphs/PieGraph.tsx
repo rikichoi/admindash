@@ -1,5 +1,6 @@
 "use client";
 import { Item, Organisation } from "@/lib/types";
+import { abbreviateNumber } from "@/lib/utils";
 import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
@@ -67,7 +68,7 @@ const renderActiveShape = (props: any) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`Total $${value}`}</text>
+      >{`Total $${abbreviateNumber(value)}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -99,8 +100,8 @@ export default function PieGraph({ items, organisations }: PieGraphProps) {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={organisations}
-            innerRadius={110}
-            outerRadius={130}
+            innerRadius={70}
+            outerRadius={90}
             fill="#8884d8"
             dataKey="totalDonationsValue"
             onMouseEnter={onPieEnter}
@@ -115,8 +116,8 @@ export default function PieGraph({ items, organisations }: PieGraphProps) {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={items}
-            innerRadius={110}
-            outerRadius={130}
+            innerRadius={70}
+            outerRadius={90}
             fill="#8884d8"
             dataKey="totalDonationValue"
             onMouseEnter={onPieEnter}
