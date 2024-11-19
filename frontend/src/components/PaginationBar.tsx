@@ -27,19 +27,13 @@ export default function PaginationBar({
   for (let page = minPage; page <= maxPage; page++) {
     numberedPageItems.push(
       <Link
-        href={generatePageLink(
-          pathname,
-          currentPage,
-          page,
-          undefined,
-          lastTransactionId
-        )}
+        href={generatePageLink(pathname, undefined, page, undefined, undefined)}
         scroll={false}
         className={`${
           currentPage == page
             ? " pointer-events-none btn-active bg-slate-950"
             : "bg-slate-500 hover:bg-slate-700"
-        } rounded-lg w-10 text-center  text-white p-2 font-bold tracking-tight`}
+        } rounded-lg w-10 text-center lg:block hidden text-white p-2 font-bold tracking-tight`}
         key={page}
       >
         {page}
@@ -68,7 +62,7 @@ export default function PaginationBar({
               currentPage == 1
                 ? " pointer-events-none btn-active bg-slate-500"
                 : "bg-slate-950 hover:bg-slate-700"
-            } rounded-lg text-center  text-white p-2 font-bold tracking-tight`}
+            } rounded-lg text-center text-white p-2 font-bold tracking-tight`}
           >
             <ChevronLeft />
           </Link>
@@ -96,7 +90,50 @@ export default function PaginationBar({
           </Link>
         </>
       ) : (
-        numberedPageItems
+        <>
+          {numberedPageItems}{" "}
+          <>
+            <Link
+              href={generatePageLink(
+                pathname,
+                undefined,
+                parseInt(currentPage.toString()) - 1,
+                undefined,
+                undefined
+              )}
+              scroll={false}
+              className={`${
+                currentPage == 1
+                  ? " pointer-events-none btn-active bg-slate-500"
+                  : "bg-slate-950 hover:bg-slate-700"
+              } rounded-lg text-center lg:hidden block text-white p-2 font-bold tracking-tight`}
+            >
+              <ChevronLeft />
+            </Link>
+            <button
+              className={`pointer-events-none w-10  bg-slate-950 lg:hidden block hover:bg-slate-600 rounded-lg text-center  text-white p-2 font-bold tracking-tight`}
+            >
+              {currentPage}
+            </button>
+            <Link
+              href={generatePageLink(
+                pathname,
+                undefined,
+                parseInt(currentPage.toString()) + 1,
+                undefined,
+                undefined
+              )}
+              scroll={false}
+              className={`${
+                currentPage == totalPages
+                  ? " pointer-events-none btn-active bg-slate-500"
+                  : "bg-slate-950 hover:bg-slate-700"
+              } rounded-lg text-center lg:hidden block text-white p-2 font-bold tracking-tight`}
+            >
+              <ChevronRight />
+            </Link>
+          </>
+        </>
       )}
     </div>
   );

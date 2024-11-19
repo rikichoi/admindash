@@ -69,11 +69,16 @@ export default function OrganisationTable({
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
-                          ? "/"
+                          ? `${generatePageLink(
+                              pathname,
+                              undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              undefined
+                            )}`
                           : `${generatePageLink(
                               pathname,
-                              currentPage ? parseInt(currentPage) : undefined,
                               undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
                               organisation._id
                             )}`
                       }
@@ -87,11 +92,16 @@ export default function OrganisationTable({
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
-                          ? "/"
+                          ? `${generatePageLink(
+                              pathname,
+                              undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              undefined
+                            )}`
                           : `${generatePageLink(
                               pathname,
-                              currentPage ? parseInt(currentPage) : undefined,
                               undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
                               organisation._id
                             )}`
                       }
@@ -105,11 +115,16 @@ export default function OrganisationTable({
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
-                          ? "/"
+                          ? `${generatePageLink(
+                              pathname,
+                              undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              undefined
+                            )}`
                           : `${generatePageLink(
                               pathname,
-                              currentPage ? parseInt(currentPage) : undefined,
                               undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
                               organisation._id
                             )}`
                       }
@@ -123,11 +138,16 @@ export default function OrganisationTable({
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
-                          ? "/"
+                          ? `${generatePageLink(
+                              pathname,
+                              undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              undefined
+                            )}`
                           : `${generatePageLink(
                               pathname,
-                              currentPage ? parseInt(currentPage) : undefined,
                               undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
                               organisation._id
                             )}`
                       }
@@ -141,11 +161,16 @@ export default function OrganisationTable({
                       className="flex px-6 py-4  w-full"
                       href={
                         _id == organisation._id
-                          ? "/"
+                          ? `${generatePageLink(
+                              pathname,
+                              undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
+                              undefined
+                            )}`
                           : `${generatePageLink(
                               pathname,
-                              currentPage ? parseInt(currentPage) : undefined,
                               undefined,
+                              currentPage ? parseInt(currentPage) : undefined,
                               organisation._id
                             )}`
                       }

@@ -3,6 +3,7 @@ import { CreateOrganisationSchema } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import axios from "axios"
 import { TransactionResponse } from "@/app/models/transactions";
+import { Item, Organisation } from "@/lib/types";
 
 //Stripe transactions functions
 export async function getTransactions(prev: number, page: number, lastTransactionId?: string,) {
@@ -103,5 +104,45 @@ export async function createOrganisation(formData: FormData) {
             });
     } catch (error) {
         console.log(error)
+    }
+}
+
+export async function getPaginatedOrganisations(currentPage: number): Promise<Organisation[] | null> {
+    try {
+        const response = await axios.get(
+            // "http://localhost:5000/api/organisation/get-organisations"
+            `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-paginated-organisations/${currentPage ? currentPage : 1}`
+        );
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function getAllOrganisations(): Promise<Organisation[]> {
+    const organisations = await axios.get(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`)
+    return organisations.data
+}
+
+export async function getOrganisationsCount() {
+    const response = await axios.get(
+        // "http://localhost:5000/api/organisation/get-organisations"
+        `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations-count`
+    );
+    return response.data;
+}
+
+export async function getItems(_id?: string): Promise<Item[] | null> {
+    if (!_id) return null;
+    try {
+        const response = await axios.get(
+            `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/item/get-org-items/${_id}`
+        );
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return null;
     }
 }
