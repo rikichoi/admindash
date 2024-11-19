@@ -5,10 +5,11 @@ import axios from "axios"
 import { TransactionResponse } from "@/app/models/transactions";
 
 //Stripe transactions functions
-export async function getTransactions() {
-    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations`);
+export async function getTransactions(prev: number, page: number, lastTransactionId?: string,) {
+    console.log(prev, page, lastTransactionId)
+    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations/${prev ? `${prev}` : 1}&${page ? `${page}` : 1}&${lastTransactionId ? lastTransactionId : undefined}`);
     const transactions: TransactionResponse = await response.json()
-    return transactions.data
+    return { transactions: transactions.data, hasMore: transactions.has_more }
 }
 
 // Donation functions

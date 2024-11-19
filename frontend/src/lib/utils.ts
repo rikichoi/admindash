@@ -13,9 +13,11 @@ export function abbreviateNumber(num: number) {
   return formattedNum;
 }
 
-export function generatePageLink(pathname: string, page?: number, _id?: string) {
+export function generatePageLink(pathname: string, prevPage?: number, page?: number, _id?: string, lastTransactionId?: string) {
   const searchParams = new URLSearchParams({
     ...(_id && { _id }),
+    ...(lastTransactionId && { lastTransactionId: lastTransactionId }),
+    ...(pathname == "/transactions" && prevPage && { prevPage: prevPage.toString() }),
     ...(page && { page: page.toString() })
   });
 

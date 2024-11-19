@@ -73,6 +73,7 @@ export default function OrganisationTable({
                           : `${generatePageLink(
                               pathname,
                               currentPage ? parseInt(currentPage) : undefined,
+                              undefined,
                               organisation._id
                             )}`
                       }
@@ -90,6 +91,7 @@ export default function OrganisationTable({
                           : `${generatePageLink(
                               pathname,
                               currentPage ? parseInt(currentPage) : undefined,
+                              undefined,
                               organisation._id
                             )}`
                       }
@@ -107,6 +109,7 @@ export default function OrganisationTable({
                           : `${generatePageLink(
                               pathname,
                               currentPage ? parseInt(currentPage) : undefined,
+                              undefined,
                               organisation._id
                             )}`
                       }
@@ -124,6 +127,7 @@ export default function OrganisationTable({
                           : `${generatePageLink(
                               pathname,
                               currentPage ? parseInt(currentPage) : undefined,
+                              undefined,
                               organisation._id
                             )}`
                       }
@@ -141,6 +145,7 @@ export default function OrganisationTable({
                           : `${generatePageLink(
                               pathname,
                               currentPage ? parseInt(currentPage) : undefined,
+                              undefined,
                               organisation._id
                             )}`
                       }

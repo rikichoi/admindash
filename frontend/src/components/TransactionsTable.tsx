@@ -14,11 +14,15 @@ import { Transaction } from "@/app/models/transactions";
 type TransactionsTableProps = {
   transactions: Transaction[];
   page: number;
+  lastTransactionId: string;
+  hasMore: boolean;
 };
 
 export function TransactionsTable({
   transactions,
   page,
+  lastTransactionId,
+  hasMore,
 }: TransactionsTableProps) {
   const totalAmount = transactions.reduce(
     (accumulator, currentValue) => accumulator + currentValue.amount,
@@ -63,6 +67,8 @@ export function TransactionsTable({
         pathname={"/transactions"}
         currentPage={page}
         totalPages={5}
+        lastTransactionId={lastTransactionId}
+        hasMore={hasMore}
       />
     </div>
   );

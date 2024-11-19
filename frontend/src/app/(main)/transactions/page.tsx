@@ -13,16 +13,26 @@ export const metadata: Metadata = {
 
 type TransactionsPageProps = {
   searchParams: {
+    prevPage: number;
     page: number;
+    lastTransactionId?: string;
   };
 };
 
 export default async function TransactionsPage({
-  searchParams: { page = 1 },
+  searchParams: { prevPage, page = 1, lastTransactionId },
 }: TransactionsPageProps) {
   const session = await getServerSession();
   if (!session) redirect("/login");
-  const transactions = await getTransactions();
+  const transactions = await getTransactions(prevPage, page, lastTransactionId);
+  let lastTransactionObjectId;
+  if (prevPage < page) {
+    lastTransactionObjectId =
+      transactions.transactions[transactions.transactions.length - 1].id;
+  } else {
+    lastTransactionObjectId = transactions.transactions[0].id;
+  }
+  const hasMore = transactions.hasMore;
 
   return (
     <div className="pt-20 p-8">
@@ -33,7 +43,12 @@ export default async function TransactionsPage({
       >
         Stripe Dashboard <ChevronsRight />
       </Link>
-      <TransactionsTable page={page} transactions={transactions} />
+      <TransactionsTable
+        page={page}
+        transactions={transactions.transactions}
+        lastTransactionId={lastTransactionObjectId}
+        hasMore={hasMore}
+      />
     </div>
   );
 }
