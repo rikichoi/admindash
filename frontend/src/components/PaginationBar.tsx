@@ -91,7 +91,7 @@ export default function PaginationBar({
         </>
       ) : (
         <>
-          {numberedPageItems}{" "}
+          {numberedPageItems}
           <>
             <Link
               href={generatePageLink(

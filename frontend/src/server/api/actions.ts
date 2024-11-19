@@ -7,8 +7,8 @@ import { Item, Organisation } from "@/lib/types";
 
 //Stripe transactions functions
 export async function getTransactions(prev: number, page: number, lastTransactionId?: string,) {
-    console.log(prev, page, lastTransactionId)
-    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations/${prev ? `${prev}` : 1}&${page ? `${page}` : 1}&${lastTransactionId ? lastTransactionId : undefined}`);
+
+    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations/${prev ? `${prev}` : 1}&${page ? `${page}` : 1}&${lastTransactionId ? lastTransactionId : undefined}`, { cache: "no-store" });
     const transactions: TransactionResponse = await response.json()
     return { transactions: transactions.data, hasMore: transactions.has_more }
 }
