@@ -115,7 +115,6 @@ export default function ImageDropzone({
         {files.map((file, index) => (
           <li key={index} className="relative h-32 w-24 rounded-md shadow-lg">
             <Image
-              // TODO: allow preview for existing images. not just display the id
               src={file.preview}
               alt={file.name}
               width={100}

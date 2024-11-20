@@ -9,11 +9,9 @@ import PaginationBar from "@/components/PaginationBar";
 import {
   getAllOrganisations,
   getItems,
-  getOrganisationsCount,
   getPaginatedOrganisations,
 } from "@/server/api/actions";
 
-// TODO: make this dynamic so that selected org name gets displayed *optional*
 export const metadata: Metadata = {
   title: "AdminDash - Dashboard",
 };
@@ -31,22 +29,29 @@ export default async function Home({
   const session = await getServerSession();
   if (!session) redirect("/login");
 
-  const organisationsCount = await getOrganisationsCount();
-  const organisations =
-    organisationsCount == 0 || !organisationsCount
-      ? null
-      : await getPaginatedOrganisations(page);
-  const items = organisationsCount == 0 ? null : await getItems(_id);
+  const [allOrganisations, paginatedOrganisations] = await Promise.all([
+    getAllOrganisations(),
+    getPaginatedOrganisations(page),
+  ]);
+
+  const items = await getItems(_id);
+
   const pageSize = 5;
-  const totalPages = Math.ceil(organisationsCount / pageSize);
-  const allOrganisations = await getAllOrganisations();
+  const totalPages = Math.ceil(allOrganisations.length / pageSize);
 
   return (
     <main className="py-12 h-full bg-[#f7fcec]">
       <div className="p-8 pb-1 space-y-2">
-        <OrganisationDataOptions _id={_id} organisations={organisations} />
+        <OrganisationDataOptions
+          _id={_id}
+          organisations={paginatedOrganisations}
+        />
         <div className="bg-white border rounded-xl p-4 flex flex-col gap-2">
-          <OrganisationTable _id={_id} organisations={organisations} />
+            <OrganisationTable
+              currentPage={page}
+              _id={_id}
+              organisations={paginatedOrganisations}
+            />
           <PaginationBar
             pathname={"/"}
             currentPage={page}

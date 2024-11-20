@@ -13,7 +13,7 @@ export default async function ReportsPage() {
   const session = await getServerSession();
   if (!session) redirect("/login");
   const donations = await getDonations();
-  console.log(donations)
+
   return (
     <div className="pt-20 p-8">
       <ReportsTable donations={donations}/>
