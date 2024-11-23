@@ -6,11 +6,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Organisation } from "../lib/types";
 import OrganisationListItem from "./OrganisationListItem";
 
-type GridCarouselProps = {
+type OrganisationCarouselProps = {
   organisations: Organisation[] | undefined;
 };
 
-export default function GridCarousel({ organisations }: GridCarouselProps) {
+export default function OrganisationCarousel({
+  organisations,
+}: OrganisationCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -64,8 +66,8 @@ export default function GridCarousel({ organisations }: GridCarouselProps) {
       </div>
       <button
         className={`${
-          !prevBtnEnabled ? "bg-white" : "bg-gray-100"
-        } absolute lg:-left-12 lg:top-1/2 left-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
+          !prevBtnEnabled ? "bg-white" : "bg-gray-100 hover:bg-gray-200"
+        } absolute lg:-left-2 lg:top-1/2 left-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
         onClick={scrollPrev}
         disabled={!prevBtnEnabled}
       >
@@ -77,8 +79,8 @@ export default function GridCarousel({ organisations }: GridCarouselProps) {
       </button>
       <button
         className={`${
-          !nextBtnEnabled ? "bg-white" : "bg-gray-100"
-        } absolute lg:-right-12 lg:top-1/2 right-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
+          !nextBtnEnabled ? "bg-white" : "bg-gray-100 hover:bg-gray-200"
+        } absolute lg:-right-2 lg:top-1/2 right-1/3 transform rounded-lg lg:-translate-y-1/2 border-2 p-3`}
         onClick={scrollNext}
         disabled={!nextBtnEnabled}
       >

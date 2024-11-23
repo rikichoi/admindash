@@ -1,6 +1,6 @@
 "use server"
 
-import { stripe } from "../lib/stripe";
+import { stripe } from "../../lib/stripe";
 
 export async function createPaymentIntent(amount: number) {
     try {
@@ -11,7 +11,7 @@ export async function createPaymentIntent(amount: number) {
             metadata: {}
         })
         return paymentIntent.client_secret
-        
+
     } catch (error) {
         console.log(error);
         throw new Error(`Internal Server Error: ${error}`);

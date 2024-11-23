@@ -1,6 +1,6 @@
 "use server"
 
-import { Donation, Item, Organisation } from "../lib/types"
+import { Donation, Item, Organisation } from "../../lib/types"
 
 export async function getNews() {
     try {
@@ -13,7 +13,7 @@ export async function getNews() {
 
 export async function getOrganisations(): Promise<Organisation[] | undefined> {
     try {
-        
+
         const organisations = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`, { "cache": "no-cache" })).json()
         return organisations
     } catch (error) {

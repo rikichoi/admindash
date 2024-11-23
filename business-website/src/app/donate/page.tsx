@@ -1,5 +1,5 @@
 import React from "react";
-import GridCarousel from "../components/GridCarousel";
+import OrganisationCarousel from "../../components/OrganisationCarousel";
 import { getOrganisations } from "../server/actions";
 
 export default async function DonatePage() {
@@ -10,7 +10,7 @@ export default async function DonatePage() {
         <h1 className="text-black tracking-tighter text-4xl font-semibold text-center">
           Select an Organisation
         </h1>
-        <GridCarousel organisations={organisations} />
+        <OrganisationCarousel organisations={organisations} />
       </div>
     </div>
   );
