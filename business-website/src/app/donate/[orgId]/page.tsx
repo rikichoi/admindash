@@ -19,7 +19,7 @@ export default async function DonationPage({
   const organisations = await getOrganisations();
   const items = await getOrganisationItems(orgId);
   return (
-    <div className="min-h-screen bg-[url('./assets/donation-page-background.jpg')] bg-cover pb-4 pt-6 font-rubik">
+    <div className="min-h-screen bg-[url('./assets/donation-page-background.jpg')] bg-cover font-rubik lg:pb-4 lg:pt-6">
       {/* <div className="flex justify-center text-black">
         <ol>
           <li className="font-semibold">Test Card Details</li>
@@ -28,9 +28,9 @@ export default async function DonationPage({
           <li className="list-disc">Any future date</li>
         </ol>
       </div> */}
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 rounded-xl border-2 bg-white p-6">
-        <div className="flex items-center justify-center rounded-xl bg-black bg-[url('./assets/payment-form-background.jpg')] bg-center bg-cover">
-          <h2 className="text-6xl px-16 font-bold tracking-tighter text-white">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 border-2 bg-white p-6 lg:grid-cols-2 lg:rounded-xl">
+        <div className="hidden items-center justify-center rounded-xl bg-black bg-[url('./assets/payment-form-background.jpg')] bg-cover bg-center lg:flex">
+          <h2 className="px-16 text-6xl font-bold tracking-tighter text-white">
             We Can Support The Future
           </h2>
         </div>

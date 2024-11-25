@@ -85,6 +85,7 @@ function CheckoutForm({
     trigger,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<CreateDonationSchema>({
     resolver: zodResolver(createDonationSchema),
@@ -113,9 +114,14 @@ function CheckoutForm({
   const amountValue = watch("amount");
 
   useEffect(() => {
-    console.log(amountValue);
     setAmount(parseInt(amountValue) || 0);
   }, [amountValue]);
+
+  useEffect(() => {
+    if (donationType == "general") {
+      setValue("itemId", undefined);
+    }
+  }, [donationType]);
 
   const stripeSubmitHandler = async (data: CreateDonationSchema) => {
     const { amount, comment, itemId, orgId, donorName, email, phone } = data;
@@ -157,7 +163,9 @@ function CheckoutForm({
         onSubmit={handleSubmit(formSubmitHandler)}
         className="rounded-md bg-white p-2 text-black"
       >
-        <h1 className="text-3xl">Make a donation</h1>
+        <h1 className="mb-5 text-3xl font-bold tracking-tight">
+          Make a Donation
+        </h1>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col">
             <h2>Donation Type</h2>
@@ -172,7 +180,7 @@ function CheckoutForm({
                     setDonationType((e.target as HTMLInputElement).value)
                   }
                   value={"general"}
-                  className="w-5 rounded-lg border-2 p-2"
+                  className="w-5 rounded-lg border p-2 accent-green-400"
                 />
               </div>
               <div className="flex gap-3">
@@ -185,21 +193,23 @@ function CheckoutForm({
                     setDonationType((e.target as HTMLInputElement).value)
                   }
                   value={"item"}
-                  className="w-5 rounded-lg border-2 p-2"
+                  className="w-5 rounded-lg border p-2 accent-green-400"
                 />
               </div>
             </div>
           </div>
         </div>
-        <div hidden={donationType !== "item"} className="flex flex-col gap-3">
-          <div hidden={donationType !== "item"} className="flex flex-col">
-            <h2 hidden={donationType !== "item"}>Item</h2>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col">
+            <h2>Item</h2>
             <select
-              hidden={donationType !== "item"}
-              className="rounded-lg border-2 p-2"
+              disabled={donationType !== "item"}
+              className={`${donationType == "general" && "bg-orange-100 hover:cursor-not-allowed"} rounded-lg border-2 p-2`}
               {...register("itemId")}
             >
-              <option disabled value={""}>Select an Item</option>
+              <option disabled value={""}>
+                Select an Item
+              </option>
               {items && items.length > 0 ? (
                 items?.map((item) => (
                   <option key={item._id} value={item._id}>
