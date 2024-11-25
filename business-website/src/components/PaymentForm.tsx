@@ -152,7 +152,7 @@ function CheckoutForm({
   };
 
   return (
-    <div className="mx-auto max-w-3xl rounded-lg border-2">
+    <div className="w-full rounded-lg">
       <form
         onSubmit={handleSubmit(formSubmitHandler)}
         className="rounded-md bg-white p-2 text-black"
