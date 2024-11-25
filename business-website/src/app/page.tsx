@@ -1,6 +1,6 @@
 import InfiniteSlider from "../components/InfiniteSlider";
 import { ArrowRight } from "lucide-react";
-import { getOrganisations } from "./server/actions";
+import { getItems, getOrganisations } from "../server/actions";
 import OrganisationCarousel from "../components/OrganisationCarousel";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -37,19 +37,8 @@ export default async function Home() {
     ssr: false,
   });
 
-  const sampleItems = [
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-    "Item 5",
-    "Item 6",
-    "Item 7",
-    "Item 8",
-    "Item 9",
-  ];
-
   const organisations = await getOrganisations();
+  const items = await getItems();
   return (
     <div className="flex min-h-screen flex-col justify-center gap-16 bg-slate-50 pt-16 font-rubik">
       <div className="flex flex-col gap-6">
@@ -111,7 +100,7 @@ export default async function Home() {
             Your help is Needed
           </h1>
         </div>
-        <ItemCarousel items={sampleItems} />
+        <ItemCarousel items={items} />
       </div>
       <div className="grid min-h-[90vh] gap-12 p-5 lg:grid-cols-2 lg:p-0">
         <div className="flex flex-col items-center justify-center gap-10 lg:items-baseline lg:pl-40">

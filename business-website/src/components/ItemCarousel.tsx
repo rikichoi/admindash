@@ -10,30 +10,26 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Item } from "@/lib/types";
+import Image from "next/image";
+import { ProgressBar } from "./ProgressBar";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 // import Image from "next/image";
 // import { Button } from "@/components/ui/button"
 
 interface ItemCarouselProps {
-  items: string[];
+  items?: Item[];
 }
 
 export function ItemCarousel({ items }: ItemCarouselProps) {
-  // const [currentIndex, setCurrentIndex] = React.useState(0)
-  // const totalItems = items.length
-
-  // const handlePrevious = () => {
-  //   setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : totalItems - 1))
-  // }
-
-  // const handleNext = () => {
-  //   setCurrentIndex((prevIndex) => (prevIndex < totalItems - 1 ? prevIndex + 1 : 0))
-  // }
 
   return (
     <Carousel
       opts={{
         align: "start",
         loop: true,
+        active: items && items.length > 0,
       }}
       className="mx-auto w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl"
       // setApi={(api) => {
@@ -45,37 +41,86 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
       // }}
     >
       <CarouselContent>
-        {items.map((item, index) => (
-          <CarouselItem
-            key={index}
-            className="gap-3 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
-          >
-            <div className="relative mx-auto flex flex-col justify-center justify-items-center px-0">
-              <Card className="mx-auto h-full min-h-64 w-full border-2 px-0">
-                <CardContent className="absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex aspect-square w-4/5 flex-col items-center justify-center bg-green-400 text-white">
-                  <p className="w-full">Organisation name</p>
-                  <span className="font-semibold">{item} name</span>
-                  <div>
-                    <span>Total donation value progress bar</span>
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <p>Goal</p>
-                    <p>Collected</p>
-                    <p>Remaining</p>
-                  </div>
-                </CardContent>
-                <div className="absolute left-0 right-0 top-0 h-full max-h-36 w-full bg-black">
-                  <div className=""></div>
-                </div>
-              </Card>
+        {items &&
+          items.length > 0 &&
+          items.map((item, index) => (
+            <CarouselItem
+              key={index}
+              className="gap-3 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
+            >
+              <div className="relative mx-auto flex flex-col justify-center justify-items-center px-0">
+                <Card className="mx-auto h-full min-h-96 w-full border-0 px-0">
+                  <CardContent className="absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex h-fit w-5/6 flex-col justify-center gap-3 rounded-lg border bg-slate-50 p-4 text-white">
+                    <p className="w-full text-sm font-semibold tracking-tighter text-[#49a27d]">
+                      {item.orgId.name}
+                    </p>
+                    <span className="text-lg font-semibold tracking-tighter text-stone-950">
+                      {item.name}
+                    </span>
+                    <div>
+                      <ProgressBar
+                        donationGoalValue={item.donationGoalValue}
+                        totalDonationValue={item.totalDonationValue}
+                      />
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Goal</p>
+                        <p className="text-stone-950">
+                          ${item.donationGoalValue}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">
+                          Collected
+                        </p>
+                        <p className="text-stone-950">
+                          ${item.totalDonationValue}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">
+                          Remaining
+                        </p>
+                        <p className="text-stone-950">
+                          ${item.donationGoalValue - item.totalDonationValue}
+                        </p>
+                      </div>
+                    </div>
+                    <Link
+                      href={`/donate/${item.orgId._id}?itemId=${item._id}`}
+                      className="group relative mx-auto flex w-fit items-center gap-2 overflow-hidden rounded-lg bg-[#1ab394] px-6 py-2 text-lg text-white transition-all duration-300 ease-in-out hover:bg-[#00cca3]"
+                    >
+                      <span className="duration 300 flex items-center gap-2 transition-transform ease-in-out group-hover:translate-x-2">
+                        Donate <ArrowRight />
+                      </span>
+                    </Link>
+                  </CardContent>
+                  <Image
+                  
+                    width={400}
+                    height={400}
+                    src={item.imageUrl}
+                    alt="item image"
+                    className="absolute left-0 right-0 top-0 h-full max-h-36 w-full object-none"
+                  ></Image>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        {!items ||
+          (items && items.length < 1 && (
+            <div className="h-32 w-full text-center text-lg text-muted-foreground">
+              Currently no Donation Campaigns
             </div>
-          </CarouselItem>
-        ))}
+          ))}
       </CarouselContent>
-      <div className="mt-4 flex items-center justify-center space-x-2">
-        <CarouselPrevious />
-        <CarouselNext />
-      </div>
+      {items && items.length > 0 && (
+        <div className="mt-4 flex items-center justify-center space-x-2">
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
+      )}
     </Carousel>
   );
 }

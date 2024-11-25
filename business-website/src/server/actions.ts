@@ -1,6 +1,6 @@
 "use server"
 
-import { Donation, Item, Organisation } from "../../lib/types"
+import { Donation, Item, Organisation } from "../lib/types"
 
 export async function getNews() {
     try {
@@ -23,8 +23,17 @@ export async function getOrganisations(): Promise<Organisation[] | undefined> {
 
 export async function getOrganisationItems(orgId: string): Promise<Item[] | undefined> {
     try {
-        const organisations = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/item/get-org-items/${orgId}`)).json()
-        return organisations
+        const items = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/item/get-org-items/${orgId}`)).json()
+        return items
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getItems(): Promise<Item[] | undefined> {
+    try {
+        const items = (await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/item/get-items`)).json()
+        return items
     } catch (error) {
         console.log(error)
     }

@@ -63,9 +63,9 @@ export default function OrganisationListItem({
         </div>
         <Link
           href={`/donate/${organisation._id}`}
-          className="flex gap-2 relative overflow-hidden transition-all ease-in-out duration-300 items-center mx-auto w-fit py-3 px-6 text-lg  text-white rounded-lg bg-[#1ab394] hover:bg-[#00cca3]"
+          className="flex gap-2 group relative overflow-hidden transition-all ease-in-out duration-300 items-center mx-auto w-fit py-3 px-6 text-lg  text-white rounded-lg bg-[#1ab394] hover:bg-[#00cca3]"
         >
-          <span className="flex gap-2 items-center transition-transform duration 300 ease-in-out hover:translate-x-2">
+          <span className="flex gap-2 items-center transition-transform duration 300 ease-in-out group-hover:translate-x-2">
             Donate <ArrowRight />
           </span>
         </Link>

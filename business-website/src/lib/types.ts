@@ -23,8 +23,8 @@ export type Item = {
     totalDonationValue: number;
     activeStatus: boolean;
     itemImage: string;
-    imageUrl?: string;
-    orgId: string;
+    imageUrl: string;
+    orgId: { _id: string, name: string };
     createdAt: Date;
     updatedAt: Date;
 }
