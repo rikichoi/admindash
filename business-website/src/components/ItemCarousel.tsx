@@ -20,9 +20,10 @@ import { ArrowRight } from "lucide-react";
 
 interface ItemCarouselProps {
   items?: Item[];
+  backgroundColor?: string;
 }
 
-export function ItemCarousel({ items }: ItemCarouselProps) {
+export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
   const [imageLoading, setImageLoading] = useState(true);
 
   return (
@@ -50,8 +51,10 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
               className="gap-3 border-none shadow-none sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
             >
               <div className="relative mx-auto flex flex-col justify-center justify-items-center border-none px-0 shadow-none">
-                <Card className="mx-auto h-full min-h-96 w-full border-none px-0 shadow-none">
-                  <CardContent className="absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex h-fit w-5/6 flex-col justify-center gap-3 rounded-lg border bg-slate-50 p-4 text-white">
+                <Card className="mx-auto h-full min-h-96 bg-transparent w-full border-none px-0 shadow-none">
+                  <CardContent
+                    className={`${backgroundColor ? backgroundColor : "bg-slate-50"} absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex h-fit w-5/6 flex-col justify-center gap-3 rounded-lg border p-4 text-white`}
+                  >
                     <p className="w-full text-sm font-semibold tracking-tighter text-[#49a27d]">
                       {item.orgId.name}
                     </p>
@@ -68,7 +71,7 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
                       <div>
                         <p className="text-sm text-muted-foreground">Goal</p>
                         <p className="text-stone-950">
-                          ${item.donationGoalValue}
+                          ${Math.floor(item.donationGoalValue / 100)}
                         </p>
                       </div>
                       <div>
@@ -76,7 +79,7 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
                           Collected
                         </p>
                         <p className="text-stone-950">
-                          ${item.totalDonationValue}
+                          ${Math.floor(item.totalDonationValue / 100)}
                         </p>
                       </div>
                       <div>
@@ -84,7 +87,10 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
                           Remaining
                         </p>
                         <p className="text-stone-950">
-                          ${item.donationGoalValue - item.totalDonationValue}
+                          $
+                          {Math.floor(
+                            item.donationGoalValue - item.totalDonationValue,
+                          ) / 100}
                         </p>
                       </div>
                     </div>

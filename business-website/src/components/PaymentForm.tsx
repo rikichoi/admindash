@@ -163,9 +163,15 @@ function CheckoutForm({
         onSubmit={handleSubmit(formSubmitHandler)}
         className="rounded-md bg-white p-2 text-black"
       >
-        <h1 className="mb-5 text-3xl font-bold tracking-tight">
+        <h1 className="mb-4 text-3xl font-bold tracking-tight">
           Make a Donation
         </h1>
+        <h2 className="font-semibold tracking-tighter text-red-500">Test Card Details</h2>
+        <ul className="mb-5">
+          <li>Card: 4242 4242 4242 4242</li>
+          <li>Date: 44/44</li>
+          <li>CVC: 444</li>
+        </ul>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col">
             <h2>Donation Type</h2>

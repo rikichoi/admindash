@@ -13,11 +13,17 @@ export function ProgressBar({
   donationGoalValue,
   totalDonationValue,
 }: ProgressBarProps) {
+  const donationRawProgress = Math.ceil(totalDonationValue / donationGoalValue);
+  let donationFormattedProgress = 0;
+  if (donationRawProgress > 100) {
+    donationFormattedProgress = 100;
+  } else {
+    donationFormattedProgress = donationRawProgress;
+  }
   return (
     <Progress
-    
-      value={totalDonationValue / donationGoalValue}
-      className="w-full bg-slate-200"
+      value={donationFormattedProgress}
+      className="w-full bg-slate-200 [&>*]:bg-[#49a27d]"
     />
   );
 }
