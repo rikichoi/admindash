@@ -37,7 +37,7 @@ export function ReportsTable({ donations }: ReportsTableProps) {
     const fieldName = e.target.name as keyof Donation;
     (donations[index][fieldName] as string) = e.target.value;
     console.log("changes are going through");
-    console.log(donations)
+    console.log(donations);
   }
 
   function removeSection(section: keyof Donation) {
@@ -79,7 +79,7 @@ export function ReportsTable({ donations }: ReportsTableProps) {
         donation.donorName ? donation.donorName : null,
         donation.email ? donation.email : null,
         donation.phone ? donation.phone : null,
-        donation.itemId ? donation.itemId : null,
+        donation.itemId ? donation.itemId._id : null,
         donation.createdAt ? donation.createdAt : null,
         donation.updatedAt ? donation.updatedAt : null,
       ]), // Map your data fields accordingly
@@ -89,7 +89,6 @@ export function ReportsTable({ donations }: ReportsTableProps) {
 
     // Create a Blob from the CSV string
     const blob = new Blob([csvString], { type: "text/csv" });
-
     // Generate a download link and initiate the download
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

@@ -38,7 +38,7 @@ export type Donation = {
     email?: string;
     phone: number;
     orgId: { _id: string, name: string };
-    itemId?: string;
+    itemId?: { _id: string, name: string };
     createdAt: Date;
     updatedAt: Date;
 }
