@@ -14,7 +14,7 @@ import { Transaction } from "@/app/models/transactions";
 type TransactionsTableProps = {
   transactions: Transaction[];
   page: number;
-  lastTransactionId: string;
+  lastTransactionId?: string;
   hasMore: boolean;
 };
 

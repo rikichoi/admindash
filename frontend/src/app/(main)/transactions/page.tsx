@@ -30,7 +30,11 @@ export default async function TransactionsPage({
     lastTransactionObjectId =
       transactions.transactions[transactions.transactions.length - 1].id;
   } else {
-    lastTransactionObjectId = transactions.transactions[0].id;
+    if (transactions.transactions.length > 0) {
+      lastTransactionObjectId = transactions.transactions[0].id;
+    } else {
+      lastTransactionObjectId = undefined;
+    }
   }
   const hasMore = transactions.hasMore;
 
