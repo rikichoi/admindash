@@ -201,13 +201,15 @@ function CheckoutForm({
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col">
-            <h2>Item</h2>
+            <h2 className={`${donationType == "general" && "line-through"}`}>
+              Item
+            </h2>
             <select
               disabled={donationType !== "item"}
               className={`${donationType == "general" && "bg-orange-100 hover:cursor-not-allowed"} rounded-lg border-2 p-2`}
               {...register("itemId")}
             >
-              <option disabled value={""}>
+              <option className="line-through" disabled value={""}>
                 Select an Item
               </option>
               {items && items.length > 0 ? (
@@ -226,7 +228,7 @@ function CheckoutForm({
             <p className="text-red-500">{errors.itemId?.message}</p>
           </div>
           <div className="flex flex-col">
-            <h2>Amount</h2>
+            <h2>Amount (In Cents - i.e $500 = 50000)</h2>
             <input
               className="rounded-lg border-2 p-2"
               {...register("amount")}

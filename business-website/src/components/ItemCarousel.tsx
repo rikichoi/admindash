@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react";
 // import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -23,6 +23,7 @@ interface ItemCarouselProps {
 }
 
 export function ItemCarousel({ items }: ItemCarouselProps) {
+  const [imageLoading, setImageLoading] = useState(true);
 
   return (
     <Carousel
@@ -40,16 +41,16 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
       //   }
       // }}
     >
-      <CarouselContent>
+      <CarouselContent className="border-none shadow-none">
         {items &&
           items.length > 0 &&
           items.map((item, index) => (
             <CarouselItem
               key={index}
-              className="gap-3 sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
+              className="gap-3 border-none shadow-none sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
             >
-              <div className="relative mx-auto flex flex-col justify-center justify-items-center px-0">
-                <Card className="mx-auto h-full min-h-96 w-full border-0 px-0">
+              <div className="relative mx-auto flex flex-col justify-center justify-items-center border-none px-0 shadow-none">
+                <Card className="mx-auto h-full min-h-96 w-full border-none px-0 shadow-none">
                   <CardContent className="absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex h-fit w-5/6 flex-col justify-center gap-3 rounded-lg border bg-slate-50 p-4 text-white">
                     <p className="w-full text-sm font-semibold tracking-tighter text-[#49a27d]">
                       {item.orgId.name}
@@ -97,12 +98,12 @@ export function ItemCarousel({ items }: ItemCarouselProps) {
                     </Link>
                   </CardContent>
                   <Image
-                  
                     width={400}
                     height={400}
                     src={item.imageUrl}
-                    alt="item image"
-                    className="absolute left-0 right-0 top-0 h-full max-h-36 w-full object-none"
+                    alt="Item Image"
+                    onLoad={() => setImageLoading(false)}
+                    className={`${imageLoading && "animate-pulse bg-slate-200"} absolute left-0 right-0 top-0 h-full max-h-36 w-full rounded-xl object-none`}
                   ></Image>
                 </Card>
               </div>
