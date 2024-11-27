@@ -253,12 +253,60 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     },
   });
 
+  const downloadCSV = () => {
+    const headers: string[] = [];
+    const rows: unknown[] = [];
+    table.getFilteredRowModel().rows.forEach((e) =>
+      e.getVisibleCells().map((cell) => {
+        if (cell.id !== "0_select" && cell.id !== "0_actions") {
+          headers.push(cell.id.slice(2));
+        }
+      })
+    );
+    table.getFilteredRowModel().rows.forEach((e) =>
+      e.getVisibleCells().map((cell) => {
+        if (cell.id !== "0_select" && cell.id !== "0_actions") {
+          rows.push(cell.getValue());
+        }
+      })
+    );
+
+    const csvString = [headers.join(","), rows.join(",")].join("\n");
+
+    // Create a Blob from the CSV string
+    const blob = new Blob([csvString], { type: "text/csv" });
+    // Generate a download link and initiate the download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${new Date().toLocaleDateString()}_donation_data.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (!data || data.length < 1) {
     return;
   }
 
   return (
     <div className="w-full">
+      <div className="justify-end flex gap-3">
+        <Button
+          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+          onClick={downloadCSV}
+        >
+          <span className="hidden md:block">Download</span> CSV
+        </Button>
+        <Button
+          disabled
+          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+          //   onClick={downloadCSV}
+        >
+          <span className="hidden md:block">Generate</span> Invoice
+        </Button>
+      </div>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."

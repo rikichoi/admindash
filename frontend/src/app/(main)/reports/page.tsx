@@ -1,6 +1,5 @@
 import React from "react";
 import { Metadata } from "next";
-import { ReportsTable } from "@/components/ReportsTable";
 import { getDonations } from "@/server/api/actions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -17,7 +16,6 @@ export default async function ReportsPage() {
 
   return (
     <div className="pt-20 p-8">
-      {/* <ReportsTable donations={donations}/> */}
       <ReportsDataTable donations={donations}/>
     </div>
   );
