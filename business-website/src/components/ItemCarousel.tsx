@@ -15,6 +15,7 @@ import Image from "next/image";
 import { ProgressBar } from "./ProgressBar";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { abbreviateNumber } from "@/lib/utils";
 // import Image from "next/image";
 // import { Button } from "@/components/ui/button"
 
@@ -25,6 +26,16 @@ interface ItemCarouselProps {
 
 export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
   const [imageLoading, setImageLoading] = useState(true);
+  function calculateRemaining(
+    donationGoal: number,
+    totalDonationsValue: number,
+  ) {
+    const remaining = (donationGoal - totalDonationsValue) / 100;
+    if (remaining <= donationGoal) {
+      return 0;
+    }
+    return remaining;
+  }
 
   return (
     <Carousel
@@ -51,7 +62,7 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
               className="gap-3 border-none shadow-none sm:basis-1/2 md:basis-1/2 lg:basis-1/3"
             >
               <div className="relative mx-auto flex flex-col justify-center justify-items-center border-none px-0 shadow-none">
-                <Card className="mx-auto h-full min-h-96 bg-transparent w-full border-none px-0 shadow-none">
+                <Card className="mx-auto h-full min-h-96 w-full border-none bg-transparent px-0 shadow-none">
                   <CardContent
                     className={`${backgroundColor ? backgroundColor : "bg-slate-50"} absolute bottom-0 left-0 right-0 top-32 z-10 mx-auto my-auto flex h-fit w-5/6 flex-col justify-center gap-3 rounded-lg border p-4 text-white`}
                   >
@@ -79,7 +90,7 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
                           Collected
                         </p>
                         <p className="text-stone-950">
-                          ${Math.floor(item.totalDonationValue / 100)}
+                          ${abbreviateNumber(Math.floor(item.totalDonationValue / 100))}
                         </p>
                       </div>
                       <div>
@@ -88,9 +99,10 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
                         </p>
                         <p className="text-stone-950">
                           $
-                          {Math.floor(
-                            item.donationGoalValue - item.totalDonationValue,
-                          ) / 100}
+                          {calculateRemaining(
+                            item.donationGoalValue,
+                            item.totalDonationValue,
+                          )}
                         </p>
                       </div>
                     </div>
