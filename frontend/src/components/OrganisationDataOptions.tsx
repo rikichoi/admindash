@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Dialog from "./OrganisationDialog";
+import ReusableDialog from "./ReusableDialog";
 import AddOrganisationModal from "./Modals/AddOrganisationModal";
 import DeleteOrganisationModal from "./Modals/DeleteOrganisationModal";
 import EditOrganisationModal from "./Modals/EditOrganisationModal";
@@ -32,7 +32,7 @@ export default function OrganisationDataOptions({
 
   return (
     <div className="flex justify-end items-center gap-1 text-black">
-      <Dialog
+      <ReusableDialog
         title={modalContent}
         showModal={showModal}
         setShowModal={setShowModal}
@@ -50,7 +50,7 @@ export default function OrganisationDataOptions({
         {modalContent == "Delete Organisation" && (
           <DeleteOrganisationModal _id={_id} setShowModal={setShowModal} />
         )}
-      </Dialog>
+      </ReusableDialog>
       <h1 className="text-2xl font-medium me-auto">Organisations</h1>
       <button
         onClick={() => (

@@ -35,6 +35,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Donation } from "@/lib/types";
+import ReusableDialog from "./ReusableDialog";
+import ReviewDonationModal from "./Modals/ReviewDonationModal";
 
 export const columns: ColumnDef<Donation>[] = [
   {
@@ -152,9 +154,20 @@ export const columns: ColumnDef<Donation>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const donation = row.original;
-
       return (
         <DropdownMenu>
+          <ReusableDialog
+            title="Donation Details"
+            showModal={row.getIsSelected()}
+            setShowModal={() => row.toggleSelected(!row.getIsSelected())}
+          >
+            {"Donation Details" == "Donation Details" && (
+              <ReviewDonationModal
+                donation={donation}
+                setShowModal={() => row.toggleSelected(!row.getIsSelected())}
+              />
+            )}
+          </ReusableDialog>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
@@ -164,12 +177,7 @@ export const columns: ColumnDef<Donation>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() =>
-                console.log(
-                  "Show Popup Modal displaying more details",
-                  donation
-                )
-              }
+              onClick={() => row.toggleSelected(!row.getIsSelected())}
             >
               View Details
             </DropdownMenuItem>
@@ -189,6 +197,7 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [globalFilter, setGlobalFilter] = React.useState<string>("");
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -206,11 +215,13 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
   });
 
@@ -270,11 +281,9 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
       </div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filter donations..."
+          // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -304,7 +313,7 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md bg-slate-50 border">
+      <div className="rounded-md bg-white border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

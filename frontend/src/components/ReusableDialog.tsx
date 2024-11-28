@@ -2,19 +2,19 @@
 import { useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { XIcon } from "lucide-react";
 
-type ItemDialogProps = {
+type ReusableDialogProps = {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   title: string;
   children: React.ReactNode;
 };
 
-export default function ItemDialog({
+export default function ReusableDialog({
   showModal,
   setShowModal,
   title,
   children,
-}: ItemDialogProps) {
+}: ReusableDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {

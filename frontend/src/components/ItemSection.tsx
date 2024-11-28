@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import ItemAddButton from "./ItemAddButton";
 import { Item } from "@/lib/types";
-import ItemDialog from "./ItemDialog";
+import ReusableDialog from "./ReusableDialog";
 import EditItemModal from "./Modals/EditItemModal";
 
 type ItemSectionProps = {
@@ -19,7 +19,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
 
   return (
     <div className="w-full text-black">
-      <ItemDialog
+      <ReusableDialog
         title={modalContent}
         showModal={showModal}
         setShowModal={setShowModal}
@@ -32,7 +32,7 @@ export default function ItemSection({ items, _id }: ItemSectionProps) {
             itemId={selectedItemId}
           />
         )}
-      </ItemDialog>
+      </ReusableDialog>
       <div className="border max-h-[480px] overflow-y-scroll bg-white flex flex-col gap-3 rounded-xl p-4">
         <h1 className="font-medium text-2xl">Campaign Items</h1>
         <div className="grid gap-5 w-full sm:grid-cols-2 md:grid-cols-3">
