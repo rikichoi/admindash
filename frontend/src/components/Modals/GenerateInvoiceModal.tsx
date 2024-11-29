@@ -11,10 +11,9 @@ export default function ReviewDonationModal({
   donation,
   setShowModal,
 }: ReviewDonationModalProps) {
-  console.log(donation)
   return (
     <div className="flex flex-col gap-3">
-      <h1>Organisation Name: {donation?.orgId.name}</h1>
+      <p>{JSON.stringify(donation)}</p>
       <div className="flex ">
         <button
           type="button"

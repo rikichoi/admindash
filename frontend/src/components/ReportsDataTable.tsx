@@ -12,6 +12,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  RowData,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
@@ -37,6 +38,14 @@ import {
 import { Donation } from "@/lib/types";
 import ReusableDialog from "./ReusableDialog";
 import ReviewDonationModal from "./Modals/ReviewDonationModal";
+
+declare module "@tanstack/react-table" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface TableMeta<TData extends RowData> {
+    onModalOpen: () => void;
+    showModal: boolean;
+  }
+}
 
 export const columns: ColumnDef<Donation>[] = [
   {
@@ -152,19 +161,19 @@ export const columns: ColumnDef<Donation>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const donation = row.original;
       return (
         <DropdownMenu>
           <ReusableDialog
             title="Donation Details"
-            showModal={row.getIsSelected()}
-            setShowModal={() => row.toggleSelected(!row.getIsSelected())}
+            showModal={table.options.meta?.showModal ?? false}
+            setShowModal={() => table.options.meta?.onModalOpen()}
           >
             {"Donation Details" == "Donation Details" && (
               <ReviewDonationModal
                 donation={donation}
-                setShowModal={() => row.toggleSelected(!row.getIsSelected())}
+                setShowModal={() => table.options.meta?.onModalOpen()}
               />
             )}
           </ReusableDialog>
@@ -176,9 +185,7 @@ export const columns: ColumnDef<Donation>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => row.toggleSelected(!row.getIsSelected())}
-            >
+            <DropdownMenuItem onClick={() => table.options.meta?.onModalOpen()}>
               View Details
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -201,8 +208,9 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [showModal, setShowModal] = React.useState(false);
 
-  const data = donations;
+  const data: Donation[] = donations;
 
   const table = useReactTable({
     data,
@@ -216,6 +224,10 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
+    meta: {
+      onModalOpen: () => setShowModal(!showModal),
+      showModal,
+    },
     state: {
       sorting,
       columnFilters,
