@@ -58,7 +58,7 @@ export default function OrganisationDataOptions({
           setModalContent("Add Organisation"),
           setShowModal(true)
         )}
-        className="flex tracking-tight text-white duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4ac5ac] bg-[#49b989] items-center rounded-lg px-4 p-2"
+        className="flex tracking-tight text-black hover:text-white duration-300 gap-1 border border-transparent hover:border-black font-semibold hover:bg-[#4eccb3] bg-[#4ac5ac] items-center rounded-lg px-4 p-2"
       >
         Add
       </button>
@@ -68,7 +68,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Edit Organisation"), setShowModal(true)
             )}
-            className="flex duration-300 text-white tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-orange-500 bg-orange-600 items-center rounded-lg px-4 p-2"
+            className="flex duration-300 text-black hover:text-white tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-orange-500 bg-orange-600 items-center rounded-lg px-4 p-2"
           >
             Edit
           </button>
@@ -76,7 +76,7 @@ export default function OrganisationDataOptions({
             onClick={() => (
               setModalContent("Delete Organisation"), setShowModal(true)
             )}
-            className="flex duration-300 text-white tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-red-600 bg-red-500 items-center rounded-lg px-4 p-2"
+            className="flex duration-300 text-black hover:text-white tracking-tight gap-1 border border-transparent hover:border-black font-semibold hover:bg-red-600 bg-red-500 items-center rounded-lg px-4 p-2"
           >
             Delete
           </button>

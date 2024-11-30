@@ -15,7 +15,6 @@ import {
   RowData,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -38,6 +37,8 @@ import {
 import { Donation } from "@/lib/types";
 import ReusableDialog from "./ReusableDialog";
 import ReviewDonationModal from "./Modals/ReviewDonationModal";
+import GenerateInvoiceButton from "./GenerateInvoiceButton";
+import DownloadCsvButton from "./DownloadCsvButton";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -237,38 +238,22 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     },
   });
 
-  const downloadCSV = () => {
-    const headers: string[] = [];
-    const rows: unknown[] = [];
-    table.getFilteredRowModel().rows.forEach((e) =>
-      e.getVisibleCells().map((cell) => {
-        if (cell.id !== "0_select" && cell.id !== "0_actions") {
-          headers.push(cell.id.slice(2));
-        }
-      })
-    );
-    table.getFilteredRowModel().rows.forEach((e) =>
-      e.getVisibleCells().map((cell) => {
-        if (cell.id !== "0_select" && cell.id !== "0_actions") {
-          rows.push(cell.getValue());
-        }
-      })
-    );
-
-    const csvString = [headers.join(","), rows.join(",")].join("\n");
-
-    // Create a Blob from the CSV string
-    const blob = new Blob([csvString], { type: "text/csv" });
-    // Generate a download link and initiate the download
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${new Date().toLocaleDateString()}_donation_data.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+  const headers: string[] = [];
+  const rows: unknown[] = [];
+  table.getFilteredRowModel().rows.forEach((e) =>
+    e.getVisibleCells().map((cell) => {
+      if (cell.id !== "0_select" && cell.id !== "0_actions") {
+        headers.push(cell.id.slice(2));
+      }
+    })
+  );
+  table.getFilteredRowModel().rows.forEach((e) =>
+    e.getVisibleCells().map((cell) => {
+      if (cell.id !== "0_select" && cell.id !== "0_actions") {
+        rows.push(cell.getValue());
+      }
+    })
+  );
 
   if (!data || data.length < 1) {
     return;
@@ -277,19 +262,8 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   return (
     <div className="w-full">
       <div className="justify-end flex gap-3">
-        <Button
-          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
-          onClick={downloadCSV}
-        >
-          <span className="hidden md:block">Download</span> CSV
-        </Button>
-        <Button
-          disabled
-          className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
-          //   onClick={downloadCSV}
-        >
-          <span className="hidden md:block">Generate</span> Invoice
-        </Button>
+        <DownloadCsvButton headers={headers} rows={rows} />
+        <GenerateInvoiceButton />
       </div>
       <div className="flex items-center py-4">
         <Input

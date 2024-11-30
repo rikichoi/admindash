@@ -11,7 +11,6 @@ export default function ReviewDonationModal({
   donation,
   setShowModal,
 }: ReviewDonationModalProps) {
-  console.log(donation);
   if (!donation) {
     return;
   }
