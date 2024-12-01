@@ -255,6 +255,16 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     })
   );
 
+  const selectedRows: unknown[] = table.getSelectedRowModel().rows.map((e) => {
+    const selectedRowData: unknown[] = [];
+    e.getVisibleCells().forEach((e) => {
+      selectedRowData.push(e.getValue());
+    });
+    selectedRowData.shift();
+    selectedRowData.pop();
+    return selectedRowData;
+  });
+
   if (!data || data.length < 1) {
     return;
   }
@@ -263,7 +273,7 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     <div className="w-full">
       <div className="justify-end flex gap-3">
         <DownloadCsvButton headers={headers} rows={rows} />
-        <GenerateInvoiceButton />
+        <GenerateInvoiceButton selectedRows={selectedRows} />
       </div>
       <div className="flex items-center py-4">
         <Input

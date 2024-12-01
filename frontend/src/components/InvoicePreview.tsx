@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export default function InvoicePreview() {
-  return (
-    <div>InvoicePreview</div>
-  )
+interface InvoicePreviewProps {
+  selectedRows: unknown[];
+}
+
+export default function InvoicePreview({ selectedRows }: InvoicePreviewProps) {
+  return <div>{JSON.stringify(selectedRows)}</div>;
 }
