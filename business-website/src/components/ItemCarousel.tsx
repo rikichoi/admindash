@@ -31,10 +31,11 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
     totalDonationsValue: number,
   ) {
     const remaining = donationGoal - totalDonationsValue;
+    console.log(donationGoal, totalDonationsValue);
     if (remaining <= 0) {
       return 0;
     }
-    return remaining / 100;
+    return Math.floor(remaining / 100);
   }
 
   return (
@@ -82,7 +83,7 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
                       <div>
                         <p className="text-sm text-muted-foreground">Goal</p>
                         <p className="text-stone-950">
-                          ${Math.floor(item.donationGoalValue / 100)}
+                          ${Math.ceil(item.donationGoalValue / 100)}
                         </p>
                       </div>
                       <div>
@@ -92,7 +93,7 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
                         <p className="text-stone-950">
                           $
                           {abbreviateNumber(
-                            Math.floor(item.totalDonationValue / 100),
+                            Math.ceil(item.totalDonationValue / 100),
                           )}
                         </p>
                       </div>
