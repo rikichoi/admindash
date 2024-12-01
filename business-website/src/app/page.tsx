@@ -36,7 +36,6 @@ export default async function Home() {
   const Mapbox = dynamic(() => import("../components/Mapbox"), {
     ssr: false,
   });
-
   const organisations = await getOrganisations();
   const items = await getItems();
   return (

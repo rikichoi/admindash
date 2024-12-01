@@ -31,7 +31,6 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
     totalDonationsValue: number,
   ) {
     const remaining = donationGoal - totalDonationsValue;
-    console.log(donationGoal, totalDonationsValue);
     if (remaining <= 0) {
       return 0;
     }
