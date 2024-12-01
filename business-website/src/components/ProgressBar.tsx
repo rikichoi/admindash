@@ -13,9 +13,9 @@ export function ProgressBar({
   donationGoalValue,
   totalDonationValue,
 }: ProgressBarProps) {
-  const donationRawProgress = Math.ceil(totalDonationValue / donationGoalValue);
+  const donationRawProgress = (totalDonationValue / donationGoalValue) * 100;
   let donationFormattedProgress = 0;
-  if (donationRawProgress > 100) {
+  if (donationRawProgress >= 100) {
     donationFormattedProgress = 100;
   } else {
     donationFormattedProgress = donationRawProgress;

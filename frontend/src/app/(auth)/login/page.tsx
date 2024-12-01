@@ -83,6 +83,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   name="password"
+                  type="password"
                   className="border-2 focus:ring-2 focus:ring-[#FDC62D] text-black focus:outline-2  outline-none border-gray-950 p-2 w-full"
                   placeholder="Password"
                 ></input>

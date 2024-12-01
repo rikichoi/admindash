@@ -30,11 +30,11 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
     donationGoal: number,
     totalDonationsValue: number,
   ) {
-    const remaining = (donationGoal - totalDonationsValue) / 100;
-    if (remaining <= donationGoal) {
+    const remaining = donationGoal - totalDonationsValue;
+    if (remaining <= 0) {
       return 0;
     }
-    return remaining;
+    return remaining / 100;
   }
 
   return (
@@ -90,7 +90,10 @@ export function ItemCarousel({ items, backgroundColor }: ItemCarouselProps) {
                           Collected
                         </p>
                         <p className="text-stone-950">
-                          ${abbreviateNumber(Math.floor(item.totalDonationValue / 100))}
+                          $
+                          {abbreviateNumber(
+                            Math.floor(item.totalDonationValue / 100),
+                          )}
                         </p>
                       </div>
                       <div>
