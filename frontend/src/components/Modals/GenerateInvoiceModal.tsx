@@ -1,19 +1,19 @@
 "use client";
-import { Donation } from "@/lib/types";
 import React, { Dispatch, SetStateAction } from "react";
+import InvoicePreview from "../InvoicePreview";
 
-type ReviewDonationModalProps = {
-  donation?: Donation;
+interface GenerateInvoiceModalProps {
+  selectedRows: unknown[];
   setShowModal: Dispatch<SetStateAction<boolean>>;
-};
+}
 
-export default function ReviewDonationModal({
-  donation,
+export default function GenerateInvoiceModal({
+  selectedRows,
   setShowModal,
-}: ReviewDonationModalProps) {
+}: GenerateInvoiceModalProps) {
   return (
     <div className="flex flex-col gap-3">
-      <p>{JSON.stringify(donation)}</p>
+      <InvoicePreview selectedRows={selectedRows} />
       <div className="flex ">
         <button
           type="button"

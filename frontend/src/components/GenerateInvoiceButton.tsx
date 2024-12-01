@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import ReusableDialog from "./ReusableDialog";
-import InvoicePreview from "./InvoicePreview";
+import GenerateInvoiceModal from "./Modals/GenerateInvoiceModal";
 
 interface GenerateInvoiceButtonProps {
   selectedRows: unknown[];
@@ -12,7 +12,6 @@ export default function GenerateInvoiceButton({
   selectedRows,
 }: GenerateInvoiceButtonProps) {
   const [showModal, setShowModal] = useState(false);
-  console.log(selectedRows);
 
   return (
     <>
@@ -21,9 +20,7 @@ export default function GenerateInvoiceButton({
         showModal={showModal}
         title={"Invoice Preview"}
       >
-        <div className="">
-          <InvoicePreview selectedRows={selectedRows} />
-        </div>
+        <GenerateInvoiceModal selectedRows={selectedRows} setShowModal={setShowModal}/>
       </ReusableDialog>
       <Button
         className="flex gap-2 w-fit text-base bg-[#4ac5ac] transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"

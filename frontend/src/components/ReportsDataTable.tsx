@@ -154,7 +154,7 @@ export const columns: ColumnDef<Donation>[] = [
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-      }).format(amount/100);
+      }).format(amount / 100);
 
       return <div className="text-right font-medium">{formatted}</div>;
     },
@@ -255,13 +255,12 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     })
   );
 
+  // thats some gnarly code my guy
   const selectedRows: unknown[] = table.getSelectedRowModel().rows.map((e) => {
-    const selectedRowData: unknown[] = [];
-    e.getVisibleCells().forEach((e) => {
-      selectedRowData.push(e.getValue());
+    const selectedRowData: { [key: string]: unknown } = {};
+    e.getVisibleCells().forEach((cell) => {
+      selectedRowData[cell.id.slice(2)] = cell.getValue();
     });
-    selectedRowData.shift();
-    selectedRowData.pop();
     return selectedRowData;
   });
 
