@@ -78,6 +78,7 @@ export default function EditItemModal({
       setIsDeleting(false);
       reset();
       setShowModal(false);
+      console.log("deleting...")
     } catch (error) {
       setIsDeleting(false);
       console.log(error);
