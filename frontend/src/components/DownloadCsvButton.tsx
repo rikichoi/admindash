@@ -1,29 +1,37 @@
 import React from "react";
 import { Button } from "./ui/button";
+import { Donation } from "@/lib/types";
 
 interface DownloadCsvButtonProps {
-  headers: string[];
-  rows: unknown[];
+  selectedRows: unknown[] | Donation[];
 }
 
 export default function DownloadCsvButton({
-  headers,
-  rows,
+  selectedRows,
 }: DownloadCsvButtonProps) {
-  function downloadCsv() {
-    const csvString = [headers.join(","), rows.join(",")].join("\n");
-    // Create a Blob from the CSV string
-    const blob = new Blob([csvString], { type: "text/csv" });
-    // Generate a download link and initiate the download
+  const downloadCsv = () => {
+    if (selectedRows.length === 0) return;
+
+    const headers = Object.keys(selectedRows[0] as Donation).join(",");
+    const csvContent = [
+      headers,
+      ...selectedRows.map((row) => {
+        return Object.values(row as Donation).join(",");
+      }),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url;
-    link.download = `${new Date().toLocaleDateString()}_donation_data.csv`;
+    link.setAttribute("href", url);
+    const date = new Date();
+    const dateString = `${date.toLocaleDateString()}_${date.toLocaleTimeString()}`;
+    link.setAttribute("download", `${dateString}_donation_data.csv`);
+    link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
+  };
 
   return (
     <>

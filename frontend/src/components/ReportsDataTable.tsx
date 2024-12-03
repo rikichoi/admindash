@@ -259,7 +259,10 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   const selectedRows: unknown[] = table.getSelectedRowModel().rows.map((e) => {
     const selectedRowData: { [key: string]: unknown } = {};
     e.getVisibleCells().forEach((cell) => {
-      selectedRowData[cell.id.slice(2)] = cell.getValue();
+      const formattedCellId = cell.id.slice(2);
+      if (formattedCellId != "actions" && formattedCellId != "select") {
+        selectedRowData[formattedCellId] = cell.getValue();
+      }
     });
     return selectedRowData;
   });
@@ -271,7 +274,7 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   return (
     <div className="w-full">
       <div className="justify-end flex gap-3">
-        <DownloadCsvButton headers={headers} rows={rows} />
+        <DownloadCsvButton selectedRows={selectedRows} />
         <GenerateInvoiceButton selectedRows={selectedRows} />
       </div>
       <div className="flex items-center py-4">
