@@ -1,6 +1,12 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Donation } from "@/lib/types";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DownloadCsvButtonProps {
   selectedRows: unknown[] | Donation[];
@@ -35,12 +41,25 @@ export default function DownloadCsvButton({
 
   return (
     <>
-      <Button
-        className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
-        onClick={() => downloadCsv()}
-      >
-        <span className="hidden md:block">Download</span> CSV
-      </Button>
+      <TooltipProvider delayDuration={0}>
+        <Tooltip>
+          <TooltipTrigger
+            disabled={selectedRows && selectedRows.length > 1}
+            asChild
+          >
+            <Button
+              disabled={!selectedRows || selectedRows.length < 1}
+              className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+              onClick={() => downloadCsv()}
+            >
+              <span className="hidden md:block">Download</span> CSV
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Please select at least 1 item</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </>
   );
 }

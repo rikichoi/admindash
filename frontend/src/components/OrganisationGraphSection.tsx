@@ -13,7 +13,7 @@ export default function OrganisationGraphSection({
   organisations,
   items,
 }: OrganisationGraphProps) {
-  console.log(_id);
+
   return (
     <div className="text-black h-full">
       {_id ? (

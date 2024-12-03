@@ -1,29 +1,60 @@
-"use client"
+"use client";
 import { Donation } from "@/lib/types";
 import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
+type SelectedRow = Donation & {
+  orgId_name: string;
+};
 
 interface InvoicePreviewProps {
-  selectedRows: unknown[] | Donation[];
+  selectedRows: unknown[] | SelectedRow[];
 }
 
 export default function InvoicePreview({ selectedRows }: InvoicePreviewProps) {
-  const dataArray: JSX.Element[] = [];
-  (selectedRows as Donation[]).forEach((row: Donation, index: number) => {
-    Object.keys(row).forEach((key) => {
-      if (row[key as keyof Donation]) {
-        dataArray.push(
-          <p className="text-black" key={`${index}-${key}`}>
-            {key}: {String(row[key as keyof Donation])}
-          </p>
-        );
-      }
-    });
-  });
-  console.log(selectedRows)
   return (
-    <div className="h-fit w-full bg-white text-black">
-      {dataArray}
+    <div className="h-fit w-[900px] bg-white text-black">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Name</TableHead>
+            <TableHead>Organisation</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {(selectedRows as SelectedRow[]).map((donation) => (
+            <TableRow key={donation.donorName}>
+              <TableCell className="font-medium">
+                {donation.donorName}
+              </TableCell>
+              <TableCell>{donation.orgId_name}</TableCell>
+              <TableCell>{donation.comment}</TableCell>
+              <TableCell className="text-right">{donation.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell className="text-right">
+              {(selectedRows as SelectedRow[]).reduce(
+                (total, donation) => total + donation.amount,
+                0
+              )}
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
     </div>
   );
 }
