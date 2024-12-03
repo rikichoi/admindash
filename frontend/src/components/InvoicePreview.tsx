@@ -20,15 +20,15 @@ interface InvoicePreviewProps {
 }
 
 export default function InvoicePreview({ selectedRows }: InvoicePreviewProps) {
+  // TODO: Create generate invoice functionality
   return (
     <div className="h-fit w-[900px] bg-white text-black">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Organisation</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="">Organisation</TableHead>
+            <TableHead className="text-right ">Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,7 +38,6 @@ export default function InvoicePreview({ selectedRows }: InvoicePreviewProps) {
                 {donation.donorName}
               </TableCell>
               <TableCell>{donation.orgId_name}</TableCell>
-              <TableCell>{donation.comment}</TableCell>
               <TableCell className="text-right">{donation.amount}</TableCell>
             </TableRow>
           ))}

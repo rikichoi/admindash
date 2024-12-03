@@ -41,21 +41,26 @@ export default function DownloadCsvButton({
 
   return (
     <>
-      <TooltipProvider delayDuration={0}>
+      <TooltipProvider delayDuration={1} skipDelayDuration={1}>
         <Tooltip>
-          <TooltipTrigger
-            disabled={selectedRows && selectedRows.length > 1}
-            asChild
-          >
+          <TooltipTrigger className="hover:cursor-default">
             <Button
-              disabled={!selectedRows || selectedRows.length < 1}
-              className="flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold"
+              disabled={!selectedRows || selectedRows.length <= 0}
+              className={`${
+                !selectedRows || selectedRows.length < 1
+                  ? "hover:cursor-default"
+                  : ""
+              } flex gap-2 w-fit text-base bg-black transition-all duration-200 hover:bg-white hover:text-black border border-transparent hover:border-black rounded-xl text-white items-center p-5 font-semibold`}
               onClick={() => downloadCsv()}
             >
               <span className="hidden md:block">Download</span> CSV
             </Button>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent
+            className={`${
+              selectedRows && selectedRows.length > 0 ? "hidden" : ""
+            } bg-red-500`}
+          >
             <p>Please select at least 1 item</p>
           </TooltipContent>
         </Tooltip>
