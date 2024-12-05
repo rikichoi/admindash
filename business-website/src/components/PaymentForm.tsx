@@ -142,7 +142,7 @@ function CheckoutForm({
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        return_url: `https://nexagrid.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${(itemId && donationType == "item" && itemId) || null}/${email || null}/${phone || null}`,
+        return_url: `http://localhost:3000/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${(itemId && donationType == "item" && itemId) || null}/${email || null}/${phone || null}/paymentId=`,
       },
     });
     console.log(result);
@@ -166,7 +166,9 @@ function CheckoutForm({
         <h1 className="mb-4 text-3xl font-bold tracking-tight">
           Make a Donation
         </h1>
-        <h2 className="font-semibold tracking-tighter text-red-500">Test Card Details</h2>
+        <h2 className="font-semibold tracking-tighter text-red-500">
+          Test Card Details
+        </h2>
         <ul className="mb-5">
           <li>Card: 4242 4242 4242 4242</li>
           <li>Date: 44/44</li>
