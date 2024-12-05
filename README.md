@@ -13,11 +13,6 @@ The **purpose** of **AdminDash** is to provide an **accessible platform** in whi
 4. Transactions are recorded on the AdminDash system
 5. Business can view analytics and manage content accordingly via AdminDash (https://admindash-sooty.vercel.app/)
 
-## Additional/Optional Features
-- [ ] Live Chat for internal communication between employees
-- [ ] Automated Email Notification to admin upon successful donation
-- [ ] Customizable Invoice generation feature
-
 ## Tech-Stack
 | Front-end | Back-end | Deployment | Libraries | Image Storage | Payment Gateway |
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
