@@ -12,10 +12,10 @@ import PaginationBar from "./PaginationBar";
 import { Transaction } from "@/app/models/transactions";
 
 type TransactionsTableProps = {
-  transactions: Transaction[];
+  transactions: Transaction[] | undefined;
   page: number;
   lastTransactionId?: string;
-  hasMore: boolean;
+  hasMore: boolean | undefined;
 };
 
 export function TransactionsTable({
@@ -24,10 +24,12 @@ export function TransactionsTable({
   lastTransactionId,
   hasMore,
 }: TransactionsTableProps) {
-  const totalAmount = transactions.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.amount,
-    0
-  );
+  const totalAmount =
+    transactions &&
+    transactions.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.amount,
+      0
+    );
   return (
     <div className="bg-white border rounded-xl p-4">
       {transactions && (
@@ -57,7 +59,7 @@ export function TransactionsTable({
             <TableRow>
               <TableCell colSpan={3}>Total ($AUD)</TableCell>
               <TableCell className="text-right">
-                ${(totalAmount / 100).toLocaleString()}
+                ${totalAmount && (totalAmount / 100).toLocaleString()}
               </TableCell>
             </TableRow>
           </TableFooter>

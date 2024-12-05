@@ -7,10 +7,15 @@ import { Item, Organisation } from "@/lib/types";
 
 //Stripe transactions functions
 export async function getTransactions(prev: number, page: number, lastTransactionId?: string,) {
+    try {
+        const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations/${prev ? `${prev}` : 1}&${page ? `${page}` : 1}&${lastTransactionId ? lastTransactionId : undefined}`, { cache: "no-store" });
+        const transactions: TransactionResponse = await response.json()
+        return { transactions: transactions.data, hasMore: transactions.has_more }
+    }
+    catch (error) {
+        return { message: error }
+    }
 
-    const response = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/get-stripe-donations/${prev ? `${prev}` : 1}&${page ? `${page}` : 1}&${lastTransactionId ? lastTransactionId : undefined}`, { cache: "no-store" });
-    const transactions: TransactionResponse = await response.json()
-    return { transactions: transactions.data, hasMore: transactions.has_more }
 }
 
 // Donation functions
@@ -120,9 +125,14 @@ export async function getPaginatedOrganisations(currentPage: number): Promise<Or
     }
 }
 
-export async function getAllOrganisations(): Promise<Organisation[]> {
-    const organisations = await axios.get(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`)
-    return organisations.data
+export async function getAllOrganisations() {
+    try {
+        const organisations = await axios.get(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations`)
+        return organisations.data
+    } catch (error) {
+        console.log(error)
+        return []
+    }
 }
 
 export async function getOrganisationsCount() {

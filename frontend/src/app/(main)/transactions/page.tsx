@@ -26,14 +26,16 @@ export default async function TransactionsPage({
   if (!session) redirect("/login");
   const transactions = await getTransactions(prevPage, page, lastTransactionId);
   let lastTransactionObjectId;
-  if (prevPage < page) {
+  if (transactions && transactions.transactions && prevPage < page) {
     lastTransactionObjectId =
       transactions.transactions[transactions.transactions.length - 1].id;
   } else {
-    if (transactions.transactions.length > 0) {
-      lastTransactionObjectId = transactions.transactions[0].id;
-    } else {
-      lastTransactionObjectId = undefined;
+    if (transactions.transactions) {
+      if (transactions.transactions.length > 0) {
+        lastTransactionObjectId = transactions.transactions[0].id;
+      } else {
+        lastTransactionObjectId = undefined;
+      }
     }
   }
   const hasMore = transactions.hasMore;

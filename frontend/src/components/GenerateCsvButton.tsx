@@ -8,13 +8,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface DownloadCsvButtonProps {
+interface GenerateCsvButtonProps {
   selectedRows: unknown[] | Donation[];
 }
 
-export default function DownloadCsvButton({
+export default function GenerateCsvButton({
   selectedRows,
-}: DownloadCsvButtonProps) {
+}: GenerateCsvButtonProps) {
   const downloadCsv = () => {
     if (selectedRows.length === 0) return;
 

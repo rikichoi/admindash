@@ -38,7 +38,7 @@ import { Donation } from "@/lib/types";
 import ReusableDialog from "./ReusableDialog";
 import ReviewDonationModal from "./Modals/ReviewDonationModal";
 import GenerateInvoiceButton from "./GenerateInvoiceButton";
-import DownloadCsvButton from "./DownloadCsvButton";
+import GenerateCsvButton from "./GenerateCsvButton";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -225,6 +225,12 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
+    initialState: {
+      pagination: {
+        pageIndex: 0, //custom initial page index
+        pageSize: 10, //custom default page size
+      },
+    },
     meta: {
       onModalOpen: () => setShowModal(!showModal),
       showModal,
@@ -237,7 +243,9 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
       globalFilter,
     },
   });
-
+  if (!donations) {
+    return;
+  }
   const headers: string[] = [];
   const rows: unknown[] = [];
   table.getFilteredRowModel().rows.forEach((e) =>
@@ -274,10 +282,11 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
   return (
     <div className="w-full">
       <div className="justify-end flex gap-3">
-        <DownloadCsvButton selectedRows={selectedRows} />
+        <GenerateCsvButton selectedRows={selectedRows} />
         <GenerateInvoiceButton selectedRows={selectedRows} />
       </div>
       <div className="flex items-center py-4">
+        {/* TODO: maybe fetch the hwole list of donation data then paginate using functions provided by the ShadCn Data Table */}
         <Input
           placeholder="Filter donations..."
           // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -311,7 +320,7 @@ export function ReportsDataTable({ donations }: ReportsTableProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md bg-white border">
+      <div className="rounded-md bg-white p-3 border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
