@@ -27,5 +27,5 @@ export async function GET(request: Request, context: { params: DonationProps }) 
 
     if (!donation) { return (redirect("/payment-error"), new NextResponse(`There was an unexpected error!`, { status: 400 })); }
 
-    return redirect("http://localhost:3000/payment-success");
+    return redirect("https://nexagrid.vercel.app/payment-success");
 }
