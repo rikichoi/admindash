@@ -31,6 +31,7 @@ export type Item = {
 
 export type Donation = {
     _id: string;
+    stripePaymentIntentId: string;
     refundStatus: boolean;
     amount: number;
     comment: string;

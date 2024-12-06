@@ -39,6 +39,7 @@ import ReusableDialog from "./ReusableDialog";
 import ReviewDonationModal from "./Modals/ReviewDonationModal";
 import GenerateInvoiceButton from "./GenerateInvoiceButton";
 import GenerateCsvButton from "./GenerateCsvButton";
+import Link from "next/link";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -188,6 +189,14 @@ export const columns: ColumnDef<Donation>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => table.options.meta?.onModalOpen()}>
               View Details
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link
+                href={`https://dashboard.stripe.com/test/payments/${donation.stripePaymentIntentId}`}
+                target="_blank"
+              >
+                View Stripe
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
