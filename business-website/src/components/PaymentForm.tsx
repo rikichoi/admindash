@@ -142,9 +142,7 @@ function CheckoutForm({
       elements,
       clientSecret: clientSecret,
       confirmParams: {
-        // return_url: `https://nexagrid.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${(itemId && donationType == "item" && itemId) || null}/${email || null}/${phone || null}/paymentId=`,
-        return_url: `http://localhost:3000/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${(itemId && donationType == "item" && itemId) || null}/${email || null}/${phone || null}/paymentId=`,
-
+        return_url: `https://nexagrid.vercel.app/api/checkout/new-donation/${amount}/${orgId}/${encodeURIComponent(comment)}/${(donorName && encodeURIComponent(donorName)) || null}/${(itemId && donationType == "item" && itemId) || null}/${email || null}/${phone || null}/paymentId=`,
       },
     });
     console.log(result);
