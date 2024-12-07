@@ -16,7 +16,7 @@ type DonationProps = {
 export async function GET(request: Request, context: { params: DonationProps }) {
     const url = new URL(request.url);
     const payment_intent = url.searchParams.get('payment_intent');
-    
+
     if (!payment_intent) {
         return new NextResponse('Payment intent not found', { status: 400 });
     }
@@ -30,6 +30,6 @@ export async function GET(request: Request, context: { params: DonationProps }) 
     if (!donation) {
         return (redirect("/payment-error"), new NextResponse(`There was an unexpected error!`, { status: 400 }));
     }
-
+    // return redirect("http://localhost:3000/payment-success");
     return redirect("https://nexagrid.vercel.app/payment-success");
 }
