@@ -16,20 +16,20 @@ type DonationProps = {
 export async function GET(request: Request, context: { params: DonationProps }) {
     const url = new URL(request.url);
     const payment_intent = url.searchParams.get('payment_intent');
-    console.log(payment_intent)
+
     if (!payment_intent) {
         return new NextResponse('Payment intent not found', { status: 400 });
     }
 
     const { amount, comment, itemId, donorName, email, orgId, phone } = context.params;
 
-    const donation = await fetch(`https://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/create-donation/${amount}&${orgId}&${comment}&${donorName}&${itemId ? itemId : ''}${email ? `&${email}` : ''}${phone ? `&${phone}` : ''}&${payment_intent}`, {
+    const donation = await fetch(`http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/donation/create-donation/${amount}&${orgId}&${comment}&${donorName}&${itemId && itemId}${email && `&${email}`}${phone && `&${phone}`}&${payment_intent}`, {
         method: "POST"
     });
 
-    if (!donation.ok) {
+    if (!donation) {
         return (redirect("/payment-error"), new NextResponse(`There was an unexpected error!`, { status: 400 }));
     }
-
+    // return redirect("http://localhost:3000/payment-success");
     return redirect("https://nexagrid.vercel.app/payment-success");
 }
