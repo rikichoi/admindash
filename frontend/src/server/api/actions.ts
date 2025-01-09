@@ -115,7 +115,6 @@ export async function createOrganisation(formData: FormData) {
 export async function getPaginatedOrganisations(currentPage: number): Promise<Organisation[] | null> {
     try {
         const response = await axios.get(
-            // "http://localhost:5000/api/organisation/get-organisations"
             `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-paginated-organisations/${currentPage ? currentPage : 1}`
         );
         return response.data;
@@ -137,7 +136,6 @@ export async function getAllOrganisations() {
 
 export async function getOrganisationsCount() {
     const response = await axios.get(
-        // "http://localhost:5000/api/organisation/get-organisations"
         `http://${process.env.NEXT_PUBLIC_ENDPOINT_URL}/api/organisation/get-organisations-count`
     );
     return response.data;
